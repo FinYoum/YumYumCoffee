@@ -10,4 +10,6 @@ public class YumyumApplication {
 		SpringApplication.run(YumyumApplication.class, args);
 //커밋
 
+	}
+
 }
