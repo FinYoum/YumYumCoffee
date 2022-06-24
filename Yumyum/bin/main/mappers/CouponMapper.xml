@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.CouponMapper">
+<sql id="CouponColumns">
+          CP_NUM <!-- 쿠폰번호 -->
+        , USER_NUM <!-- 회원번호 -->
+        , PM_NUM <!-- 결제번호 -->
+        , INSERT_DATE <!-- 발급일 -->
+        , EXPIRATION_DATE <!-- 만료일 -->
+        , KIND <!-- 종류 -->
+        , DELETE_YN <!-- 사용여부 -->
+    </sql>
+    
+    
+
+    <insert id="insertStampCoupon" parameterType="CouponDTO">
+        INSERT INTO COUPON (
+            <include refid="boardColumns" />
+        ) VALUES (
+             SEQ.NEXTVAL  
+            , #{user_num}
+            , #{pm_num}
+            , NOW()
+            , NOW()+29 <!-- 유효기간 30일 -->
+            , #{kind}
+            , 'N'
+        )
+    </insert>
+    
+    <update id="useCoupon" parameterType="CouponDTO">
+        UPDATE coupon
+        SET
+            delete_yn = 'Y'
+        WHERE
+            cp_num = #{cp_num}
+    </update>
+</mapper>

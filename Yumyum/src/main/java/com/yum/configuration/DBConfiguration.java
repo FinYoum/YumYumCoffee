@@ -15,19 +15,6 @@ import org.springframework.context.annotation.PropertySource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 @Configuration
 @PropertySource("classpath:/application.properties")
 public class DBConfiguration {
@@ -46,13 +33,14 @@ public class DBConfiguration {
 		return new HikariDataSource(hikariConfig());
 	}
 
+//	마이바티스 변수 맵핑 설정을 처리할 빈
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
-//		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mappers/**/*Mapper.xml"));
+		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mappers/**/*Mapper.xml"));
 		factoryBean.setTypeAliasesPackage("com.yum");
-//		factoryBean.setConfiguration(mybatisConfg());
+		factoryBean.setConfiguration(mybatisConfg());
 		return factoryBean.getObject();
 	}
 
@@ -60,10 +48,11 @@ public class DBConfiguration {
 	public SqlSessionTemplate sqlSession() throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory());
 	}
-
-//	@Bean
-//	@ConfigurationProperties(prefix = "mybatis.configuration")
-//	public org.apache.ibatis.session.Configuration mybatisConfg() {
-//		return new org.apache.ibatis.session.Configuration();
-//	}
+	
+//	마이바티스 변수 맵핑 설정을 처리할 빈
+	@Bean
+	@ConfigurationProperties(prefix = "mybatis.configuration")
+	public org.apache.ibatis.session.Configuration mybatisConfg() {
+		return new org.apache.ibatis.session.Configuration();
+	}
 }
