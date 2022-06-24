@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class TestController {
-	@RequestMapping(value="/test1", method = RequestMethod.GET)
+	@RequestMapping(value="/", method = RequestMethod.GET)
 	public @ResponseBody String api_test(){
 		return "index";
 	}
