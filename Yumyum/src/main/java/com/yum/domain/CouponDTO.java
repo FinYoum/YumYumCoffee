@@ -8,27 +8,31 @@ import lombok.Setter;
 @Getter
 @Setter
 
+
 public class CouponDTO {
 	/** 쿠폰번호 (PK) */
-	private int cp_num;
+	private int cpNum;
 	
 //	회원번호
-	private int user_num;
+	private int userNum;
 	
 //	결제번호
-	private int pm_num;
+	private int pmNum;
 	
 //	발급일
-	private LocalDateTime insert_date;
+	private LocalDateTime insertDate;
 	
 //	만료일
-	private LocalDateTime expiration_date;
+	private LocalDateTime expirationDate;
 	
 //	종류
 	private String kind;
 	
 //	사용여부
-	private String delete_yn;
+	private String deleteYn;
+	
+//	쿠폰 설명
+	private String description;
 
 
 }

@@ -6,5 +6,7 @@ import com.yum.domain.CouponDTO;
 
 @Mapper
 public interface CouponMapper {
-	public int insertStampCoupon(CouponDTO params);
+	public int insertStampCoupon();
+//	public int insertStampCoupon(CouponDTO params);
+
 }

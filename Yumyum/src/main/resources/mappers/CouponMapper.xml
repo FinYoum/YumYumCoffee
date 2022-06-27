@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CouponMapper">
+    <sql id = "couponColums">
+        cp_num
+        , user_num
+        , pm_num
+        , insert_date
+        , expiration_date
+        , kind
+        , delete_yn
+        , description
+    </sql>
+  <!--   <insert id="insertStampCoupon" > -->
+    <select id="insertStampCoupon" parameterType="CouponMapper">  
+        SELECT * FROM COUPON
+    <!--  
+        INSERT INTO COUPON(
+        <include refid="couponColums"/>
+        ) VALUES(
+        500
+        ,500
+        ,500
+        ,TO_DATE('2022-06-27','YYYY-MM-DD')
+        ,TO_DATE('2022-07-13','YYYY-MM-DD')
+        , '스탬프'
+        , 'N'
+        , '아메리카노 1잔과 교환할 수 있습니다.'-->
+        <!-- 
+            SEQ.NEXTVAL
+            , #{user_num}
+            , #{pm_num}
+            , NOW()
+            , NOW()+29
+            , #{kind}
+            , 'N'
+            , '아메리카노 1잔과 교환할 수 있습니다.'
+             
+            
+        )  -->      
+    </select>
+
+</mapper>
