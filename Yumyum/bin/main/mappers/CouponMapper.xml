@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mappers.CouponMapper">
-<sql id="CouponColumns">
-          CP_NUM <!-- 쿠폰번호 -->
-        , USER_NUM <!-- 회원번호 -->
-        , PM_NUM <!-- 결제번호 -->
-        , INSERT_DATE <!-- 발급일 -->
-        , EXPIRATION_DATE <!-- 만료일 -->
-        , KIND <!-- 종류 -->
-        , DELETE_YN <!-- 사용여부 -->
+<mapper namespace="CouponMapper">
+    <sql id = "couponColums">
+        cp_num
+        , user_num
+        , pm_num
+        , insert_date
+        , expiration_date
+        , kind
+        , delete_yn
+        , description
     </sql>
-    
-    
-
-    <insert id="insertStampCoupon" parameterType="CouponDTO">
-        INSERT INTO COUPON (
-            <include refid="boardColumns" />
-        ) VALUES (
-             SEQ.NEXTVAL  
+  <!--   <insert id="insertStampCoupon" > -->
+    <select id="insertStampCoupon" parameterType="CouponMapper">  
+        SELECT * FROM COUPON
+    <!--  
+        INSERT INTO COUPON(
+        <include refid="couponColums"/>
+        ) VALUES(
+        500
+        ,500
+        ,500
+        ,TO_DATE('2022-06-27','YYYY-MM-DD')
+        ,TO_DATE('2022-07-13','YYYY-MM-DD')
+        , '스탬프'
+        , 'N'
+        , '아메리카노 1잔과 교환할 수 있습니다.'-->
+        <!-- 
+            SEQ.NEXTVAL
             , #{user_num}
             , #{pm_num}
             , NOW()
-            , NOW()+29 <!-- 유효기간 30일 -->
+            , NOW()+29
             , #{kind}
             , 'N'
-        )
-    </insert>
-    
-    <update id="useCoupon" parameterType="CouponDTO">
-        UPDATE coupon
-        SET
-            delete_yn = 'Y'
-        WHERE
-            cp_num = #{cp_num}
-    </update>
+            , '아메리카노 1잔과 교환할 수 있습니다.'
+             
+            
+        )  -->      
+    </select>
+
 </mapper>
