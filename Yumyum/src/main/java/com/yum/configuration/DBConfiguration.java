@@ -14,11 +14,9 @@ import org.springframework.context.annotation.PropertySource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 @Configuration
 @PropertySource("classpath:/application.properties")
 public class DBConfiguration {
-
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -33,7 +31,6 @@ public class DBConfiguration {
 		return new HikariDataSource(hikariConfig());
 	}
 
-//	마이바티스 변수 맵핑 설정을 처리할 빈
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
@@ -48,11 +45,11 @@ public class DBConfiguration {
 	public SqlSessionTemplate sqlSession() throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory());
 	}
-	
-//	마이바티스 변수 맵핑 설정을 처리할 빈
+
 	@Bean
 	@ConfigurationProperties(prefix = "mybatis.configuration")
 	public org.apache.ibatis.session.Configuration mybatisConfg() {
 		return new org.apache.ibatis.session.Configuration();
 	}
+
 }
