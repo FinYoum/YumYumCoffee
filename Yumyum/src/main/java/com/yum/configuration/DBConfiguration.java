@@ -16,6 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+
 @Configuration
 @PropertySource("classpath:/application.properties")
 public class DBConfiguration {
@@ -37,9 +38,9 @@ public class DBConfiguration {
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
-//		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mappers/**/*Mapper.xml"));
-//		factoryBean.setTypeAliasesPackage("com.yum.domain");
-//		factoryBean.setConfiguration(mybatisConfg());
+		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mappers/**/*Mapper.xml"));
+		factoryBean.setTypeAliasesPackage("com.yum.domain");
+		factoryBean.setConfiguration(mybatisConfg());
 		return factoryBean.getObject();
 	}
 
