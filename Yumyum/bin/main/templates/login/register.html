@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+</head>
+<body>
+<br><br>
+<!-- 폼태그를 쓰려면 꼭 jsp파일을 써야 하는가?
+spring boot는 꼭 html을 써야 한다면 폼태그를 못쓰는건가 -->
+	 <h2 style="color:black;">회원가입</h2>
+	 <form action="/signCheck" method="post">
+		 <div class="input-group mb-3" style="width:500px; margin:auto;">
+		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >아이디</span>
+		     <input type="text" id=id name=id  maxlength='15' placeholder="한글 특수문자 제외 6~15자 사용하세요">
+		     <input type="button" value="중복확인" onclick="doubleCheck()">
+	     </div>  
+	     
+		<div class="input-group mb-3" style="width:500px; margin:auto;">
+		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >이름</span>
+		     <input type="text" id=name name=name maxlength='20'>
+		</div>
+	         
+	     <div class="input-group mb-3" style="width:500px; margin:auto;">
+		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >비밀번호</span>
+		     <input size="50" type="password" id="password" name=password placeholder = "8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요." maxlength="16" >
+		</div>
+		
+		 <div class="input-group mb-3" style="width:500px; margin:auto;">
+		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >비밀번호 확인</span>
+		     <input type="password" id=passcode name=passcode maxlength="16">
+		</div>
+		
+		<div class="input-group mb-3" style="width:500px; margin:auto;">
+			<span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >전화번호</span>
+			<input type="text" id=tel name=tel>
+		</div>
+		
+		<div class="input-group mb-3" style="width:500px; margin:auto;">
+		    <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >이메일</span>
+		    <input type="text" id=email name="email" maxlength="32">
+		    <input type="hidden" id=authority name="authority" value=1>
+		</div>
+		
+		<div class="input-group mb-3" style="width:500px; margin:auto;">
+		    <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >생년월일</span>
+		    <input type="text" id=email name="email" maxlength="32">
+		</div>
+	
+		<div class="input-group mb-3" style="width:500px; margin:auto;">
+			<input type="submit" value="가입완료"/>
+	      	<input type="button" value="취소"/>
+	    </div>
+    </form>
+</body>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src='https://code.jquery.com/jquery-3.5.0.js'></script>
+<script>
+
+</script>
+</html>

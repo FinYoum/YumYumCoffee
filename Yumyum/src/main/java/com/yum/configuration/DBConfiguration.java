@@ -2,7 +2,6 @@ package com.yum.configuration;
 
 import javax.sql.DataSource;
 
-
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.PropertySource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 
 @Configuration
 @PropertySource("classpath:/application.properties")
@@ -39,7 +37,8 @@ public class DBConfiguration {
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
 		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mappers/**/*Mapper.xml"));
-		factoryBean.setTypeAliasesPackage("com.yum.domain");
+//		factoryBean.setTypeAliasesPackage("com.yum.*");
+
 		factoryBean.setConfiguration(mybatisConfg());
 		return factoryBean.getObject();
 	}
@@ -54,5 +53,4 @@ public class DBConfiguration {
 	public org.apache.ibatis.session.Configuration mybatisConfg() {
 		return new org.apache.ibatis.session.Configuration();
 	}
-
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yum.mapper.MypageMapper">
+<!--  
+    <insert id="insertMember" parameterType="com.yum.domain.MemberDTO">
+        insert into sign_in (id, name, tel, email, birth, authority)
+        values(#{id},#{name},#{tel},#{email},#{birth},#{authority});
+    </insert>
+    -->
+    <select id="selectOrderDetail">
+       SELECT * FROM COUPON
+    </select>
+        <select id="selectTest">
+        <!-- 
+        SELECT to_char(SYSDATE-1) FROM DUAL
+          -->
+       SELECT * FROM COUPON
+      
+    </select>
+        <insert id="insertCoupon"> 
+                 INSERT INTO COUPON (
+                    CP_NUM 
+        , USER_NUM
+        , PM_NUM 
+        , INSERT_DATE 
+        , EXPIRATION_DATE 
+        , KIND 
+        , DELETE_YN 
+        ) VALUES (
+             SEQ.NEXTVAL  
+            , 50000
+            , 60000
+            , sysdate
+            , sysdate
+            , '스탬프'
+            , 'N'
+        )
+        <!--  
+        INSERT INTO COUPON(
+        CP_NUM,
+        USER_NUM,
+        PN_NUM,
+        INSERT_DATE,
+        EXPIRATION_DATE,
+        KIND,
+        DELETE_YN,
+        DESCRIPTION
+
+        ) VALUES(
+ 
+               
+            SEQ.NEXTVAL
+            , #{user_num}
+            , #{pm_num}
+            , to_date(SYSDATE,'YYYY-MM-DD'))
+            , to_date(SYSDATE+29,'YYYY-MM-DD'))
+            , #{kind}
+            , 'N'
+            , '아메리카노 1잔과 교환할 수 있습니다.'
+      
+        )INSERT INTO COUPON(
+        CP_NUM,
+        USER_NUM,
+        PN_NUM,
+        INSERT_DATE,
+        EXPIRATION_DATE,
+        KIND,
+        DELETE_YN,
+        DESCRIPTION
+
+        ) VALUES(
+ 
+               
+            SEQ.NEXTVAL
+            , #{user_num}
+            , #{pm_num}
+            , to_date(SYSDATE,'YYYY-MM-DD'))
+            , to_date(SYSDATE+29,'YYYY-MM-DD'))
+            , #{kind}
+            , 'N'
+            , '아메리카노 1잔과 교환할 수 있습니다.'
+            
+        )     
+              -->
+    </insert>
+    <select id="selectCouponDetail">
+    
+    </select>
+
+
+</mapper>
