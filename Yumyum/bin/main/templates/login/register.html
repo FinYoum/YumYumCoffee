@@ -10,16 +10,16 @@
 spring boot는 꼭 html을 써야 한다면 폼태그를 못쓰는건가 -->
 	 <h2 style="color:black;">회원가입</h2>
 	 <form action="/signCheck" method="post">
+		<div class="input-group mb-3" style="width:500px; margin:auto;">
+		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >이름</span>
+		     <input type="text" id=name name=name maxlength='20'>
+		</div>
+
 		 <div class="input-group mb-3" style="width:500px; margin:auto;">
 		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >아이디</span>
 		     <input type="text" id=id name=id  maxlength='15' placeholder="한글 특수문자 제외 6~15자 사용하세요">
 		     <input type="button" value="중복확인" onclick="doubleCheck()">
 	     </div>  
-	     
-		<div class="input-group mb-3" style="width:500px; margin:auto;">
-		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >이름</span>
-		     <input type="text" id=name name=name maxlength='20'>
-		</div>
 	         
 	     <div class="input-group mb-3" style="width:500px; margin:auto;">
 		     <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >비밀번호</span>
@@ -46,6 +46,14 @@ spring boot는 꼭 html을 써야 한다면 폼태그를 못쓰는건가 -->
 		    <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >생년월일</span>
 		    <input type="text" id=email name="email" maxlength="32">
 		</div>
+	
+	    <div class="input-group mb-3" style="width:500px; margin:auto;">
+            <span class="input-group-text" id="inputGroup-sizing-default" style="width:130px;" >성별</span>
+            <input type="radio" id="male" name="gender"  value="M">
+            <label for="html">남성</label>
+            <input type="radio" id="female" name="gender"  value="F">
+            <label for="html">여성</label><br>
+        </div>
 	
 		<div class="input-group mb-3" style="width:500px; margin:auto;">
 			<input type="submit" value="가입완료"/>

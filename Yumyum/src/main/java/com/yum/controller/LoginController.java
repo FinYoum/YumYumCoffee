@@ -19,9 +19,9 @@ public class LoginController {
 	@Autowired
 	   private SqlSession sqlSession;
 	
-	@GetMapping(value = "/register.do")
+	@GetMapping(value = "/register")
 	public String openRegister(Model model) {
-		return "login/register";
+		return "login/registerTest";
 	}
 	
 //	@RequestMapping(value="/signCheck",method=RequestMethod.POST,produces="application/jason;charset=utf-8")
