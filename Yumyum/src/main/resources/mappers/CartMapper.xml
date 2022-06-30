@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yum.mapper.CartMapper">
+
+	<sql id="cartColums">
+		  cart_num
+		, user_num
+		, product_num
+		, qty
+		, price
+		, shot_custom
+		, total_price
+		
+	</sql>
+
+	<!-- 카트 추가 -->
+	<insert id ="insertCart" parameterType="com.yum.domain.CartDTO">
+		INSERT into Cart (
+			<include refid="cartColums"></include>
+		)VALUES(#{cartNum}, #{userNum}, #{productNum}, #{qty}, #{price}, #{shotCustom}, #{totalPrice})
+	</insert>
+	
+	
+	<!-- 카트 수량 수정 -->
+	<update id="updateCart">
+	UPDATE cart
+	SET qty = #{qty}
+	WHERE cart_num = #{cartNum}
+	</update>
+	
+	<!-- 카트 삭제 -->
+	<delete id="deleteCart">
+		DELETE FROM cart
+		WHERE cart_num = #{cartNum}
+	</delete>
+	
+	<!-- 카트 목록 -->
+	<select id="getCart" resultType="com.yum.domain.CartDTO">
+		SELECT *
+		FROM cart 
+		WHERE user_num = #{userNum}
+	</select>
+	
+	<!-- 카트 확인 -->
+ 	<select id="check_cart" resultType="com.yum.domain.CartDTO">
+		SELECT * 
+		FROM cart 
+		WHERE user_num = #{userNum} and product_num = #{productNum}
+	</select> 
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+</mapper>
