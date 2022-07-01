@@ -7,84 +7,81 @@
         values(#{id},#{name},#{tel},#{email},#{birth},#{authority});
     </insert>
     -->
+    <sql id="couponColumns">
+        CP_NUM
+        , USER_NUM
+        , PM_NUM
+        , INSERT_DATE
+        , EXPIRATION_DATE
+        , KIND
+        , DELETE_YN
+        , DESCRIPTION
+    </sql>
+    
     <select id="selectOrderDetail">
        SELECT * FROM COUPON
     </select>
-        <select id="selectTest">
+    
+    <select id="selectTest">
         <!-- 
         SELECT to_char(SYSDATE-1) FROM DUAL
           -->
        SELECT * FROM COUPON
       
     </select>
-        <insert id="insertCoupon"> 
+    
+    <insert id="insertCoupon"> 
                  INSERT INTO COUPON (
                     CP_NUM 
         , USER_NUM
-        , PM_NUM 
         , INSERT_DATE 
         , EXPIRATION_DATE 
         , KIND 
         , DELETE_YN 
+        , DESCRIPTION
         ) VALUES (
              SEQ.NEXTVAL  
-            , 50000
-            , 60000
+            , #{userNum}
             , sysdate
-            , sysdate
+            , sysdate+29
             , '스탬프'
             , 'N'
+            , '아메리카노 1잔과 교환할 수 있습니다.'
         )
-        <!--  
-        INSERT INTO COUPON(
-        CP_NUM,
-        USER_NUM,
-        PN_NUM,
-        INSERT_DATE,
-        EXPIRATION_DATE,
-        KIND,
-        DELETE_YN,
-        DESCRIPTION
-
-        ) VALUES(
- 
-               
-            SEQ.NEXTVAL
-            , #{user_num}
-            , #{pm_num}
-            , to_date(SYSDATE,'YYYY-MM-DD'))
-            , to_date(SYSDATE+29,'YYYY-MM-DD'))
-            , #{kind}
-            , 'N'
-            , '아메리카노 1잔과 교환할 수 있습니다.'
-      
-        )INSERT INTO COUPON(
-        CP_NUM,
-        USER_NUM,
-        PN_NUM,
-        INSERT_DATE,
-        EXPIRATION_DATE,
-        KIND,
-        DELETE_YN,
-        DESCRIPTION
-
-        ) VALUES(
- 
-               
-            SEQ.NEXTVAL
-            , #{user_num}
-            , #{pm_num}
-            , to_date(SYSDATE,'YYYY-MM-DD'))
-            , to_date(SYSDATE+29,'YYYY-MM-DD'))
-            , #{kind}
-            , 'N'
-            , '아메리카노 1잔과 교환할 수 있습니다.'
-            
-        )     
-              -->
     </insert>
-    <select id="selectCouponDetail">
     
+    <select id="selectCouponList" parameterType="com.yum.domain.CouponDTO" resultType="com.yum.domain.CouponDTO">
+        SELECT 
+          EXPIRATION_DATE
+        , KIND
+        , DESCRIPTION
+        FROM 
+            COUPON
+        WHERE 
+            USER_NUM= #{userNum} 
+        AND 
+            DELETE_YN='N'
+        ORDER BY
+            CP_NUM DESC
+    </select>
+    <select id="selectUserDetail" parameterType="int" resultType="com.yum.domain.UserDTO">
+        SELECT 
+            *
+        FROM 
+            SIGN_IN
+        WHERE 
+            USER_NUM= #{userNum} 
+    </select>
+    
+    <select id="countCoupon" parameterType="com.yum.domain.CouponDTO" resultType="int">
+        SELECT 
+            COUNT(*)
+        FROM 
+            COUPON
+        WHERE 
+            USER_NUM= #{userNum} 
+        AND 
+            DELETE_YN='N'
     </select>
 
 

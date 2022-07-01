@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
+    <th:block layout:fragment="title">
+        <title>YumYum Coffee</title>
+    </th:block>
+    <th:block layout:fragment="header">
+        <h4 class="display-3 fw-bolder">My Page</h4>
+        <p class="lead fw-normal text-white-50 mb-0"></p>
+    </th:block>
+    <th:block layout:fragment="content">
+    <!-- 스탬프 영역 -->
+        <div style="width:250px; height:150px;">
+            <th:block th:if="${user.stamp}==0">
+                <th:block th:each="n: ${#numbers.sequence(1,15)}">
+	                <div style="width:50px; height:50px; border:solid 1px;">            
+	                </div>
+                </th:block>
+            </th:block>
+            <th:block th:unless="${user.stamp}==0">
+	            <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
+	                <div>                
+		                <img th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCB7lX8zZn5OLCjLHaYzLD1JPltLGPDn9LuQ&usqp=CAU}"
+		                    style="width:50px; height:50px; border:solid 1px;"></img>
+	                </div>
+	            </th:block>
+	            <th:block th:each="n: ${#numbers.sequence(user.stamp,15)}">
+	                <div style="width:50px; height:50px; border:solid 1px;">            
+	                </div>
+	            </th:block>
+	         </th:block>
+ 
+        </div>
+        <!-- 쿠폰 영역 -->
+        <div>
+            <span>COUPON</span>
+            <h2 th:text="${coupon}"></h2>
+        </div>
+        
+        <!-- 사이드바 영역 -->
+        <div class="justify-content-end">
+<!--          <sidebar class="position-absolute top-0 end-0 bg-secondary">-->
+            
+	        <ul>
+	            <li>내 정보 수정</li>
+	            <li>과거 주문 내역</li>
+	        </ul>
+	        <th:block th:if="${user.stamp}==0">
+		        <ul>
+		           <span>관리자 목록</span>
+    		        <!-- 
+		            <li th:action="@{}">회원 관리</li>
+		             -->
+		            <li>메뉴 관리</li>
+		            <li>게시판 관리</li>
+		        </ul>
+	        </th:block>
+        </div>
+    
+    </th:block>
+</html>
