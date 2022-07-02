@@ -31,7 +31,7 @@ dependencies {
     
     
     //오라클 클라우드 DB 의존성 추가
-    //implementation 'com.oracle.ojdbc:ucp'
+    implementation 'com.oracle.database.jdbc:ucp'
     implementation 'com.oracle.database.security:oraclepki'
     implementation 'com.oracle.database.security:osdt_core'
     implementation 'com.oracle.database.security:osdt_cert'

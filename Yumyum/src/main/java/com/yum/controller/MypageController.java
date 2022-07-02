@@ -37,8 +37,8 @@ public class MypageController {
 		
 		CouponDTO params = new CouponDTO();
 		params.setUserNum(userNum);
-		int coupon = mypageService.countCoupon(params);
-		model.addAttribute("coupon",coupon);
+		int couponTotalCount = mypageService.countCoupon(params);
+		model.addAttribute("couponTotalCount",couponTotalCount);
 		return "/yumyum/mypage";
 	}
 	
