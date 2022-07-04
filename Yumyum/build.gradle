@@ -23,16 +23,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' /* Thymeleaf Layout */
 	implementation 'javax.servlet:jstl'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-	
+	//비밀번호 암호화 의존성 추가
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
 	//오라클 클라우드 DB 의존성 추가
     //implementation 'com.oracle.ojdbc:ucp'
     implementation 'com.oracle.database.security:oraclepki'
     implementation 'com.oracle.database.security:osdt_core'
     implementation 'com.oracle.database.security:osdt_cert'
 	// https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc10
-    implementation 'com.oracle.database.jdbc:ojdbc10:19.3.0.0'
+    implementation 'com.oracle.database.jdbc:ojdbc10:19.3.0.0' 
+//    {
+//    	exclude group: 'com.oracle.ojdbc', module: 'simplefan'
+//        exclude group: 'com.oracle.ojdbc', module: 'ons'
+//    }
     
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
