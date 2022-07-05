@@ -22,7 +22,14 @@ public class MapperTests {
 	
 	@Autowired
 	private MypageMapper mypageMapper;
-
+	
+	 @Test
+	 public void testOfSelectOrderHistory() {
+		 int userNum = 2;
+		 int period = 30;
+		 System.out.println(mypageMapper.selectOrderHistory(userNum, period, 1, 5));
+	 }
+}
 	
 //	쿠폰 발급 테스트/성공
 //	@Test
@@ -78,7 +85,6 @@ public class MapperTests {
 //			e.printStackTrace();
 //		}
 //	}
-}
 //
 //
 //	@Test

@@ -13,6 +13,7 @@ public class CouponTests {
 	@Autowired
 	MypageService mypageService;
 	
+	
 //	쿠폰리스트 가져오기/성공
 	@Test
 	public void getCouponList() {
@@ -32,5 +33,13 @@ public class CouponTests {
 		params.setUserNum(userNum);
 		System.out.println(mypageService.countCoupon(params));
 	}
+	 
+//	주문 이력 조회
+	 @Test
+	 public void testOfSelectOrderHistory() {
+		 int userNum = 2;
+		 int period = 30;
+		 System.out.println(mypageService.getOrderHistory(userNum, period,1,5));
+	 }
 
 }
