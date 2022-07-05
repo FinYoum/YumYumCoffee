@@ -18,7 +18,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                         <ul class="coupon-list"></ul>
+                         <ul id="coupon-list"></ul>
                     </div>
                 </div>
             </div>
@@ -27,31 +27,33 @@
     
     <th:block layout:fragment="content">
     <!-- 스탬프 영역 -->
-        <div id="StampContainer" style="width:300px;
-    display: flex;
-    flex-direction:row;
-    flex-wrap: wrap;
-    align-content: flex-start;">
+        <div style="width:300px;">
             <p>STAMP</p>
-            <th:block th:if="${user.stamp}==0">
-                <th:block th:each="n: ${#numbers.sequence(1,15)}">
-	                <div style="width:50px; height:50px; border:solid 1px grey;">            
-	                </div>
-                </th:block>
-            </th:block>
-            <th:block th:unless="${user.stamp}==0">
-	            <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
-	                <div>                
-		                <img th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCB7lX8zZn5OLCjLHaYzLD1JPltLGPDn9LuQ&usqp=CAU}"
-		                    style="width:50px; height:50px; border:solid 1px grey;"></img>
-	                </div>
+	        <div id="StampContainer" 
+	        style="width:250px;
+			    display: flex;
+			    flex-direction:row;
+			    flex-wrap: wrap;
+			    align-content: flex-start;">
+	            <th:block th:if="${user.stamp}==0">
+	                <th:block th:each="n: ${#numbers.sequence(1,15)}">
+		                <div style="width:50px; height:50px; border:solid 1px grey;">            
+		                </div>
+	                </th:block>
 	            </th:block>
-	            <th:block th:each="n: ${#numbers.sequence(user.stamp,15)}">
-	                <div style="width:50px; height:50px; border:solid 1px grey;">            
-	                </div>
-	            </th:block>
-	         </th:block>
- 
+	            <th:block th:unless="${user.stamp}==0">
+		            <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
+		                <div>                
+			                <img th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCB7lX8zZn5OLCjLHaYzLD1JPltLGPDn9LuQ&usqp=CAU}"
+			                    style="width:50px; height:50px; border:solid 1px grey;"></img>
+		                </div>
+		            </th:block>
+		            <th:block th:each="n: ${#numbers.sequence(user.stamp+1,15)}">
+		                <div style="width:50px; height:50px; border:solid 1px grey;">            
+		                </div>
+		            </th:block>
+		         </th:block>
+	        </div>
         </div>
         <!-- 쿠폰 영역 -->
         <div>
@@ -63,9 +65,11 @@
         <div class="justify-content-end">
 <!--          <sidebar class="position-absolute top-0 end-0 bg-secondary">-->
             
-	        <ul>
+	        <ul style="width:400px;">
 	            <li>내 정보 수정</li>
-	            <li>과거 주문 내역</li>
+	            <li>
+	            <a th:href="@{/yumyum/orderhistory.do(userNum=${user.userNum})}" style="cursor:pointer; z-index:10;">과거 주문 내역</a>
+	            </li>
 	        </ul>
 	        <th:block th:if="${user.stamp}==0">
 		        <ul>
@@ -85,7 +89,7 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             	
-    /*쿠폰 리스 출력*/     	
+    /*쿠폰 리스트 출력*/     	
     $(function() {
     	printCouponList();
     });
@@ -100,18 +104,17 @@
                 let couponHtml = "";              
 
                 $(response.couponList).each(function(num, coupon) {
-                	let expDate = (coupon.expirationDate).substring(0,10)
-                console.log(expDate);
+                	let expDate = (coupon.expirationDate).substring(0,10);
                 	couponHtml += `
                         <li>
-                            <div class="kind">${coupon.kind} 쿠폰</div>
-                            <div class="desc">${coupon.description}</div>
-                            <div class="time">${expDate}</div>
+                            <div>${coupon.kind} 쿠폰</div>
+                            <div>${coupon.description}</div>
+                            <div>${expDate}</div>
                         </li>
                     `;
                 });
 
-                $(".coupon-list").html(couponHtml);
+                $("#coupon-list").html(couponHtml);
             }
         }, "json");
     }

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yum.domain.CouponDTO;
-import com.yum.domain.OrderDTO;
+import com.yum.domain.OrderHistoryDTO;
 import com.yum.domain.UserDTO;
 import com.yum.mapper.MypageMapper;
 
@@ -15,13 +15,7 @@ import com.yum.mapper.MypageMapper;
 public class MypageServiceImpl implements MypageService {
 	@Autowired
 	private MypageMapper mypageMapper;
-	
-	
-	@Override
-	public OrderDTO getOrderDetail(int num, int date) {
-		return mypageMapper.selectOrderDetail(num, date) ;
-	}
-	
+		
 	
 	@Override
 	public UserDTO getUserDetail(int userNum) {
@@ -50,6 +44,32 @@ public class MypageServiceImpl implements MypageService {
 			}
 		}
 		return couponList;
+	}
+	
+	
+	@Override
+	public List<OrderHistoryDTO> getOrderHistory(int userNum, int period, int firstIndex, int lastIndex){
+//		public List<OrderHistoryDTO> getOrderHistory(OrderHistoryDTO params){
+		List<OrderHistoryDTO> orderHistoryList = Collections.emptyList();
+		int orderTotalCount = mypageMapper.countOrder(userNum);
+		if (orderTotalCount > 0) {
+			try {
+				orderHistoryList = mypageMapper.selectOrderHistory(userNum, period, firstIndex, lastIndex);
+			} catch(RuntimeException e) {
+				System.out.println(e);
+			} catch (Exception e){
+				System.out.println(e);
+			}
+			
+		}
+		return orderHistoryList;
+	}
+
+
+	@Override
+	public int countOrder(int userNum) {
+		int orderTotalCount = mypageMapper.countOrder(userNum);
+		return orderTotalCount;
 	}
 	
 }

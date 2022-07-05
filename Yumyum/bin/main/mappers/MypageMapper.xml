@@ -17,19 +17,7 @@
         , DELETE_YN
         , DESCRIPTION
     </sql>
-    
-    <select id="selectOrderDetail">
-       SELECT * FROM COUPON
-    </select>
-    
-    <select id="selectTest">
-        <!-- 
-        SELECT to_char(SYSDATE-1) FROM DUAL
-          -->
-       SELECT * FROM COUPON
-      
-    </select>
-    
+        
     <insert id="insertCoupon"> 
                  INSERT INTO COUPON (
                     CP_NUM 
@@ -83,6 +71,86 @@
         AND 
             DELETE_YN='N'
     </select>
-
+    
+    
+    <select id="selectOrderHistory" parameterType="map" resultType="com.yum.domain.OrderHistoryDTO">
+		 SELECT *
+		 FROM (
+		 SELECT
+		      o."order_num"
+		    , o."user_num"  
+		    , o."order_time" 
+		    , b.BRANCH_NAME
+		    , o."total_price" 
+		    , d."ea" 
+		    , d."price" 
+		    , d."shot_custom"
+		    , p.NAME 
+		 FROM 
+		      "order" o
+		    , "order_detail" d
+		    , PRODUCT p 
+		    , BRANCH b
+		 WHERE 
+		      o."user_num" = #{userNum}
+		 AND      
+		      o."order_num" = d."order_num"  
+		 AND 
+		      o."order_time" >= (SYSDATE - #{period} +1) 
+		 AND 
+		      p.PRODUCT_NUM = d."product_num" 
+		 AND
+		      o."branch_num" = b.BRANCH_NUM
+		 ORDER BY
+            o."order_time"  DESC
+            )
+         WHERE ROWNUM >= #{firstIndex} AND #{lastIndex} >= ROWNUM
+    </select>
+    
+    <!-- 
+    <select id="selectOrderHistory" parameterType="com.yum.domain.OrderHistoryDTO" resultType="com.yum.domain.OrderHistoryDTO">
+		 SELECT 
+		      o."order_num"
+		    , o."user_num"  
+		    , o."order_time" 
+		    , b.BRANCH_NAME
+		    , o."total_price" 
+		    , d."ea" 
+		    , d."price" 
+		    , d."shot_custom"
+		    , p.NAME 
+		 FROM 
+		      "order" o
+		    , "order_detail" d
+		    , PRODUCT p 
+		    , BRANCH b
+		 WHERE 
+		      o."user_num" = #{userNum}
+		 AND      
+		      o."order_num" = d."order_num"  
+		 AND 
+		      o."order_time" >= (SYSDATE - #{period} +1) 
+		 AND 
+		      p.PRODUCT_NUM = d."product_num" 
+		 AND
+		      o."branch_num" = b.BRANCH_NUM
+		 ORDER BY
+            o."order_time"  DESC
+    </select>
+     -->
+    
+    <select id="countOrder" parameterType="int" resultType="int">
+        SELECT 
+            COUNT(*)
+        FROM 
+              "order" o
+            , "order_detail" d
+        WHERE 
+              o."user_num" = #{userNum}
+        AND      
+              o."order_num" = d."order_num"  
+        AND 
+              o."order_time" >= (SYSDATE - 30 +1) 
+    </select>
 
 </mapper>
