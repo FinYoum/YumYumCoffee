@@ -1,80 +1,100 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>product_list</title>
-    <script>
-    function changes1Step(fr) {
-      if(fr=="음료") {
-       num = new Array("커피","스무디","티");
-       vnum = new Array("커피","스무디","티");
-      }
-      else if(fr=="디저트") {
-       num = new Array("케이크","구움과자","빙수");
-       vnum = new Array("케이크","구움과자","빙수");
-      }
-      
-      for(i=0; i<form.Step2.length; i++) {
-       form.Step2.options[i] = null;
-      }
-      
-    //   for(i=0; i<form.Step3.length; i++) {
-    //    form.Step3.options[i] = null;
-    //   }
-    //    form.Step3.options[0] = new Option("--3단계--", "--3단계--");
-      for(i=0; i<num.length; i++) {
-       form.Step2.options[i] = new Option(num[i],vnum[i]);
-      }
-     }
-    </script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<style type="text/css">
+    tr{
+        border-bottom :1px solid #dee2e6;
+    } 
+    
+
+</style>
 </head>
 <body>
-    <h2>제품 목록</h2>
-    <form name='form' action="#">
-        <select name="Step1" id="" onchange="changes1Step(value)">
-            <option >선택하세요</option>
-            <option value="전체">전체</option>
-            <option value="음료">음료</option>
-            <option value="디저트">디저트</option>
-        </select>
-        <select name="Step2" id="">
-            <option value="">--------</option>
-        </select>
-    </form>
 
-    <a th:href="@{/product/write.do}">제품등록</a>
-    <button type="button" th:href="@{/product/write.do}">제품등록</button>
-    
-    
-    <button>수정</button>
-    <button>삭제</button>
-    <table>
-        <thead>
-            <tr>
-                <th>상품번호</th>
-                <th>이름</th>
-                <th>가격</th>
-                <th>설명</th>
-                <th>이미지</th>
-            </tr>
-        </thead>
-        <tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}">
-            <td scope="row" th:text="${row.productNum}"></td>
-            <td>
-                <a th:href="@{/product/view.do( idx=${row.productNum} )}" th:text="${row.name}">
-            </td>
-            <td th:text="${row.price}"></td>
-            <td th:text="${row.info}"></td>
-            <td th:text="${row.img}"></td>
-        </tr>
-        <tr th:unless="${not #lists.isEmpty( productList )}">
-           <td colspan="5">조회된 결과가 없습니다.</td>
-        </tr>
-    </table>
-    
-    <!-- 해당 상품번호를 가지고 연결 해야 함 -->
+    <th:block>
+        <div class="jumbotron">
+            <h1>제품 목록</h1>
+            <p>productList</p>
+        </div>
+        
+        <div class="container">
+            <div class="btn_wrap text-right">
+                <a  class="btn btn-dark">다중수정</a>
+            </div><br>
+            
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-1" >선택사항</th>
+                        <th class="col-sm-1">상품번호</th>
+                        <th>제품명</th>
+                        <th>가격</th>
+                        <th>상세정보</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}" >
+                        <td><input type="checkbox"></td>
+                        <td scope="row" th:text="${row.productNum}"></td>
+                        <td class="text-left" th:text="${row.name}"></td>
+                        <td th:text="${#numbers.formatInteger(row.price,3,'COMMA')+'원'}"></td>
+                        <!-- <td th:text="${row.info}"></td> -->
+                        <td>
+                            <button th:onclick="|location.href='@{/product/write.do}'|">수정하기</button>
+                        </td>
+                    </tr>
 
+                    <tr th:unless="${not #lists.isEmpty( productList )}">
+                        <td colspan="5">조회된 결과가 없습니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="btn_wrap text-right">
+                <a th:href="@{/product/write.do}" class="btn btn-dark">제품등록</a>
+            </div>
+        </div>
+        
+    </th:block>
+
+    <script>
+        /*<![CDATA[*/
+
+        function movePage(uri, queryString) {
+            location.href = uri + queryString;
+        }
+
+        function searchBoard(form) {
+            /*[- 드롭다운이 아닌 메인 검색 키워드로 검색했을 때 -]*/
+            if (isEmpty(form) == true) {
+                var searchKeyword = document.getElementById("mainSearchKeyword");
+                if (isEmpty(searchKeyword.value) == true) {
+                    alert("키워드를 입력해 주세요.");
+                    searchKeyword.focus();
+                    return false;
+                }
+
+                form = document.getElementById("searchForm");
+                form.searchKeyword.value = searchKeyword.value;
+                form.submit();
+            }
+
+            if (isEmpty(form.searchKeyword.value) == true) {
+                alert("키워드를 입력해 주세요.");
+                form.searchKeyword.focus();
+                return false;
+            }
+        }
+        /*[- end of function -]*/
+
+        /*]]>*/
+    </script>
+    </th:block>
 </body>
+</html>
 </html>

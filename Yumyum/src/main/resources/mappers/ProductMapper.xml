@@ -2,29 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yum.mapper.ProductMapper">
     
+    <sql id="productColumns">
+          product_num
+        , code_id
+        , name
+        , price
+        , info
+    </sql>
+
     <insert id="insertProduct" parameterType="com.yum.domain.ProductDTO">
-        INSERT INTO product(
-            product_num
-            ,name
-            ,price
-            ,info
-            ,img        
+        INSERT INTO product (
+            <include refid="productColumns" />
         ) VALUES (
-            pnum_seq.nextval
-            ,#{name}
-            ,#{price}
-            ,#{info}
-            ,#{img}
+              #{productNum}
+            , #{codeId}
+            , #{name}
+            , #{price}
+            , #{info}
         )
     </insert>
     
     <select id="selectProductDetail" parameterType="long" resultType="com.yum.domain.ProductDTO">
         SELECT 
-            product_num
-            ,name
-            ,price
-            ,info
-            ,img  
+            <include refid="productColumns" />
         FROM 
             product
         WHERE
@@ -36,7 +36,6 @@
         SET
             price=#{price}
             , info=#{info}
-            , img =#{img}
         WHERE
             product_num=#{productNum}
     </update>
@@ -52,8 +51,7 @@
             product_num
             ,name
             ,price
-            ,info
-            ,img  
+            ,info 
         FROM 
             product
     </select>
@@ -62,6 +60,13 @@
         SELECT 
             COUNT(*)
         FROM 
+            product
+    </select>
+    
+    <select id="selectProductMax" parameterType="com.yum.domain.ProductDTO" resultType="int">
+        SELECT
+            NVL(max(Product_num),0)
+        FROM
             product
     </select>
 </mapper>

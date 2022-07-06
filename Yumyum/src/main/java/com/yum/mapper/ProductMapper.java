@@ -17,9 +17,10 @@ public interface ProductMapper {
 	
 	public int deleteProduct(Long productNum);
 	
-	public List<ProductDTO> selectProductList();
+	public List<ProductDTO> selectProductList(ProductDTO params);
 	
-	public int selectProductTotalCount();
-
+	public int selectProductTotalCount(ProductDTO params);
+	
+	public int selectProductMax(ProductDTO params);
 	
 }

@@ -11,6 +11,9 @@ public class ProductDTO {
 	//상품 번호	
 	private Long productNum;
 	
+	//상품코드
+	private String codeId;
+	
 	//상품이름
 	private String name;
 	
