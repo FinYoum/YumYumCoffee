@@ -67,8 +67,8 @@ public class MypageServiceImpl implements MypageService {
 
 
 	@Override
-	public int countOrder(int userNum) {
-		int orderTotalCount = mypageMapper.countOrder(userNum);
+	public int countOrder(int userNum, int period) {
+		int orderTotalCount = mypageMapper.countOrder(userNum, period);
 		return orderTotalCount;
 	}
 	

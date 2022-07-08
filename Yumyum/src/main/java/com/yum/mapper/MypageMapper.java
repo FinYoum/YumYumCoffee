@@ -25,5 +25,6 @@ public interface MypageMapper {
 				, @Param("period") int period
 			);
 
+
 	
 }
