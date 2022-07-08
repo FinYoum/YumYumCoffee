@@ -2,14 +2,21 @@ package com.yum.mapper;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.yum.domain.MemberDTO;
 
 @Mapper
-public interface RegisterMapper {
+public interface MemberMapper {
 	
 	public int idOverlapCheck(String id);
+	
+	public MemberDTO login(@Param("id") String id, @Param("pw") String pw);
+	//public MemberDTO login(MemberDTO params, HttpSession session);
+	//public MemberDTO login(String id);
 	
 	public int insertMember(MemberDTO params);
 	

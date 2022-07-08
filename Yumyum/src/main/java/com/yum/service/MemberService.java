@@ -2,6 +2,8 @@ package com.yum.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.yum.domain.MemberDTO;
 
 public interface MemberService {
@@ -15,4 +17,7 @@ public interface MemberService {
 	public List<MemberDTO> getMemberList();
 	
 	public int idOverlapCheck(String id);
+	
+	public MemberDTO login(String id, String pw);
+	//public MemberDTO login(MemberDTO params, HttpSession session);
 }

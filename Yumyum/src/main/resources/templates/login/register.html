@@ -94,7 +94,6 @@
 	<script th:inline="javascript">
 		/*<![CDATA[ */
 	
-/* let flag=""; */
 $(document)
 .on('submit', function() {
  	if (!nameCheck($('input[name=userName]').val())) {
@@ -187,7 +186,7 @@ function idCheck() { /*아이디 정규식*/
             }
         },
         error:function(){
-            console.log("에러입니다");
+            alert("에러입니다");
             return false;
         }
 	});
