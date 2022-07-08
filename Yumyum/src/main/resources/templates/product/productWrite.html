@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
@@ -67,7 +67,7 @@ select{
 
 </style>
 </head>
-
+<th:block layout:fragment="content">
 <body>
     <div class="jumbotron">
        <h1>제품 등록</h1>
@@ -237,5 +237,7 @@ select{
         
         /*]]>*/
     </script>
+    
 </body>
+</th:block>
 </html>
