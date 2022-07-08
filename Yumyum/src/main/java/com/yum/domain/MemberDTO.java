@@ -6,13 +6,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberDTO {
+	int userNum;
 	String id;
 	String name;
-	// String pw;
-	int tel;
+	String pw;
+	String tel;
 	String email;
 	String birth;
 	int authority;
-	String stamp;
+	String DeleteYn;
+	// String stamp;
 	
 }
