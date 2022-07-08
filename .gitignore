@@ -1,3 +1,7 @@
 /Yumyum쿠폰 모달 완료.zip
 
 Yumyum/bin/
+
+Yumyum/src/main/resources/application.properties
+
+Yumyum/build.gradle
