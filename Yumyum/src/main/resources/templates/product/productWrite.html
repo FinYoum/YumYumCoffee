@@ -1,96 +1,243 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="http://madalla.kr/js/jquery-1.8.3.min.js"></script>
-    <title>productDetails</title>
-    <style>
-        tr,td{
-            border: 1px solid black;
-        }
-    </style>
-    
-</head>
-<body>
-    <h2>제품 등록</h2>
-    <form th:action="@{/product/register.do}" th:object="${product}" method="post" name="form" id="imgForm">
-        <input type="hidden" th:if="*{productNum != null and productNum  > 0}" th:field="*{idx}" />
-        <select name="Step1" id="" onchange="changes1Step(value)">
-            <option >제품</option>
-            <option value="음료">음료</option>
-            <option value="디저트">디저트</option>
-        </select>
-        <select name="Step2" id="">
-            <option value="">--------</option>
-        </select><br>
-        <table>
-            <tr>
-             <td style="width: 200px;">제품명</td>
-                <td rowspan="5">
-                   <input type='file' id="myFile" th:field="*{img}"/><br>   
-                   <!-- <input type="text" th:field="*{img}"  placeholder="이미지를 입력해 주세요."> -->
-                    <img id="View" src="#" alt="이미지 미리보기" style="width: 200px; height: 200px;"/>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="text" th:field="*{name}"  placeholder="제품명을 입력해 주세요."></td>
-            </tr>
-            <tr>
-                <td>가격</td>
-            </tr>
-            <tr>
-                <td><input type="text" th:field="*{price}"  placeholder="가격을 입력해 주세요."></td>
-            </tr>
-            <tr>
-                <td>제품설명</td>
-            </tr>
-            <tr >
-                <td colspan="2">
-                    <textarea  id="" cols="70" rows="10" th:field="*{info}"  placeholder="설명을 입력해 주세요."></textarea>
-                </td>
-            </tr>
-        </table> 
-   
-        <button type="button" th:href="@{/product/List.do}">뒤로가기</button>
-        <button type="submit">등록하기</button>
-    </form>
-    
-    <script>
-        function changes1Step(fr) {
-            if(fr=="음료") {
-            num = new Array("커피","스무디","티");
-            vnum = new Array("커피","스무디","티");
-            }
-            else if(fr=="디저트") {
-            num = new Array("케이크","구움과자","빙수");
-            vnum = new Array("케이크","구움과자","빙수");
-            }
-            
-            for(i=0; i<form.Step2.length; i++) {
-            form.Step2.options[i] = null;
-            }
-            
-            for(i=0; i<num.length; i++) {
-            form.Step2.options[i] = new Option(num[i],vnum[i]);
-            }
-         }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
-        $(function() {
-            $("#myFile").on('change', function(){
-                readURL(this);
-            });
-        });
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                $('#View').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
+<title>상품등록</title>
+
+<style type="text/css">
+.filebox input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+.filebox.bs3-primary .col-sm-10>label {
+    color: #fff;
+    background-color: #393b3d;
+    border-color: #393b3d;
+}
+.filebox .col-sm-10>label {
+    display: inline-block;
+    padding: .5em .75em;
+    color: #999;
+    font-size: inherit;
+    font-weight: 600;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+}
+.filebox .upload-name {
+    display: inline-block;
+    width: 350px;
+    padding: .5em .75em;
+    /* label의 패딩값과 일치 */
+    font-size: inherit;
+    font-family: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #f5f5f5;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+    -webkit-appearance: none;
+    /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select{
+    border:1px solid #bdc2c7;
+    border-radius:3px;
+    color: #66696b;
+    padding: 3px;
+}
+
+</style>
+</head>
+<th:block layout:fragment="content">
+<body>
+    <div class="jumbotron">
+       <h1>제품 등록</h1>
+       <p>새로운 제품을 등록하세요!</p>
+    </div>
+    
+    <div class="container mt-3">
+      <div class="card">
+        <div class="card-body">
+            <th:block>
+               <form class="form-horizontal" th:action="@{/product/register.do}" th:object="${product}" method="post" enctype="multipart/form-data" >
+                <!--/* update의 경우 서버로 전달할 게시글 번호 (PK) */-->
+                <input type="hidden" th:if="*{productNum != null and productNum > 0}" th:field="*{productNum}" />
+                 
+                <!-- <div class="form-group"> -->
+                <label for="codeId" class="col-1 control-label">분류</label>
+                    <span class="col-sm-6">
+                       <select onchange="categoryChange(this)">
+                           <option>선택해주세요</option>
+                           <option value="b">음료</option>
+                           <option value="d">베이커리</option>
+                       </select>
+                       
+                       <select id="good" name="codeId">
+                           <option >------</option>
+                       </select>
+                    </span>
+                    
+                <!-- </div> -->
+                
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">제품명</label>
+                    <div class="col-sm-12">
+                        <input type="text" th:field="*{name}" class="form-control" placeholder="제품명을 입력해 주세요." />
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="price" class="col-sm-2 control-label">가격</label>
+                    <div class="col-sm-12">
+                        <input type="number" th:field="*{price}" class="form-control" />
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="info" class="col-sm-2 control-label">상세정보</label>
+                    <div class="col-sm-12">
+                        <textarea th:field="*{info}" class="form-control"
+                            placeholder="상세정보 입력해 주세요."></textarea>
+                    </div>
+                </div>
+    
+                <div data-name="fileDiv" class="form-group filebox bs3-primary">
+                    <label for="file_0" class="col-sm-2 control-label">파일1</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="upload-name" value="파일 찾기" readonly />
+                        <label for="file_0" class="control-label">찾아보기</label>
+                        <input type="file" name="files" id="file_0" class="upload-hidden" onchange="changeFilename(this)" />
+                    
+                        <button type="button" onclick="addFile()" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+                            <i class="fa fa-plus" aria-hidden="true">+</i>
+                        </button>
+                        <button type="button" onclick="removeFile(this)" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+                            <i class="fa fa-minus" aria-hidden="true">-</i>
+                        </button>
+                    </div>
+                </div>
+    
+                <div id="btnDiv" class="btn_wrap text-center">
+                    <a th:href="@{/product/list.do}" class="btn btn-outline-secondary">뒤로가기</a>
+                    <button type="submit" class="btn btn-dark">저장하기</button>
+                </div>
+            </form>
+           </th:block>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    
+        let fileIdx = 0; /*[- 파일 인덱스 처리용 전역 변수 -]*/
+        
+        function addFile() {
+        
+            const fileDivs = $('div[data-name="fileDiv"]');
+            if (fileDivs.length > 2) {
+                alert('파일은 최대 세 개까지 업로드 할 수 있습니다.');
+                return false;
             }
+        
+            fileIdx++;
+        
+            const fileHtml = `
+                <div data-name="fileDiv" class="form-group filebox bs3-primary">
+                    <label for="file_${fileIdx}" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="upload-name" value="파일 찾기" readonly />
+                        <label for="file_${fileIdx}" class="control-label">찾아보기</label>
+                        <input type="file" name="files" id="file_${fileIdx}" class="upload-hidden" onchange="changeFilename(this)" />
+        
+                        <button type="button" onclick="removeFile(this)" class="btn btn-bordered btn-xs visible-xs-inline visible-sm-inline visible-md-inline visible-lg-inline">
+                            <i class="fa fa-minus" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        
+            $('#btnDiv').before(fileHtml);
         }
+        
+        function removeFile(elem) {
+        
+            const prevTag = $(elem).prev().prop('tagName');
+            if (prevTag === 'BUTTON') {
+                const file = $(elem).prevAll('input[type="file"]');
+                const filename = $(elem).prevAll('input[type="text"]');
+                file.val('');
+                filename.val('파일 찾기');
+                return false;
+            }
+        
+            const target = $(elem).parents('div[data-name="fileDiv"]');
+            target.remove();
+        }
+        
+        function changeFilename(file) {
+        
+            file = $(file);
+            const filename = file[0].files[0].name;
+            const target = file.prevAll('input');
+            target.val(filename);
+        }
+        
+        /* selectbox */
+
+        function categoryChange(e) {
+            var good_b = ["커피", "스무디", "에이드", "티"];
+            var good_d = ["빵", "샐러드", "케이크"];
+
+            var good_b_v = ["b1", "b2", "b3", "b4"];
+            var good_d_v = ["d1", "d2", "d3"];
+
+            var target = document.getElementById("good");
+
+            if(e.value == "b") {
+                var d = good_b; 
+                var b = good_b_v;
+            } else if(e.value == "d") {
+                var d = good_d;
+                var b = good_d_v;
+            }
+            
+            target.options.length = 0;
+
+            for (x in d) {
+                var opt = document.createElement("option");
+                    for (i in b){
+                        opt.value = b[x];
+                    }
+                opt.innerHTML = d[x];
+                target.appendChild(opt);
+            }
+
+        }
+        
+        /*[- end of function -]*/
+        
+        /*]]>*/
     </script>
+    
 </body>
+</th:block>
 </html>

@@ -18,7 +18,6 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @PropertySource("classpath:/application.properties")
 public class DBConfiguration {
-
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -39,6 +38,7 @@ public class DBConfiguration {
 		factoryBean.setDataSource(dataSource());
 		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mappers/**/*Mapper.xml"));
 		factoryBean.setTypeAliasesPackage("com.yum.*");
+
 		factoryBean.setConfiguration(mybatisConfg());
 		return factoryBean.getObject();
 	}
@@ -53,5 +53,4 @@ public class DBConfiguration {
 	public org.apache.ibatis.session.Configuration mybatisConfg() {
 		return new org.apache.ibatis.session.Configuration();
 	}
-
 }

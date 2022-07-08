@@ -15,16 +15,17 @@ import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.impl.CreatorCandidate.Param;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.yum.domain.MemberDTO;
 import com.yum.mapper.MemberMapper;
 
 @SpringBootTest
 public class MapperTests {
-	@Autowired
-	private MemberMapper registerMapper;
 	
+	@Autowired
+	private MypageMapper mypageMapper;
+	@Autowired
+	private RegisterMapper registerMapper;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
@@ -41,6 +42,14 @@ public class MapperTests {
 	         () -> assertTrue(passwordEncoder.matches(rawPassword, encodedPassword))
 	   );
 	}
+	
+	 @Test
+	 public void testOfSelectOrderHistory() {
+		 int userNum = 2;
+		 int period = 30;
+		 System.out.println(mypageMapper.selectOrderHistory(userNum, period, 1));
+	 }
+
 	
 	@Test
 	public void testRegisterMapper() {
@@ -136,24 +145,100 @@ public class MapperTests {
 		}
 	}
 	
-	@Test
-	public void testSelectList() {
-		int memberTotalCount = registerMapper.selectMemberTotalCount();
-		if (memberTotalCount > 0) {
-			List<MemberDTO> memberList = registerMapper.selectMemberList();
-			if (CollectionUtils.isEmpty(memberList) == false) {
-				for (MemberDTO member : memberList) {
-					System.out.println("=========================");
-					System.out.println(member.getName());
-					System.out.println(member.getId());
-					System.out.println(member.getPw());
-					System.out.println(member.getTel());
-					System.out.println(member.getEmail());
-					System.out.println(member.getBirth());
-					System.out.println("=========================");
-				}
-			}
-		}
+//	@Test
+//	public void testSelectList() {
+//		int memberTotalCount = registerMapper.selectMemberTotalCount();
+//		if (memberTotalCount > 0) {
+//			List<MemberDTO> memberList = registerMapper.selectMemberList();
+//			if (CollectionUtils.isEmpty(memberList) == false) {
+//				for (MemberDTO member : memberList) {
+//					System.out.println("=========================");
+//					System.out.println(member.getName());
+//					System.out.println(member.getId());
+//					System.out.println(member.getPw());
+//					System.out.println(member.getTel());
+//					System.out.println(member.getEmail());
+//					System.out.println(member.getBirth());
+//					System.out.println("=========================");
+//				}
+//			}
+//		}
 	}
 	
-}
+
+	
+//	쿠폰 발급 테스트/성공
+//	@Test
+//	public void testOf() {
+//		System.out.println(mypageMapper.insertCoupon());
+//	}
+//	
+//	mypageMapper 쿠폰리스트 가져오기/성공
+//	@Test
+//	public void testOfSelectCouponDetail() {
+//		CouponDTO params = new CouponDTO();
+//		int userNum = 2;
+//		params.setUserNum(userNum);
+//		List<CouponDTO> couponList = mypageMapper.selectCouponList(params);
+//		if (CollectionUtils.isEmpty(couponList) == false) {
+//			for (CouponDTO coupon : couponList) {
+//				System.out.println("=========================");
+//				System.out.println(coupon.getKind());
+//				System.out.println(coupon.getDescription());
+//				System.out.println(coupon.getExpirationDate());
+//				System.out.println("=========================");
+//			}
+//		}
+//	}
+	
+	
+//	 mapper쿠폰갯수 테스트/성공
+//	 @Test
+//	 public void testOfCountCouponMapper() {
+//		int userNum = 2;
+//		CouponDTO params=new CouponDTO();
+//		params.setUserNum(userNum);
+//		System.out.println(mypageMapper.countCoupon(params));
+//	}
+	
+
+	
+	
+	
+//	회원정보 불러오기/성공
+//	@Test
+//	public void testOfSelectDetail() {
+//		int userNum=2;
+//		UserDTO user = mypageMapper.selectUserDetail(userNum);
+//		try {
+//	        String userJson = new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(user);
+//	
+//			System.out.println("=========================");
+//			System.out.println(userJson);
+//			System.out.println("=========================");
+//	
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//
+//	@Test
+//	public void testOfInsert() {
+//		CouponDTO params = new CouponDTO();
+//		params.setUserNum(50000); 
+//		params.setPmNum(60000);
+//		params.setKind("스탬프");
+//		try {
+//		int result = CouponMapper.insertStampCoupon(params);
+//		System.out.println("결과는 " + result + "입니다.");
+//		} catch(RuntimeException e) {
+//			System.out.println(1);
+//			System.out.println(e);
+//		} catch(Exception e) {
+//			System.out.println(2);
+//			System.out.println(e);
+//		}
+//		System.out.println("결과는 " + result + "입니다.");
+//	}
+	

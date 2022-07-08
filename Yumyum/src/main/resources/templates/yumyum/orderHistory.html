@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
+    <th:block layout:fragment="title">
+        <title>YumYum Coffee</title>
+    </th:block>
+    <th:block layout:fragment="header">
+        <h4 class="display-3 fw-bolder">My Page</h4>
+        <p class="lead fw-normal text-white-50 mb-0"></p>
+    </th:block>
+    
+    <th:block layout:fragment="content">
+        <!-- 과거 주문 내역-->
+        <span>과거 주문 내역</span>
+        <div >
+            <span th:onclick="printOrderList(7,1)" style="cursor:pointer;">1주일</span>
+            <span th:onclick="printOrderList(30,1)" style="cursor:pointer;">1개월</span>
+            <span th:onclick="printOrderList(100,1)" style="cursor:pointer;">전체</span>
+        </div>
+        <div>
+           <table id="order-list" style="width:600px;"></table>
+           <span th:onclick="addContent()" style="cursor:pointer;">더보기</span>
+        </div>
+        
+        <!-- 사이드바 영역 -->
+        <div class="justify-content-end">
+<!--          <sidebar class="position-absolute top-0 end-0 bg-secondary">-->
+            
+            <!-- 
+            <ul>
+                <li>내 정보 수정</li>
+                <li>과거 주문 내역</li>
+            </ul>
+            <th:block th:if="${user.stamp}==0">
+                <ul>
+                   <span>관리자 목록</span>
+                    <!-- 
+                    <li th:action="@{}">회원 관리</li>
+                     -->
+                     <!-- 
+                    <li>메뉴 관리</li>
+                    <li>게시판 관리</li>
+                </ul>
+            </th:block>
+             -->
+        </div>
+    </th:block>
+    
+<!-- 자바스크립트 -->
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            //let orderTotlaCount = /*[[${orderTotlaCount}]]*/null;
+            let period = 7;
+            let firstIndex = 1;
+            let orderHistoryHtml = "";  
+            
+            /*전체 기간 조회*/    
+            function getToday(){
+                    var date = new Date();
+                    var year = date.getFullYear();
+                    var month = ("0" + (1 + date.getMonth())).slice(-2);
+                    var day = ("0" + date.getDate()).slice(-2);
+            
+                    return year + "-" + month + "-" + day;
+                }
+                
+                        
+                const getDateDiff = (d1, d2) => {
+                      const date1 = new Date(d1);
+                      const date2 = new Date(d2);
+                      
+                      const diffDate = date1.getTime() - date2.getTime();
+                      
+                      return Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+                    }
+            
+                const allPeriod = getDateDiff("2022-06-13", getToday())+1;
+            
+                    
+            /*주문 내역 출력*/        
+            $(function() {
+                printOrderList(7, 1);
+            });
+            
+            function printOrderList(selectedTerm, index) { 
+            	console.log(1)
+            	if (index == 1){
+            		firstIndex = 1;
+                    orderHistoryHtml = "";   
+            	} 
+            	if (selectedTerm!=null){
+	                if (selectedTerm==100){
+	                    period=allPeriod;
+	                } else{
+	                	period = selectedTerm;
+	                }
+            	}
+                
+                let uri = /*[[ @{/yumyum/orderhistory/}+${user.userNum}+'/']]*/null;
+                uri+=(period+'/'+firstIndex);
+                
+                $.get(uri, function(response) {
+                    if (isEmpty(response) == false) {
+                        
+                        function groupArrayOfObjects(list, key) {
+                              return list.reduce(function(rv, x) {
+                                (rv[x[key]] = rv[x[key]] || []).push(x);
+                                console.log(x);
+                                console.log(key);
+                                return rv;
+                              }, {});
+                            };
+                            
+                        let groupOrderList=groupArrayOfObjects(response.orderHistoryList,"orderNum");
+                        let sortList=[]
+                        
+                        for(i in groupOrderList){
+                        	sortList.unshift(groupOrderList[i]);
+                        }
+                        
+
+                        for(i in sortList){
+                            let order = sortList[i][0];
+                            let orderDate = ""+(order.orderTime).substring(0,10);
+                            
+                            orderHistoryHtml += `
+                                <tr>
+                                   <td>${orderDate}</td>
+                                   <td>${order.branchName}</td>
+                                   <td>${order.orderNum}</td>
+                                   <td></td>
+                                </tr>
+                                  `;
+                                  
+                            for(j in sortList[i]){
+                                let orderDetail = sortList[i][j];
+                                orderHistoryHtml += `
+                                    <tr>
+                                        <td>${orderDetail.name}</td>
+                                        <td>${orderDetail.shotCustom}</td>
+                                        <td>${orderDetail.ea}</td>
+                                        <td>${orderDetail.price}</td>
+                                    </tr>
+                                `;
+                            }
+                            
+                            orderHistoryHtml += `
+                                   <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>결제금액</td>
+                                       <td>${order.totalPrice}</td>
+                                   </tr>
+                                   <tr>
+	                                   <td></td>
+	                                   <td></td>
+	                                   <td></td>
+	                                   <td></td>
+                                   </tr>
+                                   
+                                  `;
+                        };
+        
+                        $("#order-list").html(orderHistoryHtml);
+                    }
+                }, "json");
+                firstIndex+=5;
+            }
+            /*[- end of function -]*/
+            
+            function addContent(){
+                printOrderList(null,null); 
+            }
+            /*[- end of function -]*/
+                    /*[- end of function -]*/
+                    /*]]>*/
+        </script>
+    </th:block>
+</html>

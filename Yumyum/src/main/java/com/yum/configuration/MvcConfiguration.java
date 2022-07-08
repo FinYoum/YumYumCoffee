@@ -11,12 +11,16 @@ import com.yum.interceptor.CartInterceptor;
 
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer{
+<<<<<<< HEAD
 	
 	/*
 	 * @Override public void addViewControllers(ViewControllerRegistry registry) {
 	 * registry.addRedirectViewController("/","login"); }
 	 */
 	
+=======
+
+>>>>>>> refs/remotes/origin/main
 	/*
 	 * @Override public void addInterceptors(InterceptorRegistry registry) {
 	 * registry.addInterceptor(new CartInterceptor())
