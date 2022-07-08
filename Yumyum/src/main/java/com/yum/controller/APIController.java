@@ -42,19 +42,15 @@ public class APIController {
 	}
 
 	
-	@GetMapping(value = "yumyum/orderhistory/{userNum}/{period}/{firstIndex}/{lastIndex}")
+	@GetMapping(value = "yumyum/orderhistory/{userNum}/{period}/{firstIndex}")
 	public JsonObject getOrderHistoryList(
-				@PathVariable("userNum") int userNum, 
-				@PathVariable("period") int period,
-				@PathVariable("firstIndex") int firstIndex,
-				@PathVariable("lastIndex") int lastIndex
+				@PathVariable("userNum") int userNum
+				, @PathVariable("period") int period
+				, @PathVariable("firstIndex") int firstIndex
 				) {
-		System.out.println("TEST");
-		System.out.println(firstIndex);
-		System.out.println(lastIndex);
 		
 		JsonObject jsonObj = new JsonObject();
-		List<OrderHistoryDTO> orderHistoryList = mypageService.getOrderHistory(userNum, period, firstIndex, lastIndex);
+		List<OrderHistoryDTO> orderHistoryList = mypageService.getOrderHistory(userNum, period, firstIndex);
 		if (CollectionUtils.isEmpty(orderHistoryList) == false) {
 			Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new GsonLocalDateTimeAdapter()).create();
 			JsonArray jsonArr = gson.toJsonTree(orderHistoryList).getAsJsonArray();

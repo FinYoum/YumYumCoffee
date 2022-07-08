@@ -16,12 +16,14 @@ public interface MypageMapper {
 	public UserDTO selectUserDetail(int userNum);
 	public int countCoupon(CouponDTO Params);
 	public List<OrderHistoryDTO> selectOrderHistory(
-				@Param("userNum") int userNum, 
-				@Param("period") int period,
-				@Param("firstIndex") int firstIndex,
-				@Param("lastIndex") int lastIndex
+				@Param("userNum") int userNum
+				, @Param("period") int period
+				, @Param("firstIndex") int firstIndex
 				);
-	public int countOrder(int userNum);
+	public int countOrder(
+				@Param("userNum") int userNum
+				, @Param("period") int period
+			);
 
 	
 }

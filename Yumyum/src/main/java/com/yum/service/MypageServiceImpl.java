@@ -48,13 +48,13 @@ public class MypageServiceImpl implements MypageService {
 	
 	
 	@Override
-	public List<OrderHistoryDTO> getOrderHistory(int userNum, int period, int firstIndex, int lastIndex){
+	public List<OrderHistoryDTO> getOrderHistory(int userNum, int period, int firstIndex){
 //		public List<OrderHistoryDTO> getOrderHistory(OrderHistoryDTO params){
 		List<OrderHistoryDTO> orderHistoryList = Collections.emptyList();
-		int orderTotalCount = mypageMapper.countOrder(userNum);
+		int orderTotalCount = mypageMapper.countOrder(userNum, period);
 		if (orderTotalCount > 0) {
 			try {
-				orderHistoryList = mypageMapper.selectOrderHistory(userNum, period, firstIndex, lastIndex);
+				orderHistoryList = mypageMapper.selectOrderHistory(userNum, period, firstIndex);
 			} catch(RuntimeException e) {
 				System.out.println(e);
 			} catch (Exception e){

@@ -14,8 +14,7 @@ public interface MypageService {
 	public List<CouponDTO> getCouponList(CouponDTO params);
 	public UserDTO getUserDetail(int userNum);
 	public int countCoupon(CouponDTO params);
-	public List<OrderHistoryDTO> getOrderHistory(int userNum, int period, int firstIndex, int lastIndex);
-//	public List<OrderHistoryDTO> getOrderHistory(OrderHistoryDTO params);
-	public int countOrder(int userNum);
+	public List<OrderHistoryDTO> getOrderHistory(int userNum, int period, int firstIndex);
+	public int countOrder(int userNum, int period);
 	
 }

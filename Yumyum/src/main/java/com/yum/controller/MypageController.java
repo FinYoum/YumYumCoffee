@@ -20,7 +20,7 @@ public class MypageController {
 //	마이페이지 회원정보 불러오기
 	@GetMapping(value="/yumyum/mypage.do")
 	public String openMypage(Model model) {
-		int userNum=2; //회원번호
+		int userNum=1; //회원번호
 		UserDTO user = mypageService.getUserDetail(userNum);
 		model.addAttribute("user",user);
 		
@@ -37,7 +37,8 @@ public class MypageController {
 	}
 	
 	@GetMapping(value="yumyum/orderhistory.do")
-	public String orderhistory(@RequestParam(value = "userNum", required = true) int userNum, Model model) {
+	public String orderhistory(@RequestParam(value = "userNum", required = true) int userNum
+								, Model model) {
 		UserDTO user = mypageService.getUserDetail(userNum);
 		model.addAttribute("user", user);		
 		return "yumyum/orderHistory";

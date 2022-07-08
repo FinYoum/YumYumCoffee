@@ -9,44 +9,16 @@
     </th:block>
     
     <th:block layout:fragment="content">
-    <!-- 주문 내역 -->
-    <!-- 
-        <div id="StampContainer" style="width:300px;
-    display: flex;
-    flex-direction:row;
-    flex-wrap: wrap;
-    align-content: flex-start;">
-            <p>STAMP</p>
-            <th:block th:if="${user.stamp}==0">
-                <th:block th:each="n: ${#numbers.sequence(1,15)}">
-                    <div style="width:50px; height:50px; border:solid 1px grey;">            
-                    </div>
-                </th:block>
-            </th:block>
-            <th:block th:unless="${user.stamp}==0">
-                <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
-                    <div>                
-                        <img th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCB7lX8zZn5OLCjLHaYzLD1JPltLGPDn9LuQ&usqp=CAU}"
-                            style="width:50px; height:50px; border:solid 1px grey;"></img>
-                    </div>
-                </th:block>
-                <th:block th:each="n: ${#numbers.sequence(user.stamp,15)}">
-                    <div style="width:50px; height:50px; border:solid 1px grey;">            
-                    </div>
-                </th:block>
-             </th:block>
- 
-        </div>
-     -->
         <!-- 과거 주문 내역-->
         <span>과거 주문 내역</span>
         <div >
-            <span th:onclick="printOrderList(7)" style="cursor:pointer;">1주일</span>
-            <span th:onclick="printOrderList(30)" style="cursor:pointer;">1개월</span>
-            <span th:onclick="printOrderList(100)" style="cursor:pointer;">전체</span>
+            <span th:onclick="printOrderList(7,1)" style="cursor:pointer;">1주일</span>
+            <span th:onclick="printOrderList(30,1)" style="cursor:pointer;">1개월</span>
+            <span th:onclick="printOrderList(100,1)" style="cursor:pointer;">전체</span>
         </div>
         <div>
            <table id="order-list" style="width:600px;"></table>
+           <span th:onclick="addContent()" style="cursor:pointer;">더보기</span>
         </div>
         
         <!-- 사이드바 영역 -->
@@ -77,7 +49,11 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
             /*<![CDATA[*/
-                
+            //let orderTotlaCount = /*[[${orderTotlaCount}]]*/null;
+            let period = 7;
+            let firstIndex = 1;
+            let orderHistoryHtml = "";  
+            
             /*전체 기간 조회*/    
             function getToday(){
                     var date = new Date();
@@ -99,53 +75,65 @@
                     }
             
                 const allPeriod = getDateDiff("2022-06-13", getToday())+1;
-              
             
                     
             /*주문 내역 출력*/        
             $(function() {
-                printOrderList();
+                printOrderList(7, 1);
             });
-        
-            function printOrderList(period) {   
-                let uri = /*[[ @{/yumyum/orderhistory/}+${user.userNum}+'/']]*/;
-                console.log(period);
-                if (period == null){
-                    period=7
-                } else if (period==100){
-                    period=allPeriod;
-                }
+            
+            function printOrderList(selectedTerm, index) { 
+            	console.log(1)
+            	if (index == 1){
+            		firstIndex = 1;
+                    orderHistoryHtml = "";   
+            	} 
+            	if (selectedTerm!=null){
+	                if (selectedTerm==100){
+	                    period=allPeriod;
+	                } else{
+	                	period = selectedTerm;
+	                }
+            	}
                 
-                uri+=period+'/1/5';
-                console.log(uri);
+                let uri = /*[[ @{/yumyum/orderhistory/}+${user.userNum}+'/']]*/null;
+                uri+=(period+'/'+firstIndex);
+                
                 $.get(uri, function(response) {
                     if (isEmpty(response) == false) {
                         
                         function groupArrayOfObjects(list, key) {
                               return list.reduce(function(rv, x) {
                                 (rv[x[key]] = rv[x[key]] || []).push(x);
+                                console.log(x);
+                                console.log(key);
                                 return rv;
                               }, {});
                             };
-        
+                            
                         let groupOrderList=groupArrayOfObjects(response.orderHistoryList,"orderNum");
-                        let orderHistoryHtml = "";   
+                        let sortList=[]
                         
                         for(i in groupOrderList){
-                            let order = groupOrderList[i][0];
+                        	sortList.unshift(groupOrderList[i]);
+                        }
+                        
+
+                        for(i in sortList){
+                            let order = sortList[i][0];
                             let orderDate = ""+(order.orderTime).substring(0,10);
                             
                             orderHistoryHtml += `
                                 <tr>
                                    <td>${orderDate}</td>
-                                   <td></td>
-                                   <td></td>
                                    <td>${order.branchName}</td>
+                                   <td>${order.orderNum}</td>
+                                   <td></td>
                                 </tr>
                                   `;
                                   
-                            for(j in groupOrderList[i]){
-                                let orderDetail = groupOrderList[i][j];
+                            for(j in sortList[i]){
+                                let orderDetail = sortList[i][j];
                                 orderHistoryHtml += `
                                     <tr>
                                         <td>${orderDetail.name}</td>
@@ -164,22 +152,26 @@
                                        <td>${order.totalPrice}</td>
                                    </tr>
                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td></td>
-                                       <td></td>
+	                                   <td> </td>
+	                                   <td> </td>
+	                                   <td> </td>
+	                                   <td> </td>
                                    </tr>
+                                   
                                   `;
                         };
         
                         $("#order-list").html(orderHistoryHtml);
                     }
                 }, "json");
+                firstIndex+=5;
             }
             /*[- end of function -]*/
-                
-             
-              
+            
+            function addContent(){
+                printOrderList(null,null); 
+            }
+            /*[- end of function -]*/
                     /*[- end of function -]*/
                     /*]]>*/
         </script>
