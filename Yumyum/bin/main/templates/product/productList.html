@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product_list</title>
+    <script>
+    function changes1Step(fr) {
+      if(fr=="음료") {
+       num = new Array("커피","스무디","티");
+       vnum = new Array("커피","스무디","티");
+      }
+      else if(fr=="디저트") {
+       num = new Array("케이크","구움과자","빙수");
+       vnum = new Array("케이크","구움과자","빙수");
+      }
+      
+      for(i=0; i<form.Step2.length; i++) {
+       form.Step2.options[i] = null;
+      }
+      
+    //   for(i=0; i<form.Step3.length; i++) {
+    //    form.Step3.options[i] = null;
+    //   }
+    //    form.Step3.options[0] = new Option("--3단계--", "--3단계--");
+      for(i=0; i<num.length; i++) {
+       form.Step2.options[i] = new Option(num[i],vnum[i]);
+      }
+     }
+    </script>
+</head>
+<body>
+    <h2>제품 목록</h2>
+    <form name='form' action="#">
+        <select name="Step1" id="" onchange="changes1Step(value)">
+            <option >선택하세요</option>
+            <option value="전체">전체</option>
+            <option value="음료">음료</option>
+            <option value="디저트">디저트</option>
+        </select>
+        <select name="Step2" id="">
+            <option value="">--------</option>
+        </select>
+    </form>
+
+    <a th:href="@{/product/write.do}">제품등록</a>
+    <button type="button" th:href="@{/product/write.do}">제품등록</button>
+    
+    
+    <button>수정</button>
+    <button>삭제</button>
+    <table>
+        <thead>
+            <tr>
+                <th>상품번호</th>
+                <th>이름</th>
+                <th>가격</th>
+                <th>설명</th>
+                <th>이미지</th>
+            </tr>
+        </thead>
+        <tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}">
+            <td scope="row" th:text="${row.productNum}"></td>
+            <td>
+                <a th:href="@{/product/view.do( idx=${row.productNum} )}" th:text="${row.name}">
+            </td>
+            <td th:text="${row.price}"></td>
+            <td th:text="${row.info}"></td>
+            <td th:text="${row.img}"></td>
+        </tr>
+        <tr th:unless="${not #lists.isEmpty( productList )}">
+           <td colspan="5">조회된 결과가 없습니다.</td>
+        </tr>
+    </table>
+    
+    <!-- 해당 상품번호를 가지고 연결 해야 함 -->
+
+</body>
+</html>
