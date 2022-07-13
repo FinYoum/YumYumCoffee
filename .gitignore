@@ -5,3 +5,5 @@ Yumyum/bin/
 Yumyum/src/main/resources/application.properties
 
 Yumyum/build.gradle
+
+Yumyum/src/main/resources/templates/yumyum.zip

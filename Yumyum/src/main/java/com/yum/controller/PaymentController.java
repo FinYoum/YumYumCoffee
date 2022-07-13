@@ -8,6 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+<<<<<<< HEAD
+=======
+import org.springframework.web.bind.annotation.ResponseBody;
+>>>>>>> refs/remotes/origin/main
 
 import com.yum.domain.PaymentDTO;
 import com.yum.service.PaymentService;

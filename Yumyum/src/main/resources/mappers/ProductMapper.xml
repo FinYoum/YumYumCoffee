@@ -23,6 +23,7 @@
     </insert>
     
     <select id="selectProductDetail" parameterType="long" resultType="com.yum.domain.ProductDTO">
+        
         SELECT 
             <include refid="productColumns" />
         FROM 
@@ -34,19 +35,42 @@
     <update id="updateProduct" parameterType="com.yum.domain.ProductDTO">
         UPDATE product
         SET
-            price=#{price}
+<!--              code_id=#{codeId} 
+            , --> name=#{name}
+            , price=#{price}
             , info=#{info}
         WHERE
             product_num=#{productNum}
     </update>
     
     <delete id="deleteProduct" parameterType="long">
-        DELETE product
+        delete product
         WHERE
             product_num=#{productNum}
     </delete>
     
     <select id="selectProductList" parameterType="com.yum.domain.ProductDTO" resultType="com.yum.domain.ProductDTO">
+<!--         SELECT 
+            product_num
+            ,code_id
+            ,name
+            ,price
+            ,info 
+        FROM 
+            product
+        ORDER BY product_num ASC -->
+       SELECT
+        <include refid="productColumns" />
+        FROM (
+            SELECT ROW_NUMBER() OVER (ORDER BY product_num) NUM
+            , A.*
+            FROM product A
+            ORDER BY product_num 
+        )
+        WHERE NUM BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
+    </select>
+    
+    <select id="selectProductList2" parameterType="com.yum.domain.ProductDTO" resultType="com.yum.domain.ProductDTO">
         SELECT 
             product_num
             ,name
@@ -54,6 +78,8 @@
             ,info 
         FROM 
             product
+        where code_id=#{codeId}
+        ORDER BY product_num ASC
     </select>
     
     <select id="selectProductTotalCount" parameterType="com.yum.domain.ProductDTO" resultType="int">
@@ -68,5 +94,16 @@
             NVL(max(Product_num),0)
         FROM
             product
+    </select>
+    
+    <!-- list change -->
+    <select id="selectListDetail" parameterType="long" resultType="com.yum.domain.ProductDTO">
+        
+        SELECT 
+            <include refid="productColumns" />
+        FROM 
+            product
+        WHERE
+            code_id=#{codeId}
     </select>
 </mapper>
