@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yum.mapper.AttachMapper;
-import com.yum.util.FileUtils;
 import com.yum.domain.ImgDTO;
 import com.yum.domain.ProductDTO;
+import com.yum.mapper.ImgMapper;
 import com.yum.mapper.ProductMapper;
+import com.yum.util.FileUtils;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
 	private ProductMapper productMapper;
 	
 	@Autowired
-	private AttachMapper attachMapper;
+	private ImgMapper imgMapper;
 	
 	@Autowired
 	private FileUtils fileUtils;
@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		List<ImgDTO> fileList = fileUtils.uploadFiles(files, params.getProductNum());
 		if (CollectionUtils.isEmpty(fileList) == false) {
-			queryResult = attachMapper.insertAttach(fileList);
+			queryResult = imgMapper.insertAttach(fileList);
 			if (queryResult < 1) {
 				queryResult = 0;
 			}
