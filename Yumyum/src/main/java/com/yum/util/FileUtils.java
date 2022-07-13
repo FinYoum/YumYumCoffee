@@ -21,7 +21,7 @@ public class FileUtils {
 	//private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
 
 	/** 업로드 */
-	private final String uploadPath = Paths.get("C:", "Users", "h","Pictures","yumyum").toString();
+	private final String uploadPath = Paths.get("C:", "Users", System.getProperty("user.name"),"Pictures","yumyum").toString();
 	//private final String uploadPath = Paths.get("C:", "Users", "user","OneDrive","사진","yumyum").toString();
 
 	/**
