@@ -1,5 +1,7 @@
 package com.yum.domain;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,10 +16,22 @@ public class ImgDTO {
 	private Long productNum;
 
 	/** 원본 파일명 */
-	private String name;
+	private String originalName;
+	
+	//저장 파일명
+	private String saveName;
+	
+	//파일경로
+	private String imgPath;
+	
+	//입력 날짜
+	private Date insertTime;
 
 	/** 파일 크기 */
 	private long size;
+	
+	//삭제여부
+	private String deleteYn;
 
 }
 

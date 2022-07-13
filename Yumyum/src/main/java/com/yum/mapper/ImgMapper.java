@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.yum.domain.ImgDTO;
 
 @Mapper
-public interface AttachMapper {
+public interface ImgMapper {
 
 	public int insertAttach(List<ImgDTO> attachList);
 
@@ -18,5 +18,7 @@ public interface AttachMapper {
 	public List<ImgDTO> selectAttachList(Long productNum);
 
 	public int selectAttachTotalCount(Long productNum);
+	
+	public int updateAttach(List<Long> idxs);
 
 }
