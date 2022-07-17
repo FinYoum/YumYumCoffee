@@ -3,31 +3,39 @@ package com.yum.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-<<<<<<< HEAD
-=======
-import org.springframework.web.bind.annotation.ResponseBody;
->>>>>>> refs/remotes/origin/main
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.yum.domain.PaymentDTO;
 import com.yum.service.PaymentService;
 
-@Controller
+@RestController
 public class PaymentController {
 	
 	@Autowired
 	private PaymentService paymentService;
 	
 	@GetMapping(value="/payment")
-	public String PaymentList(@ModelAttribute("params") PaymentDTO params, Model model) {
+	public ModelAndView PaymentList(@ModelAttribute("params") PaymentDTO params) {
+		ModelAndView mv = new ModelAndView();
 		List<PaymentDTO> paymentList = paymentService.getPaymentList(params);
-		model.addAttribute("paymentList", paymentList);
-		return "payment/paymentPage";
+//		model.addAttribute("paymentList", paymentList);
+		
+		mv.addObject("paymentList", paymentList);
+		mv.setViewName("payment/paymentPage");
+		return mv;
 	}
+
+//	@GetMapping(value="/payment")
+//	public String PaymentList(@ModelAttribute("params") PaymentDTO params, Model model) {
+//		List<PaymentDTO> paymentList = paymentService.getPaymentList(params);
+//		model.addAttribute("paymentList", paymentList);
+//		return "payment/paymentPage";
+//	}
 	
 	@GetMapping(value="/payment.do")
 	public String Payment(@RequestParam("orderNum") int param, Model model) {

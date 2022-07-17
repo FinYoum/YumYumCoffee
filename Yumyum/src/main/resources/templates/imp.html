@@ -1,20 +1,23 @@
-<!DOCTYPE html>>
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
+    <title>IamPort 연동결제</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 </head>
 <body>
 
+ <button onclick="requestPay()">결제하기</button>
+
 <script>
 
-    $(function(){
+    $(function requestPay(){
     
     	//@@@@@@ 1번 @@@@@@@
         var IMP = window.IMP; // 생략가능
-        IMP.init('가맹점 식별코드'); //가맹점 식별코드 삽입
+        IMP.init('imp46753753'); //가맹점 식별코드 삽입
         var msg;
         
         //@@@@@@@@ 2번 @@@@@@@@
@@ -39,11 +42,11 @@
             merchant_uid : 'merchant_' + new Date().getTime(),
             name : 'vivipayment',
             amount : getParam("price"),
-            buyer_email : '이메일 넣기',
-            buyer_name : '이름 넣기',
-            buyer_tel : '번호 넣기',
-            buyer_addr : '주소 넣기',
-            buyer_postcode : '123-456',
+            buyer_email : 'wlgns89v@gmail.com',
+            buyer_name : '송호섭',
+            buyer_tel : '010-9279-5361',
+            buyer_addr : '인천광역시 남동구 선수촌로 56',
+            buyer_postcode : '21585',
            // m_redirect_url : '결제 완료후 이동할 페이지'
         }, function(rsp) {
             if ( rsp.success ) {
