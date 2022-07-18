@@ -12,11 +12,8 @@ import com.yum.domain.ImgDTO;
 import com.yum.domain.ProductDTO;
 import com.yum.mapper.ImgMapper;
 import com.yum.mapper.ProductMapper;
-<<<<<<< HEAD
-=======
 import com.yum.paging.Criteria;
 import com.yum.paging.PaginationInfo;
->>>>>>> refs/remotes/origin/main
 import com.yum.util.FileUtils;
 
 @Service
@@ -72,10 +69,7 @@ public class ProductServiceImpl implements ProductService {
 		List<ImgDTO> fileList = fileUtils.uploadFiles(files, params.getProductNum());
 		
 		if (CollectionUtils.isEmpty(fileList) == false) {
-<<<<<<< HEAD
-=======
 			System.out.println("fileList : "+fileList);
->>>>>>> refs/remotes/origin/main
 			queryResult = imgMapper.insertAttach(fileList);
 			if (queryResult < 1) {
 				queryResult = 0;
