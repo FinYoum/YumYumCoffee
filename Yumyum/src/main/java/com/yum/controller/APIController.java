@@ -1,9 +1,7 @@
 package com.yum.controller;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -26,7 +24,8 @@ public class APIController {
 
 	@Autowired
 	private MypageService mypageService;
-
+	
+//유저번호에 따른 쿠폰 리스트 불러오기
 	@GetMapping(value = "yumyum/coupon/{userNum}")
 	public JsonObject getCommentList(@PathVariable("userNum") int userNum, @ModelAttribute("params") CouponDTO params) {
 		
@@ -41,7 +40,7 @@ public class APIController {
 		return jsonObj;
 	}
 
-	
+//	유저별, 기간 별, 과거 주문 내역 확인 (기본값 7일(7일/31일/전체), 주문 5개)
 	@GetMapping(value = "yumyum/orderhistory/{userNum}/{period}/{firstIndex}")
 	public JsonObject getOrderHistoryList(
 				@PathVariable("userNum") int userNum
@@ -58,5 +57,12 @@ public class APIController {
 		}
 		return jsonObj;
 	}
+	
+//	react연동 테스트
+//	@GetMapping(value="api/hello")
+//	public String testReactConnection() {
+//		return "hello";
+//	}
+	
 
 }

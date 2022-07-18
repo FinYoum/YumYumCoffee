@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yum.domain.CouponDTO;
+import com.yum.domain.MemberDTO;
 import com.yum.domain.OrderHistoryDTO;
-import com.yum.domain.UserDTO;
 import com.yum.mapper.MypageMapper;
 
 @Service
@@ -18,7 +18,7 @@ public class MypageServiceImpl implements MypageService {
 		
 	
 	@Override
-	public UserDTO getUserDetail(int userNum) {
+	public MemberDTO getUserDetail(int userNum) {
 		return mypageMapper.selectUserDetail(userNum);
 	}
 	

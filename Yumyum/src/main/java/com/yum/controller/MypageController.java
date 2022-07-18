@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.yum.domain.CouponDTO;
-import com.yum.domain.UserDTO;
+import com.yum.domain.MemberDTO;
 import com.yum.service.MypageService;
 
-//@RestController
+
 @Controller
 public class MypageController {
 	
@@ -18,28 +18,30 @@ public class MypageController {
 	private MypageService mypageService;
 	
 //	마이페이지 회원정보 불러오기
-	@GetMapping(value="/yumyum/mypage.do")
+	@GetMapping(value="mypage.do")
 	public String openMypage(Model model) {
 		int userNum=1; //회원번호
-		UserDTO user = mypageService.getUserDetail(userNum);
+		MemberDTO user = mypageService.getUserDetail(userNum);
 		model.addAttribute("user",user);
 		
 		CouponDTO params = new CouponDTO();
 		params.setUserNum(userNum);
 		int couponTotalCount = mypageService.countCoupon(params);
 		model.addAttribute("couponTotalCount",couponTotalCount);
-		return "/yumyum/mypage";
+		return "yumyum/mypage";
 	}
-	
+		
+//	홈페이지
 	@GetMapping(value="")
 	public String openHome(Model model) {
 		return "yumyum/index";
 	}
 	
-	@GetMapping(value="yumyum/orderhistory.do")
+//	마이페이지 >> 과거 주문 내역 페이지
+	@GetMapping(value="orderhistory.do")
 	public String orderhistory(@RequestParam(value = "userNum", required = true) int userNum
 								, Model model) {
-		UserDTO user = mypageService.getUserDetail(userNum);
+		MemberDTO user = mypageService.getUserDetail(userNum);
 		model.addAttribute("user", user);		
 		return "yumyum/orderHistory";
 	}

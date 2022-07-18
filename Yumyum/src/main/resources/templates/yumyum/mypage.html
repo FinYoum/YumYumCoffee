@@ -12,9 +12,15 @@
         <div id="couponModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <div class="modal-header" style="display: flex; justify-content: space-between;" >
+                        <div class="text-slate-900 font-semibold mt-4 mb-4 ml-4 text-center text-3xl leading-6 dark:text-slate-100"
+	                        >
+	                        보유 쿠폰
+                        </div>
+                        
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="openModal()">
+                        <img aria-hidden="true" th:src="@{https://cdn3.iconfinder.com/data/icons/status/100/close_1-512.png}" style="width:15px; height:15px; margin:20px;"></img>
+                        <!-- <span aria-hidden="true"></span> -->
                         </button>
                     </div>
                     <div class="modal-body">
@@ -25,64 +31,43 @@
         </div>
     </th:block>
     
-    <th:block layout:fragment="content">
-    <!-- 스탬프 영역 -->
-        <div style="width:300px;">
-            <p>STAMP</p>
-	        <div id="StampContainer" 
-	        style="width:250px;
-			    display: flex;
-			    flex-direction:row;
-			    flex-wrap: wrap;
-			    align-content: flex-start;">
-	            <th:block th:if="${user.stamp}==0">
-	                <th:block th:each="n: ${#numbers.sequence(1,15)}">
-		                <div style="width:50px; height:50px; border:solid 1px grey;">            
-		                </div>
-	                </th:block>
-	            </th:block>
-	            <th:block th:unless="${user.stamp}==0">
-		            <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
-		                <div>                
-			                <img th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCB7lX8zZn5OLCjLHaYzLD1JPltLGPDn9LuQ&usqp=CAU}"
-			                    style="width:50px; height:50px; border:solid 1px grey;"></img>
-		                </div>
+    <th:block layout:fragment="myPage">
+        <div class="flex justify-evenly mt-5 col">
+	        <!-- 스탬프 영역 -->
+	        <div class="text-center">
+	            <p style="font-size:x-large; margin-bottom:10px; font-weight:500;">STAMP</p>
+		        <div 
+		          class="flex flex-row flex-wrap flex-content-start w-64 border-3 border-slate-600"
+		          id="StampContainer">
+		            <th:block th:if="${user.stamp}==0">
+		                <th:block th:each="n: ${#numbers.sequence(1,15)}">
+			                <div style="width:50px; height:50px; border:solid 1px grey;">            
+			                </div>
+		                </th:block>
 		            </th:block>
-		            <th:block th:each="n: ${#numbers.sequence(user.stamp+1,15)}">
-		                <div style="width:50px; height:50px; border:solid 1px grey;">            
-		                </div>
-		            </th:block>
-		         </th:block>
+		            <th:block th:unless="${user.stamp}==0">
+			            <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
+			                <div>                
+				                <img th:src="@{./img/stamp.jpg}"
+				                    style="width:50px; height:50px; border:solid 1px grey;"></img>
+			                </div>
+			            </th:block>
+			            <th:block th:each="n: ${#numbers.sequence(user.stamp,14)}">
+			                <div style="width:50px; height:50px; border:solid 1px grey;"></div>
+			            </th:block>
+	
+			         </th:block>
+		        </div>
 	        </div>
-        </div>
-        <!-- 쿠폰 영역 -->
-        <div>
-            <span>COUPON</span>
-            <h2 th:text="${couponTotalCount}" onclick="openModal()" style="cursor:pointer;"></h2>
-        </div>
-        
-        <!-- 사이드바 영역 -->
-        <div class="justify-content-end">
-<!--          <sidebar class="position-absolute top-0 end-0 bg-secondary">-->
-            
-	        <ul style="width:400px;">
-	            <li>내 정보 수정</li>
-	            <li>
-	            <a th:href="@{/yumyum/orderhistory.do(userNum=${user.userNum})}" style="cursor:pointer; z-index:10;">과거 주문 내역</a>
-	            </li>
-	        </ul>
-	        <th:block th:if="${user.stamp}==0">
-		        <ul>
-		           <span>관리자 목록</span>
-    		        <!-- 
-		            <li th:action="@{}">회원 관리</li>
-		             -->
-		            <li>메뉴 관리</li>
-		            <li>게시판 관리</li>
-		        </ul>
-	        </th:block>
-        </div>
-    </th:block>
+	        <!-- 쿠폰 영역 -->
+	        <div class="text-center">
+	            <p style="font-size:x-large; margin-bottom:10px; font-weight:500;">COUPON</p>
+	            <p th:text="${couponTotalCount}" 
+	                onclick="openModal()" 
+	                style="cursor:pointer; font-size:xx-large;"></p>
+	        </div>
+	   </div>     
+       
     
 <!-- 자바스크립트 -->
     <th:block layout:fragment="script">
@@ -106,10 +91,14 @@
                 $(response.couponList).each(function(num, coupon) {
                 	let expDate = (coupon.expirationDate).substring(0,10);
                 	couponHtml += `
-                        <li>
-                            <div>${coupon.kind} 쿠폰</div>
-                            <div>${coupon.description}</div>
-                            <div>${expDate}</div>
+                        <li class="bg-stone-100 border-solid border-2 rounded m-3 p-3 border-slate-600">
+                            <div style="display:flex; flex-flow: row wrap; justify-content: space-between;">
+                                <div class="py-1 font-semibold hover:text-slate-900 dark:text-slate-400"
+                                >${coupon.kind} 쿠폰</div>
+                                <div class="py-1 font-semibold hover:text-slate-900 dark:text-slate-400"
+                                >유효기간 : ${expDate}까지</div>
+                            </div>
+                            <div >${coupon.description}</div>
                         </li>
                     `;
                 });
@@ -122,10 +111,6 @@
      
      function openModal() {
          $("#couponModal").modal("toggle");
-//         document.getElementById("modalKind").value = kind;
-//         document.getElementById("modalExpirationDate").value = expirationDate;
-//         document.getElementById("modalDescription").value = description;
-
      }
     
      
