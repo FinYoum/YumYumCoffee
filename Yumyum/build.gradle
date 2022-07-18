@@ -50,6 +50,8 @@ dependencies {
     // GSON은 구글에서 만든 자바 오브젝트 직렬화/역직렬화 라이브러리
     implementation 'com.google.code.gson:gson'
     
+    // 이메일 전송
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
    
     // 비밀번호 암호화
     implementation group: 'com.oracle.database.nls', name: 'orai18n', version: '21.1.0.0'

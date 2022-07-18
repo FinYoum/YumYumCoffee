@@ -1,8 +1,5 @@
 package com.yum.controller;
 
-
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,12 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.yum.SessionConstants;
 import com.yum.domain.MemberDTO;
+//import com.yum.service.EmailService;
 import com.yum.service.MemberService;
+
 
 @Controller
 /* @RequestMapping("/yum") */
@@ -36,65 +38,70 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	/* private SqlSession sqlSession; */
 	
+	@GetMapping(value = "/home")
+	public String home(@SessionAttribute(name = SessionConstants.loginMember, required = false)MemberDTO loginMember,
+						HttpServletRequest request, Model model) {
+		//sessionCall(request, model);
+		
+		model.addAttribute("member", loginMember);
+		System.out.println(request);
+		System.out.println(model);
+		
+		return "yumyum/index";
+	}
 	
 	@GetMapping(value = "/login")
 	public String getLogin() {
+		
 		return "login/login";
 	}
 	
 	@PostMapping(value = "/login")
-	public String doLogin(@ModelAttribute MemberDTO params, Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		logger.info("로그인");
-		String userid = request.getParameter("id");
-		String userpw = request.getParameter("pw");
-		
-		MemberDTO member = memberService.login(userid, userpw);
+	public String doLogin(@ModelAttribute MemberDTO params, Model model, HttpSession session, 
+							HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		logger.info("로그인222");
+		MemberDTO member = memberService.login(params.getId(), params.getPw());
 		System.out.println(member);
 		
 		if(member == null) {
 			
-			String test = "failID";
-			System.out.println("존재하지 않는 ID입니다.");
-			model.addAttribute("noID", test);
-			System.out.println(member);
+			String failID = "failID";
+			model.addAttribute("noID", failID);
+			System.out.println("noID");
 			
 			return "login/login";
 		}
-		
 		
 		//MemberDTO login = memberService.login(params, session);
-		System.out.println("1111");
 		boolean pwCheck = passwordEncoder.matches(params.getPw(), member.getPw());
-		
-		System.out.println("2222");
 		if(member != null && pwCheck) { 
+			
 			session.setAttribute(SessionConstants.loginMember, member);
+			model.addAttribute("member", member);
 			System.out.println("loginS");
 			
-			return "redirect:/"; 
+			return "redirect:/home"; 
+			
 		} else {
-			session.setAttribute(SessionConstants.loginMember, member);
+			
 			System.out.println("loginF");
-			String test = "failPW";
-			System.out.println("비밀번호가 맞지 않습니다.");
-			model.addAttribute("failPW", test);
+			String failPW = "failPW";
+			model.addAttribute("failPW", failPW);
 			
 			return "login/login";
 		}
-
-		//HttpSession session = request.getSession();
 	}
 	
-	@PostMapping("/logout")
+	@PostMapping(value = "/logout")
 	public String logout(HttpServletRequest request) {
 	    HttpSession session = request.getSession(false);
 	    
 	    if (session != null) {
 	        session.invalidate();   // 세션 날림
 	    }
-	    
-	    return "redirect:/";
+
+		return "redirect:/home"; 
 	}
 
 	@GetMapping(value = "/register")
@@ -150,4 +157,10 @@ public class LoginController {
 		return result;
 	}
 
+	@GetMapping(value = "/findId")
+	public String pageFindId() {
+		
+		return "login/findId";
+	}
+	
 }
