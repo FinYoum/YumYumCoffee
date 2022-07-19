@@ -78,7 +78,7 @@
                 <div id="btnDiv" class="btn_wrap text-center">
                     <a th:href="@{/product/list}" class="btn btn-outline-secondary waves-light">뒤로가기</a>
                     <a th:href="@{/product/write( productNum=${product.productNum} )}" class="btn btn-primary waves-effect waves-light">수정하기</a>
-                    <button type="button" class="btn btn-danger waves-effect waves-light" th:onclick="deleteProduct([[ ${product.productNum} ]])">삭제하기</button>
+                    <button type="button" class="btn btn-danger bg-red-600" th:onclick="deleteProduct([[ ${product.productNum} ]])">삭제하기</button>
                 </div>
             </form>
            </th:block>
