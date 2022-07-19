@@ -3,7 +3,10 @@
     <body th:fragment="main-body">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="/home">YumYumCoffee</a>
+                <a class="navbar-brand" href="/home">
+                    <img th:src="@{/img/yumyumCoffee_logo.jpg}"
+                        style="width:130px;"></img>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 	<span class="navbar-toggler-icon"></span>
                 </button>
@@ -29,6 +32,20 @@
                         <li class="nav-item" th:if="${member != null}">
                         	<a class="nav-link" th:href="@{/yumyum/mypage}" href="/yumyum/mypage">Mypage</a>
                         </li>
+                        <li class="nav-item" th:unless="${member != null}">
+                        	<a class="nav-link" th:href="@{/login}" href="/login">Login</a>
+                        </li> 
+                        
+                        <li class="nav-item" th:if="${member != null}">
+                        	<a class="nav-link" th:href="@{/logout}">Logout</a>
+                        </li>
+                        <li class="nav-item" th:if="${member != null}">
+                        	<a class="nav-link" th:href="@{/yumyum/mypage}" href="/yumyum/mypage">Mypage</a>
+                        </li>
+                        
+                       <!--  <li class="nav-item"><a class="nav-link" href="/product">All Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/drink">음료</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/dessert">디저트</a></li> -->
                         <li class="nav-item" th:unless="${member != null}">
                         	<a class="nav-link" th:href="@{/login}" href="/login">Login</a>
                         </li>
@@ -64,7 +81,7 @@
         
         <!-- Modal -->
         <th:block layout:fragment="modal"></th:block>
-        
+                 
         <!-- Section-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
@@ -78,70 +95,6 @@
             </div>
         </section>        
         
-        <!-- 마이페이지 Section-->
-        <section class="py-5">
-            <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-end">
-                    <!-- content -->
-                    <th:block layout:fragment="myPage">
-                    
-                    </th:block>
-                    <!-- 마이페이지 사이드바 -->
-                    <div class=" flex flex-wrap content-between bg-slate-700 p-4 w-48 col-md-4 min-h-[60vh] ">
-			            <div>
-			                <h4 class="text-white font-semibold mb-2 text-xl leading-6 dark:text-slate-100">
-			                   마이 페이지
-			                </h4>
-			                <ul>
-			                    <li>
-			                       <a class="block py-1 text-white cursor-pointer"
-			                       >내 정보 수정
-			                       </a>
-			                    </li>
-			                    <li>
-			                        <a th:href="@{/orderhistory.do(userNum=${user.userNum})}" 
-			                           class="block py-1 text-white cursor-pointer"
-			                           > 
-			                           과거 주문 내역</a>
-			                    </li>
-			                </ul>
-			            </div>
-			     <!--   user.authority
-			            관리자=3
-			            지점 매니저=2
-			            일반 유저=1 -->
-			            <th:block th:if="${user.authority}!=1">
-			                <div>
-			                     <h4 class="text-white font-semibold mb-2 mt-16 text-xl leading-6 dark:text-slate-100 ">
-			                       관리자 페이지
-			                    </h4>
-			                    <ul>
-			                    <!--     지점장 메뉴 관리  -->
-			                        <li>
-			                           <a class="block py-1 text-white cursor-pointer"
-			                           >메뉴 관리
-			                           </a>
-			                        </li>
-			                       <!--  관리자만 접근 가능 -->
-			                        <th:block th:if="${user.authority}==3">
-			                            <li>
-			                               <a class="block py-1 text-white cursor-pointer" 
-			                               >게시판 관리
-			                               </a>
-			                            </li>
-			                            <li>
-			                                <a class="block py-1 text-white cursor-pointer"
-			                               >회원 관리
-			                               </a>
-			                            </li>
-			                        </th:block>
-			                    </ul>
-			                </div>
-			            </th:block>
-			        </div>
-                </div>
-            </div>
-        </section>
         
         <!-- Footer-->
         <footer class="py-3 bg-dark fixed-bottom">
