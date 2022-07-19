@@ -1,12 +1,14 @@
 package com.yum.domain;
 
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductDTO {
+public class ProductDTO extends CommonDTO {
 	
 	//상품 번호	
 	private Long productNum;
@@ -25,6 +27,12 @@ public class ProductDTO {
 	
 	//상품이미지
 	private String img;
+
+	//-----------------------------
+	//파일 변경 여부
+	private String changeYn;
+	//파일 인덱스 리스트
+	private List<Long> fileIdxs;
 	
 
 }

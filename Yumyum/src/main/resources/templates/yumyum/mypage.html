@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/mypageBasic">
     <th:block layout:fragment="title">
         <title>YumYum Coffee</title>
     </th:block>
@@ -31,8 +31,7 @@
         </div>
     </th:block>
     
-<<<<<<< HEAD
-    <th:block layout:fragment="myPage">
+    <th:block layout:fragment="content">
         <div class="flex justify-evenly mt-5 col">
 	        <!-- 스탬프 영역 -->
 	        <div class="text-center">
@@ -45,36 +44,11 @@
 			                <div style="width:50px; height:50px; border:solid 1px grey;">            
 			                </div>
 		                </th:block>
-=======
-    <th:block layout:fragment="content">
-    <!-- 스탬프 영역 -->
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-        <div style="width:300px;">
-            <p>STAMP</p>
-	        <div id="StampContainer" 
-	        style="width:250px;
-			    display: flex;
-			    flex-direction:row;
-			    flex-wrap: wrap;
-			    align-content: flex-start;">
-	            <th:block th:if="${user.stamp}==0">
-	                <th:block th:each="n: ${#numbers.sequence(1,15)}">
-		                <div style="width:50px; height:50px; border:solid 1px grey;">            
-		                </div>
-	                </th:block>
-	            </th:block>
-	            <th:block th:unless="${user.stamp}==0">
-		            <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
-		                <div>                
-			                <img th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCB7lX8zZn5OLCjLHaYzLD1JPltLGPDn9LuQ&usqp=CAU}"
-			                    style="width:50px; height:50px; border:solid 1px grey;"></img>
-		                </div>
->>>>>>> refs/remotes/origin/main
 		            </th:block>
 		            <th:block th:unless="${user.stamp}==0">
 			            <th:block th:each="n: ${#numbers.sequence(1,user.stamp)}">
 			                <div>                
-				                <img th:src="@{./img/stamp.jpg}"
+				                <img th:src="@{/img/stamp.jpg}"
 				                    style="width:50px; height:50px; border:solid 1px grey;"></img>
 			                </div>
 			            </th:block>
@@ -85,7 +59,7 @@
 			         </th:block>
 		        </div>
 	        </div>
-<<<<<<< HEAD
+
 	        <!-- 쿠폰 영역 -->
 	        <div class="text-center">
 	            <p style="font-size:x-large; margin-bottom:10px; font-weight:500;">COUPON</p>
@@ -95,38 +69,6 @@
 	        </div>
 	   </div>     
        
-=======
-        </div>
-        <!-- 쿠폰 영역 -->
-        <div>
-            <span>COUPON</span>
-            <h2 th:text="${couponTotalCount}" onclick="openModal()" style="cursor:pointer;"></h2>
-        </div>
-        
-        <!-- 사이드바 영역 -->
-        <div class="justify-content-end">
-<!--          <sidebar class="position-absolute top-0 end-0 bg-secondary">-->
-            
-	        <ul style="width:400px;">
-	            <li>내 정보 수정</li>
-	            <li>
-	            <a th:href="@{/yumyum/orderhistory.do(userNum=${user.userNum})}" style="cursor:pointer; z-index:10;">과거 주문 내역</a>
-	            </li>
-	        </ul>
-	        <th:block th:if="${user.stamp}==0">
-		        <ul>
-		           <span>관리자 목록</span>
-    		        <!-- 
-		            <li th:action="@{}">회원 관리</li>
-		             -->
-		            <li>메뉴 관리</li>
-		            <li>게시판 관리</li>
-		        </ul>
-	        </th:block>
-        </div>
-        </div>
-    </th:block>
->>>>>>> refs/remotes/origin/main
     
 <!-- 자바스크립트 -->
     <th:block layout:fragment="script">
@@ -134,14 +76,13 @@
             /*<![CDATA[*/
             	
     /*쿠폰 리스트 출력*/     	
-    $(function() {
+    (function() {
     	printCouponList();
-    });
-
+    })();
+    printCouponList();
     function printCouponList() {
 
         var uri = /*[[ @{/yumyum/coupon/} + ${user.userNum} ]]*/null;
-
 
         $.get(uri, function(response) {
             if (isEmpty(response) == false) {
@@ -172,8 +113,6 @@
          $("#couponModal").modal("toggle");
      }
     
-     
-      
             /*[- end of function -]*/
             /*]]>*/
         </script>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <body th:fragment="main-body">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="/home">
+                    <img th:src="@{/img/yumyumCoffee_logo.jpg}"
+                        style="width:150px;"></img>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                	<span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Board</a></li>
+                        
+                        <!-- 메뉴 드롭다운 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/product">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="/drink">음료</a></li>
+                                <li><a class="dropdown-item" href="/dessert">디저트</a></li>
+                            </ul>
+                        </li> 
+                        
+                        <li class="nav-item" th:if="${member != null}">
+                        	<a class="nav-link" th:href="@{/logout}">Logout</a>
+                        </li>
+                        <li class="nav-item" th:if="${member != null}">
+                        	<a class="nav-link" th:href="@{/yumyum/mypage}" href="/yumyum/mypage">Mypage</a>
+                        </li>
+                        <li class="nav-item" th:unless="${member != null}">
+                        	<a class="nav-link" th:href="@{/login}" href="/login">Login</a>
+                        </li> 
+                        
+                        <li class="nav-item" th:if="${member != null}">
+                        	<a class="nav-link" th:href="@{/logout}">Logout</a>
+                        </li>
+                        <li class="nav-item" th:if="${member != null}">
+                        	<a class="nav-link" th:href="@{/yumyum/mypage}" href="/yumyum/mypage">Mypage</a>
+                        </li>
+                        
+                       <!--  <li class="nav-item"><a class="nav-link" href="/product">All Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/drink">음료</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/dessert">디저트</a></li> -->
+                        <li class="nav-item" th:unless="${member != null}">
+                        	<a class="nav-link" th:href="@{/login}" href="/login">Login</a>
+                        </li>
+                        
+                       <!--  <li class="nav-item"><a class="nav-link" href="/product">All Products</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/drink">음료</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/dessert">디저트</a></li> -->
+                    </ul>
+                    <form class="d-flex">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        
+        <header class="bg-dark py-1">
+            <div class="container px-4 px-lg-5 my-3">
+                <div class="text-center text-white">
+	                <th:block layout:fragment="header">
+	                <!--  
+	                    <h1 class="display-4 fw-bolder">YumYum Coffee</h1>
+	                    <p class="lead fw-normal text-white-50 mb-0">Welcome to our Cafe!</p>
+	                    -->
+	                </th:block>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Modal -->
+        <th:block layout:fragment="modal"></th:block>
+                       
+        
+        <!-- 마이페이지 Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-2">
+                <div class="row gx-4 gx-lg-5 justify-content-end">
+                    <!-- content -->
+                    <th:block layout:fragment="content">
+                    
+                    </th:block>
+                    <!-- 마이페이지 사이드바 -->
+                    <div class=" flex flex-wrap content-between bg-slate-700 p-4 w-48 col-md-4 min-h-[60vh] ">
+			            <div>
+			                <h4 class="text-white font-semibold mb-2 text-xl leading-6 dark:text-slate-100">
+			                   마이 페이지
+			                </h4>
+			                <ul>
+			                    <li>
+			                       <a class="block py-1 text-white cursor-pointer"
+			                       >내 정보 수정
+			                       </a>
+			                    </li>
+			                    <li>
+			                    <!-- 유저 번호 넘기기 -->
+			                        <a th:href="@{/yumyum/orderhistory(userNum=${user.userNum})}" 
+			                           class="block py-1 text-white cursor-pointer"
+			                           > 
+			                           과거 주문 내역</a>
+			                    </li>
+			                </ul>
+			            </div>
+			            
+			     <!--   user.authority
+			            관리자=3
+			            지점 매니저=2
+			            일반 유저=1 -->
+			            <th:block th:if="${user.authority}!=1">
+			                <div>
+			                     <h4 class="text-white font-semibold mb-2 mt-16 text-xl leading-6 dark:text-slate-100 ">
+			                       관리자 페이지
+			                    </h4>
+			                    <ul>
+			                    <!--     지점장 메뉴 관리  -->
+			                        <li>
+			                           <a class="block py-1 text-white cursor-pointer"
+			                           >메뉴 관리
+			                           </a>
+			                        </li>
+			                       <!--  관리자만 접근 가능 -->
+			                        <th:block th:if="${user.authority}==3">
+			                            <li>
+			                               <a class="block py-1 text-white cursor-pointer" 
+			                               >게시판 관리
+			                               </a>
+			                            </li>
+			                            <li>
+			                                <a class="block py-1 text-white cursor-pointer"
+			                               >회원 관리
+			                               </a>
+			                            </li>
+			                        </th:block>
+			                    </ul>
+			                </div>
+			            </th:block>
+			        </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer-->
+        <footer class="py-3 bg-dark fixed-bottom">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; YumYum Coffee 2022</p></div>
+        </footer>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js}"></script>
+        <!-- Core theme JS-->
+        <!-- <script th:src="@{/js/scripts.js}"></script> -->
+        <script th:src="@{/plugin/common/moment.js}"></script>
+        <script th:src="@{/scripts/jquery.min.js}"></script>
+        <script th:src="@{/plugin/bootstrap/js/bootstrap.min.js}"></script>
+        <script th:src="@{/plugin/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js}"></script>
+        <script th:src="@{/scripts/main.js}"></script>
+        <script th:src="@{/scripts/common.js}"></script>
+        <th:block layout:fragment="script"></th:block>
+    
+    </body>
+</html>

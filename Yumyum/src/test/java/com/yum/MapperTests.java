@@ -1,18 +1,21 @@
 package com.yum;
 
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.CollectionUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.yum.domain.MemberDTO;
+import com.yum.mapper.MemberMapper;
 import com.yum.mapper.MypageMapper;
-import com.yum.mapper.RegisterMapper;
 
 @SpringBootTest
 public class MapperTests {
@@ -20,7 +23,23 @@ public class MapperTests {
 	@Autowired
 	private MypageMapper mypageMapper;
 	@Autowired
-	private RegisterMapper registerMapper;
+	private MemberMapper registerMapper;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Test
+	@DisplayName("패스워드 암호화 테스트")
+	void passwordEncode() {
+	   // given
+	   String rawPassword = "12345678";
+     // when
+	   String encodedPassword = passwordEncoder.encode(rawPassword);
+     // then
+    	assertAll(
+	         () -> assertNotEquals(rawPassword, encodedPassword),
+	         () -> assertTrue(passwordEncoder.matches(rawPassword, encodedPassword))
+	   );
+	}
 	
 	 @Test
 	 public void testOfSelectOrderHistory() {

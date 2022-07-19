@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yum.mapper.BranchProductMapper">
+
+    <sql id="branchProductColumns">
+           branch_num
+          ,product_num
+          ,hidden_yn
+    </sql>
+    
+    
+    <select id="selectBranchProductList" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
+
+	    SELECT name,price FROM product
+			WHERE PRODUCT_NUM in (
+                  SELECT PRODUCT_NUM  FROM BRANCH_PRODUCT
+                  WHERE BRANCH_NUM  = 1
+               )
+
+    </select>
+    
+    <select id="selectBranchProductDetail" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
+        
+    </select>
+</mapper>

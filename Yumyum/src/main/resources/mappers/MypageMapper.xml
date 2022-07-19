@@ -30,8 +30,8 @@
         ) VALUES (
              SEQ.NEXTVAL  
             , #{userNum}
-            , sysdate
-            , sysdate+29
+            , CURRENT_DATE
+            , CURRENT_DATE+29
             , '스탬프'
             , 'N'
             , '아메리카노 1잔과 교환할 수 있습니다.'
@@ -40,9 +40,9 @@
     
     <select id="selectCouponList" parameterType="com.yum.domain.CouponDTO" resultType="com.yum.domain.CouponDTO">
         SELECT 
-          EXPIRATION_DATE
-        , KIND
-        , DESCRIPTION
+	          EXPIRATION_DATE
+	        , KIND
+	        , DESCRIPTION
         FROM 
             COUPON
         WHERE 
@@ -50,7 +50,7 @@
         AND 
             DELETE_YN='N'
         AND
-            EXPIRATION_DATE>=SYSDATE
+            EXPIRATION_DATE>=CURRENT_DATE
         ORDER BY
             CP_NUM DESC
     </select>
@@ -72,6 +72,8 @@
             USER_NUM= #{userNum} 
         AND 
             DELETE_YN='N'
+        AND
+            EXPIRATION_DATE>=CURRENT_DATE
     </select>
     
     
@@ -106,7 +108,7 @@
                     WHERE 
                         "user_num" = #{userNum}
                     AND 
-                        "order_time" >= (sysdate-#{period}+1)
+                        "order_time" >= (CURRENT_DATE-#{period}+1)
 	             ) 
 	             WHERE 
 	                (#{firstIndex}+5) > rnum AND rnum >= #{firstIndex}
@@ -133,7 +135,7 @@
         AND      
               o."order_num" = d."order_num"  
         AND 
-              o."order_time" >= (SYSDATE - #{period} +1) 
+              o."order_time" >= (CURRENT_DATE - #{period} +1) 
     </select>
 
 </mapper>

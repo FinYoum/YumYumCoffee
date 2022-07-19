@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yum.mapper.MemberMapper">
+
+	<insert id="insertMember" parameterType="com.yum.domain.MemberDTO">
+		INSERT INTO MEMBER
+			(user_num, name, id, pw, tel, email, birth)
+		VALUES
+			(user_num.nextval, #{name}, #{id}, #{pw}, #{tel}, #{email}, #{birth})
+	</insert>
+
+	<select id="selectMemberDetail" parameterType="long" resultType="com.yum.domain.MemberDTO">
+		SELECT name, id, pw, tel, email, birth
+		  FROM MEMBER
+		 WHERE user_num = #{userNum}
+	</select>
+
+	<update id="updateMember" parameterType="com.yum.domain.MemberDTO">
+		UPDATE MEMBER
+		   SET name = #{name}
+				, id = #{id}
+				, pw = #{pw}
+				, tel = #{tel}
+				, email = #{email}
+				, birth = #{birth}
+		 WHERE user_num = #{userNum}
+	</update>
+
+	<update id="deleteMember" parameterType="long">
+		UPDATE MEMBER
+		   SET delete_yn = 'Y'
+		 WHERE user_num = #{userNum}
+	</update>
+
+	<select id="selectMemberList" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
+		SELECT name, id, pw, tel, email, birth, authority
+		  FROM MEMBER
+		 WHERE delete_yn = 'N'
+		 ORDER BY user_num
+	</select>
+
+	<select id="selectMemberTotalCount" parameterType="com.yum.domain.MemberDTO" resultType="int">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE delete_yn = 'N'
+	</select>
+
+	<select id="idOverlapCheck" parameterType="com.yum.domain.MemberDTO" resultType="int">
+		SELECT count(id)
+		  FROM MEMBER 
+		 WHERE id = #{id}
+	</select>
+
+	<select id="login" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
+		SELECT USER_NUM, ID, PW, NAME, TEL, EMAIL, BIRTH, AUTHORITY, STAMP, DELETE_YN
+		  FROM MEMBER
+		 WHERE ID = #{id}
+	</select>
+</mapper>

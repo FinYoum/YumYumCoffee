@@ -8,27 +8,15 @@ import org.springframework.context.ApplicationContext;
 
 @SpringBootTest
 class YumyumApplicationTests {
+
 	@Autowired
 	private ApplicationContext context;
 
 	@Autowired
 	private SqlSessionFactory sessionFactory;
-	
 
 	@Test
 	void contextLoads() {
-	}
-	
-	@Test
-	public void testBySqlSessionFactory() {
-		try {
-			System.out.println("=========================");
-			System.out.println(sessionFactory.toString());
-			System.out.println("=========================");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Test
@@ -42,6 +30,18 @@ class YumyumApplicationTests {
 			e.printStackTrace();
 		}
 	}
+
+	@Test
+	public void testBySqlSessionFactory() {
+		try {
+			System.out.println("=========================");
+			System.out.println(sessionFactory.toString());
+			
+			System.out.println("=========================");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
-
-

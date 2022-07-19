@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yum.mapper.ProductMapper">
+    
+    <sql id="productColumns">
+          product_num
+        , code_id
+        , name
+        , price
+        , info
+    </sql>
+
+    <insert id="insertProduct" parameterType="com.yum.domain.ProductDTO">
+        INSERT INTO product (
+            <include refid="productColumns" />
+        ) VALUES (
+              #{productNum}
+            , #{codeId}
+            , #{name}
+            , #{price}
+            , #{info}
+        )
+    </insert>
+    
+    <select id="selectProductDetail" parameterType="long" resultType="com.yum.domain.ProductDTO">
+        SELECT 
+            <include refid="productColumns" />
+        FROM 
+            product
+        WHERE
+            product_num=#{productNum}
+    </select>
+    
+    <update id="updateProduct" parameterType="com.yum.domain.ProductDTO">
+        UPDATE product
+        SET
+            price=#{price}
+            , info=#{info}
+        WHERE
+            product_num=#{productNum}
+    </update>
+    
+    <delete id="deleteProduct" parameterType="long">
+        DELETE product
+        WHERE
+            product_num=#{productNum}
+    </delete>
+    
+    <select id="selectProductList" parameterType="com.yum.domain.ProductDTO" resultType="com.yum.domain.ProductDTO">
+        SELECT 
+            product_num
+            ,name
+            ,price
+            ,info 
+        FROM 
+            product
+    </select>
+    
+    <select id="selectProductTotalCount" parameterType="com.yum.domain.ProductDTO" resultType="int">
+        SELECT 
+            COUNT(*)
+        FROM 
+            product
+    </select>
+    
+    <select id="selectProductMax" parameterType="com.yum.domain.ProductDTO" resultType="int">
+        SELECT
+            NVL(max(Product_num),0)
+        FROM
+            product
+    </select>
+</mapper>

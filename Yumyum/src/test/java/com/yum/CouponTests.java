@@ -39,7 +39,7 @@ public class CouponTests {
 	 public void testOfSelectOrderHistory() {
 		 int userNum = 2;
 		 int period = 30;
-		 System.out.println(mypageService.getOrderHistory(userNum, period,1,5));
+//		 System.out.println(mypageService.getOrderHistory(userNum, period,1,5));
 	 }
 
 }
