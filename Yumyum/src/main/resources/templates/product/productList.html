@@ -85,8 +85,8 @@
     <script  th:inline="javascript">
     /*<![CDATA[*/
   /*  function test(){
-    	console.log(0)
-    	$("#commentModal").modal("toggle");	
+        console.log(0)
+        $("#commentModal").modal("toggle"); 
     } */
     
     
@@ -159,40 +159,6 @@
     $(function() {
           $(".modal1" ).draggable();
     });
-    
-    /* selectbox */
-
-    function categoryChange(e) {
-        var good_b = ["커피", "스무디", "에이드", "티"];
-        var good_d = ["빵", "샐러드", "케이크"];
-
-        var good_b_v = ["b1", "b2", "b3", "b4"];
-        var good_d_v = ["d1", "d2", "d3"];
-
-        var target = document.getElementById("good");
-
-        if(e.value == "b") {
-            var d = good_b; 
-            var b = good_b_v;
-        } else if(e.value == "d") {
-            var d = good_d;
-            var b = good_d_v;
-        }
-        
-        target.options.length = 0;
-
-        for (x in d) {
-            var opt = document.createElement("option");
-                for (i in b){
-                    opt.value = b[x];
-                }
-            opt.innerHTML = d[x];
-            target.appendChild(opt);
-        }
-        //const value = e.value;
-        
-
-    }
     
     /*[- end of function -]*/
 
