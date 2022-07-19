@@ -6,13 +6,14 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -22,7 +23,7 @@ import com.siot.IamportRestClient.response.Payment;
 public class ImpContoroller {
 
 	
-	@RestController
+	@Controller
 	public class HomeController {
 		
 		private IamportClient api;
@@ -33,15 +34,35 @@ public class ImpContoroller {
 		}
 		
 		@ResponseBody
-		@RequestMapping(value="/payment/{imp_uid}")
+		@RequestMapping(value="/payment/{imp_uid}" )
 		public IamportResponse<Payment> paymentByImpUid(
 				Model model
 				, Locale locale
 				, HttpSession session
 				, @PathVariable(value= "imp_uid") String imp_uid) throws IamportResponseException, IOException
 		{	
+				System.out.println("imp_uid CHECK : " + imp_uid);
 				return api.paymentByImpUid(imp_uid);
 		}
+		
+		
+//		@RequestMapping(value = "/insertPay")
+//		@ResponseBody
+//		public int pay(@RequestBody Payed_listVO pvo) {
+//			System.out.println("pvo.getMerchant_uid : " + pvo.getMerchant_uid());
+//			int res = paySV.insert_pay(pvo);
+//			if(res == 1) {
+//				Biz_memberVO bvo = memberSV.selectBizMember(pvo.getBiz_email());
+//				bvo.setPay_coupon(bvo.getPay_coupon()+5);
+//				System.out.println("paycoupon: " + bvo.getPay_coupon());
+//				res = paySV.updateBiz_pay(bvo);
+//				if(res == 1)
+//					System.out.println("biz_member pay coupon insert complete");
+//			}
+//			
+//			return res;
+//		}
+		
 			
 		@ResponseBody
 		@RequestMapping(value="/orderComplete", produces = "application/text; charset=utf8", method = RequestMethod.GET)

@@ -1,11 +1,24 @@
-/Yumyum쿠폰 모달 완료.zip
+bin/
+build/
+.gradle/
+.settings/
 
-Yumyum/bin/
+application.properties
 
-Yumyum/src/main/resources/application.properties
+./build.gradle
 
-Yumyum/build.gradle
 
-Yumyum/src/main/resources/templates/yumyum.zip
 
-Yumyum/build/
+.gradle
+
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+
+src/**/*.scss
