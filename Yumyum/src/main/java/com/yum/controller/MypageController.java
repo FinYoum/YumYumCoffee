@@ -18,7 +18,7 @@ public class MypageController {
 	private MypageService mypageService;
 	
 //	마이페이지 회원정보 불러오기
-	@GetMapping(value="mypage.do")
+	@GetMapping(value="/yumyum/mypage")
 	public String openMypage(Model model) {
 		int userNum=1; //회원번호
 		MemberDTO user = mypageService.getUserDetail(userNum);
@@ -38,7 +38,7 @@ public class MypageController {
 	}
 	
 //	마이페이지 >> 과거 주문 내역 페이지
-	@GetMapping(value="orderhistory.do")
+	@GetMapping(value="yumyum/orderhistory")
 	public String orderhistory(@RequestParam(value = "userNum", required = true) int userNum
 								, Model model) {
 		MemberDTO user = mypageService.getUserDetail(userNum);
