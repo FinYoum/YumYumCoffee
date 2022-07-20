@@ -5,20 +5,18 @@ build/
 
 application.properties
 
-./build.gradle
-
-
-
+build.gradle
 .gradle
 
-!gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings/
+.settings
 .springBeans
 
+bin/**/*.class
 src/**/*.scss
