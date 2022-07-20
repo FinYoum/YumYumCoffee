@@ -16,20 +16,20 @@ public class BranchProductMapperTests {
 	@Autowired
 	private BranchProductMapper branchProductMapper;
 	
-	@Test
-	public void testSelectList() {
-//		int branchTotalCount = branchMapper.selectBoardTotalCount();
-		
+//	@Test
+//	public void testSelectList() {
+//		int branchTotalCount = branchProductMapper.selectBoardTotalCount();
+//		
 //		if (branchTotalCount > 0) {}
-		
-		List<BranchProductDTO> branchProductList = branchProductMapper.selectBranchProductList();
-		if (CollectionUtils.isEmpty(branchProductList) == false) {
-			for (BranchProductDTO branch : branchProductList) {
-				System.out.println("=========================");
-				System.out.println(branch.getBranchNum());
-				System.out.println("=========================");
-			}
-		}
-	}
+//		
+//		List<BranchProductDTO> branchProductList = branchProductMapper.selectBranchProductList();
+//		if (CollectionUtils.isEmpty(branchProductList) == false) {
+//			for (BranchProductDTO branch : branchProductList) {
+//				System.out.println("=========================");
+//				System.out.println(branch.getBranchNum());
+//				System.out.println("=========================");
+//			}
+//		}
+//	}
 
 }

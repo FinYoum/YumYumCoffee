@@ -6,21 +6,56 @@
     <sql id="branchProductColumns">
            branch_num
           ,product_num
-          ,hidden_yn
+          ,hiden_yn
     </sql>
     
     
     <select id="selectBranchProductList" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
 
-	    SELECT name,price FROM product
-			WHERE PRODUCT_NUM in (
+         SELECT name,price FROM product
+            WHERE PRODUCT_NUM in (
                   SELECT PRODUCT_NUM  FROM BRANCH_PRODUCT
                   WHERE BRANCH_NUM  = 1
-               )
-
+               ) 
     </select>
     
     <select id="selectBranchProductDetail" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
         
     </select>
+    
+    <!-- 지점별 제품화면 목록 -->
+    <select id="selectBPList" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
+        SELECT 
+            b.product_num,
+            b.branch_num,
+            p.name,
+            b.hiden_yn
+        FROM 
+            product p,branch_product b
+        WHERE
+            p.product_num=b.product_num
+        AND
+            branch_num=#{branchNum}
+    </select>
+    
+    <select id="selectBProductTotalCount" parameterType="com.yum.domain.BranchProductDTO" resultType="int">
+        SELECT 
+            COUNT(*)
+        FROM 
+            branch_product
+        WHERE
+            branch_num=#{branchNum}
+    </select>
+    
+    
+    <update id="updateBProductState" parameterType="com.yum.domain.BranchProductDTO">
+        UPDATE branch_product
+        SET
+            hiden_yn=#{hidenYn}
+        WHERE
+            product_num=#{productNum}
+        AND
+            branch_num=#{branchNum}
+    </update>
+    
 </mapper>

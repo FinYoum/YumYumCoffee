@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BranchProductDTO {
+public class BranchProductDTO extends CommonDTO{
 	
 	/** 지점번호 (식별) */
 	private Long branchNum;
@@ -15,5 +15,8 @@ public class BranchProductDTO {
 	
 	/** 가리기 여부  */
 	private String hidenYn;
+	
+	/**product_name*/
+	private String name;
 
 }

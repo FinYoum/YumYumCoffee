@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yum.domain.BranchProductDTO;
 import com.yum.domain.ImgDTO;
 import com.yum.domain.ProductDTO;
 
@@ -21,5 +22,13 @@ public interface ProductService {
 	public List<ProductDTO> getProductList(ProductDTO params);
 	
 	public List<ImgDTO> getAttachFileList(Long productNum);
+	
+	//branchProduct
+	public List<BranchProductDTO> getBranchProductList(BranchProductDTO params);
+	//public BranchProductDTO getBranchProductList(Long branchNum);
+	
+	public void updateBProduct(BranchProductDTO params);
+	
+	
 	
 }

@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.yum.domain.BranchProductDTO;
 import com.yum.domain.ImgDTO;
 import com.yum.domain.ProductDTO;
+import com.yum.mapper.BranchProductMapper;
 import com.yum.mapper.ImgMapper;
 import com.yum.mapper.ProductMapper;
-import com.yum.paging.Criteria;
 import com.yum.paging.PaginationInfo;
 import com.yum.util.FileUtils;
 
@@ -26,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
 	private ImgMapper imgMapper;
 	
 	@Autowired
+	private BranchProductMapper BPMapper;
+	
+	@Autowired
 	private FileUtils fileUtils;
 
 	@Override
@@ -37,6 +41,8 @@ public class ProductServiceImpl implements ProductService {
 			int ProductNumMax = productMapper.selectProductMax(params);
 			params.setProductNum((long)ProductNumMax+1);
 			queryResult = productMapper.insertProduct(params);
+			//List<BranchProductDTO> BPList = BPMapper.selectBranchProductList( params.getProductNum());
+			
 		} else {
 			queryResult = productMapper.updateProduct(params);
 
@@ -115,12 +121,37 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return imgMapper.selectAttachList(productNum);
 	}
+
+	//BranchProduct관련
+	@Override
+	public List<BranchProductDTO> getBranchProductList(BranchProductDTO params) {
+		List<BranchProductDTO> BPList=Collections.emptyList();
+		params.setBranchNum((long)1);
+		int BproductTotalCount=BPMapper.selectBProductTotalCount(params);
+		
+		PaginationInfo paginationInfo = new PaginationInfo(params);
+		paginationInfo.setTotalRecordCount(BproductTotalCount);
+		
+		params.setPaginationInfo(paginationInfo);
+		
+		if(BproductTotalCount >0) {
+			BPList = BPMapper.selectBPList(params);
+		}
+		
+		return BPList;
+	}
 	
 
-	//@Override
-	//public ProductDTO getListDetail(String codeId) {
-	//	return productMapper.selectListDetail(codeId);
-	//}
+	@Override
+	public void updateBProduct(BranchProductDTO params) {
+		BPMapper.updateBProductState(params);
+	}
+
+	
+	
+	
+
+	
 
 
 }

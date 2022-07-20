@@ -76,17 +76,6 @@
     </select>
     
     <update id="updateAttach" parameterType="list">
-        <!-- <foreach collection="list" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;"> 
-        UPDATE img
-        SET 
-            original_name=#{item.originalName},
-            img_path=#{item.imgPath},
-            img_size=#{item.imgSize},
-            insert_time=#{item.insertTime},
-            delete_yn='N'
-        WHERE
-            img_num = #{item.imgNum}
-        </foreach>  -->
         UPDATE img
         SET
             delete_yn = 'N'

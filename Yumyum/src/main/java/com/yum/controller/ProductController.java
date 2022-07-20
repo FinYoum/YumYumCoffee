@@ -1,7 +1,6 @@
 package com.yum.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yum.constant.Method;
+import com.yum.domain.BranchProductDTO;
 import com.yum.domain.ImgDTO;
 import com.yum.domain.ProductDTO;
 import com.yum.service.ProductService;
@@ -69,16 +69,7 @@ public class ProductController extends UiUtils{
 
 		return "product/productList";
 	}
-	
-	//지점장페이지 아직 구현X
-	@GetMapping(value = "/product/list2")
-	public String openProductList2(@ModelAttribute("params") ProductDTO params, Model model) {
-		List<ProductDTO> productList = productService.getProductList(params);
-		model.addAttribute("productList", productList);
-
-		return "product/productList2";
-	}
-	
+		
 	@GetMapping(value = "/product/view")
 	public String openProductDetail(@RequestParam(value = "productNum", required = false) Long productNum, Model model) {
 		if (productNum == null) {
@@ -126,6 +117,33 @@ public class ProductController extends UiUtils{
 		*/
 		return showMessageWithRedirect("게시글 삭제가 완료되었습니다.", "/product/list", Method.GET, null, model);
 	}
+	
+	//지점장페이지 아직 구현X
+	@GetMapping(value = "/product/list2")
+	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model) {
+		System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
+		List<BranchProductDTO> BranchProductList = productService.getBranchProductList(params);
+		model.addAttribute("BranchProductList", BranchProductList);
+
+		return "product/productList2";
+	}
+	
+	/*
+	@GetMapping(value = "/product/list2")
+	public String openProductList2(@RequestParam(value = "branchNum", required = false) Long branchNum, Model model) {
+		System.out.println("==========controller 시작: "+branchNum+"==========");
+		BranchProductDTO BranchProductList = productService.getBranchProductList(branchNum);
+		model.addAttribute("BranchProductList",BranchProductList);
+
+		return "product/productList2";
+	}
+	*/
+	@PostMapping(value = "/product/list2")
+	public String updateBProduct(BranchProductDTO params)  throws Exception {
+		productService.updateBProduct(params);
+		return "redirect:/product/list2";
+	}
+	
 
 	//test
 		@GetMapping(value = "/product/test")

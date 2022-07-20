@@ -36,6 +36,27 @@ public class EmailController {
 			
 		} catch (Exception e) {
 			
+			text = "";
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+		}
+		return text;
+	}
+	@ResponseBody
+	@PostMapping("/newPwMail")
+	public String newPwEmailConfirm(@RequestParam("email") String email, @RequestParam("id") String id) {
+		String text = "";
+		try {
+			
+			logger.info("post emailConfirm");
+			System.out.println("전달 받은 이메일 : "+email);
+			emailservice.sendNewPW(email);	
+			emailservice.updatePw(EmailServiceImpl.ePw, id);
+			text = email;
+			
+		} catch (Exception e) {
+			
+			text = "";
             e.printStackTrace();
             System.out.println(e.getMessage());
 		}

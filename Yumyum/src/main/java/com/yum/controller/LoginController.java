@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.yum.SessionConstants;
 import com.yum.domain.MemberDTO;
+import com.yum.service.EmailService;
 //import com.yum.service.EmailService;
 import com.yum.service.MemberService;
 
@@ -161,6 +162,46 @@ public class LoginController {
 	public String pageFindId() {
 		
 		return "login/findId";
+	}
+	@ResponseBody
+	@PostMapping(value = "/findId")
+	public String findId(@RequestParam("name") String name, @RequestParam("email") String email) {
+		
+		String result = "";
+			try {
+				result = memberService.findId(name, email); // 확인한 값을 String로 받음
+				//model.addAttribute("userID", params.getId());
+				
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				result = "";
+			}
+		
+		return result;
+	}
+	
+
+	@GetMapping(value = "/findPw")
+	public String pageFindPw() {
+		
+		return "login/findPW";
+	}
+	@ResponseBody
+	@PostMapping(value = "/findPw")
+	public int findPw(@RequestParam("id") String id, @RequestParam("email") String email) {
+		
+		int result = 0;
+		
+			try {
+				result = memberService.findPw(id, email); // 확인한 값을 int로 받음
+				//model.addAttribute("userID", params.getId());
+				
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				result = 0;
+			}
+		
+		return result;
 	}
 	
 }

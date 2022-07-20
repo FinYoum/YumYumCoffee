@@ -2,7 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yum.mapper.MemberMapper">
+	<select id="findPw" parameterType="com.yum.domain.MemberDTO" resultType="int">
+		SELECT count(id) 
+		  FROM MEMBER 
+		 WHERE email = #{email}
+		   AND id = #{id}
+	</select>
+	<update id="updatePw" parameterType="com.yum.domain.MemberDTO">
+		UPDATE MEMBER
+		   SET pw = #{pw}
+		 WHERE id = #{id}
+	</update>
+	
+	<select id="findId" parameterType="String" resultType="String">
+		SELECT id 
+		  FROM MEMBER 
+		 WHERE email = #{email}
+		   AND name = #{name}
+	</select>
 
+	<select id="idOverlapCheck" parameterType="com.yum.domain.MemberDTO" resultType="int">
+		SELECT count(id)
+		  FROM MEMBER 
+		 WHERE id = #{id}
+	</select>
+	
 	<insert id="insertMember" parameterType="com.yum.domain.MemberDTO">
 		INSERT INTO MEMBER
 			(user_num, name, id, pw, tel, email, birth)
@@ -44,12 +68,6 @@
 		SELECT COUNT(*)
 		  FROM MEMBER
 		 WHERE delete_yn = 'N'
-	</select>
-
-	<select id="idOverlapCheck" parameterType="com.yum.domain.MemberDTO" resultType="int">
-		SELECT count(id)
-		  FROM MEMBER 
-		 WHERE id = #{id}
 	</select>
 
 	<select id="login" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
