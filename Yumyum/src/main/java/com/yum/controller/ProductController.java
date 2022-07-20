@@ -118,7 +118,7 @@ public class ProductController extends UiUtils{
 		return showMessageWithRedirect("게시글 삭제가 완료되었습니다.", "/product/list", Method.GET, null, model);
 	}
 	
-	//지점장페이지 아직 구현X
+	//지점장페이지 
 	@GetMapping(value = "/product/list2")
 	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model) {
 		System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
