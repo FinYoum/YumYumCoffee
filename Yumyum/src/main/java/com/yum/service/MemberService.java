@@ -17,7 +17,12 @@ public interface MemberService {
 	public List<MemberDTO> getMemberList();
 	
 	public int idOverlapCheck(String id);
+
+	public String findId(String name, String email);
+	
+	public int findPw(String id, String email);
 	
 	public MemberDTO login(String id, String pw);
+	
 	//public MemberDTO login(MemberDTO params, HttpSession session);
 }

@@ -35,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
 	    	params.setPw(passwordEncoder.encode(params.getPw()));
 			queryResult = memberMapper.insertMember(params);
 		} else {
+	    	params.setPw(passwordEncoder.encode(params.getPw()));
 			queryResult = memberMapper.updateMember(params);
 		}
 		        
@@ -73,9 +74,21 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int idOverlapCheck(String id) {
 		int result = memberMapper.idOverlapCheck(id);
+		
 		return result;
 	}
-	
+	@Override
+	public String findId(String name, String email) {
+		String result = memberMapper.findId(name, email);
+		
+		return result;
+	}
+	@Override
+	public int findPw(String id, String email) {
+		int result = memberMapper.findPw(id, email);
+		
+		return result;
+	}
 	
 	
 }
