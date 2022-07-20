@@ -87,14 +87,12 @@
 	            , d."ea" 
 	            , d."price" 
 	            , d."shot_custom"
-	<!--          , p.NAME 
-	-->
+	            , p.NAME 
 	       FROM 
 	            "order_detail" d,
 	            "order" o 
 	            , BRANCH b
-	<!--          , PRODUCT p 
-	-->
+	            , PRODUCT p 
 	       WHERE 
 	            d."order_num" IN (
 	            SELECT 
@@ -117,11 +115,11 @@
 	             d."order_num" = o."order_num"
 	        AND 
 	             o."branch_num" = b.BRANCH_NUM
-<!--        AND  
-                 d."product_num"=p.PRODUCT_NUM;--> 
+            AND  
+                 d."product_num"=p.PRODUCT_NUM 
             ORDER BY 
                 o."order_num" DESC
-                <!-- p.NAME ASC -->
+                , p.NAME ASC
     </select>
         
     <select id="countOrder" parameterType="map" resultType="int">

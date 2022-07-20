@@ -58,11 +58,6 @@ public class APIController {
 		return jsonObj;
 	}
 	
-//	react연동 테스트
-//	@GetMapping(value="api/hello")
-//	public String testReactConnection() {
-//		return "hello";
-//	}
 	
 
 }

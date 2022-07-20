@@ -18,31 +18,37 @@ public class MypageController {
 	private MypageService mypageService;
 	
 //	마이페이지 회원정보 불러오기
-	@GetMapping(value="/yumyum/mypage")
+	@GetMapping(value="/mypage")
 	public String openMypage(Model model) {
 		int userNum=1; //회원번호
-		MemberDTO user = mypageService.getUserDetail(userNum);
-		model.addAttribute("user",user);
+		MemberDTO member = mypageService.getUserDetail(userNum);
+		model.addAttribute("member",member);
 		
 		CouponDTO params = new CouponDTO();
 		params.setUserNum(userNum);
 		int couponTotalCount = mypageService.countCoupon(params);
 		model.addAttribute("couponTotalCount",couponTotalCount);
-		return "yumyum/mypage";
+		return "mypage/mypage2";
 	}
 		
-//	홈페이지
-	@GetMapping(value="")
-	public String openHome(Model model) {
-		return "yumyum/index";
+//	마이페이지 >> 과거 주문 내역 페이지
+	@GetMapping(value="/orderhistory")
+	public String orderhistory(
+				@RequestParam(value = "userNum", required = true) int userNum
+								, Model model) {
+		MemberDTO member = mypageService.getUserDetail(userNum);
+		model.addAttribute("member", member);		
+		return "mypage/orderHistory";
 	}
 	
-//	마이페이지 >> 과거 주문 내역 페이지
-	@GetMapping(value="yumyum/orderhistory")
-	public String orderhistory(@RequestParam(value = "userNum", required = true) int userNum
+//	마이페이지 >> 내 정보 수정
+	@GetMapping(value="/updateuser")
+	public String updateuser(
+				@RequestParam(value = "userNum", required = true) int userNum
 								, Model model) {
-		MemberDTO user = mypageService.getUserDetail(userNum);
-		model.addAttribute("user", user);		
-		return "yumyum/orderHistory";
+		MemberDTO member = mypageService.getUserDetail(userNum);
+		model.addAttribute("member", member);		
+		return "mypage/updateUser";
 	}
+	
 }

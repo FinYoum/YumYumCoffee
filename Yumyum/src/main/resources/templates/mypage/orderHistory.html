@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/mypageBasic">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
     <th:block layout:fragment="title">
-        <title>YumYum Coffee</title>
+        <title>YumYum 과거 주문 내역</title>
     </th:block>
     <th:block layout:fragment="header">
         <h4 class="display-3 fw-bolder">My Page</h4>
@@ -9,25 +9,28 @@
     </th:block>
     
     <th:block layout:fragment="content">
-        <div class="flex flex-col col mx-8">
-	        <div class="flex col max-h-10 mb-3 ">
-	        <!-- 과거 주문 내역-->
-	            <div class="grow font-semibold text-2xl">과거 주문 내역</div>
-		        <div class="mb-2 font-semibold text-xl">
-		            <span th:onclick="printOrderList(7,1)" class="cursor-pointer mx-1">1주일</span>
-		            <span th:onclick="printOrderList(31,1)" class="cursor-pointer mx-1">1개월</span>
-		            <span th:onclick="printOrderList(100,1)" class="cursor-pointer mx-1">전체</span>
+        <div class="row gx-4 gx-lg-5 justify-content-end">
+	        <div class="flex flex-col col mx-8">
+		        <div class="flex col max-h-10 mb-3 ">
+		        <!-- 과거 주문 내역-->
+		            <div class="grow font-semibold text-2xl">과거 주문 내역</div>
+			        <div class="mb-2 font-semibold text-xl">
+			            <span th:onclick="printOrderList(7,1)" class="cursor-pointer mx-1">1주일</span>
+			            <span th:onclick="printOrderList(31,1)" class="cursor-pointer mx-1">1개월</span>
+			            <span th:onclick="printOrderList(100,1)" class="cursor-pointer mx-1">전체</span>
+			        </div>
 		        </div>
-	        </div>
-	        <div class="max-h-[50vh] overflow-y-scroll bg-gray-200 p-3  grid grid-cols-1 flex justify-center">
-	           <div class="flex justify-center">
-	               <table id="order-list" style="min-width:600px; border:0;"></table>
-	           </div>
-	           <div th:onclick="addContent()" style="cursor:pointer;"
-	               class=" text-white bg-slate-900 text-center font-semibold m-4 p-3 "
-	               >더보기</div>
-	        </div>
-	     </div>
+		        <div class="max-h-[50vh] overflow-y-scroll bg-gray-200 p-3  grid grid-cols-1 flex justify-center">
+		           <div class="flex justify-center">
+		               <table id="order-list" style="min-width:600px; border:0;"></table>
+		           </div>
+		           <div th:onclick="addContent()" style="cursor:pointer;"
+		               class=" text-white bg-slate-900 text-center font-semibold m-4 p-3 "
+		               >더보기</div>
+		        </div>
+		     </div>
+		     <div th:replace="yumyum/fragments/mypageSidebar :: sidebar"> </div>
+		 </div>
     </th:block>
     
 <!-- 자바스크립트 -->
@@ -81,7 +84,7 @@
 	                }
             	}
                 
-                let uri = /*[[ @{/yumyum/orderhistory/}+${user.userNum}+'/']]*/null;
+                let uri = /*[[ @{/yumyum/orderhistory/}+${member.userNum}+'/']]*/null;
                 uri+=(period+'/'+firstIndex);
                 
                 $.get(uri, function(response) {
