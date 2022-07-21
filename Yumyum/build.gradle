@@ -30,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa' /* 스프링 데이터 JPA와 하이버네이트를 사용 */
     implementation 'org.springframework.boot:spring-boot-starter-jdbc' /* 톰캣 JDBC 커넥션 풀에 사용 */
     implementation 'org.springframework.boot:spring-boot-starter-web' /* 웹을 만드는 데 사용(스프링 MVC, REST형, 임베디드 톰캣, 기타 라이브러리 포함) */
+    implementation 'org.springframework.boot:spring-boot-starter-aop' /* 로그인 확인을 위한 aop*/
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2' /* mybatis */
     implementation 'javax.servlet:jstl'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
