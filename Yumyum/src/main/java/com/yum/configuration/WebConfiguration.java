@@ -8,9 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfiguration implements WebMvcConfigurer {
 	
  	private String connectPath = "/imagePath/**";
- 	//경로 신경쓰시오!!
-    //private String resourcePath = "file:///Users/user/OneDrive/사진/yumyum/";
-    private String resourcePath = "file:///C:Users/"+System.getProperty("user.name")+"/Pictures/yumyum/";
+ 	//경로 신경쓰시오!
+    private String resourcePath = "file:///C:/Users/"+System.getProperty("user.name")+"/Pictures/yumyum/";
 
 
     @Override
