@@ -25,7 +25,7 @@
     
     <!-- 지점별 제품화면 목록 -->
     <select id="selectBPList" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
-        SELECT 
+        <!-- SELECT 
             b.product_num,
             b.branch_num,
             p.name,
@@ -35,7 +35,26 @@
         WHERE
             p.product_num=b.product_num
         AND
-            branch_num=#{branchNum}
+            branch_num=#{branchNum} -->
+        SELECT
+            NUM
+            ,product_num
+            ,name
+            ,branch_num
+            ,hiden_yn
+        FROM (
+            SELECT 
+              ROW_NUMBER() OVER (ORDER BY p.product_num) NUM
+              ,p.name
+              ,b.*
+            FROM product p, branch_product b
+                WHERE
+                 p.product_num=b.product_num
+                AND
+                 branch_num=#{branchNum}
+                ORDER BY p.product_num
+        )
+        WHERE NUM BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
     </select>
     
     <select id="selectBProductTotalCount" parameterType="com.yum.domain.BranchProductDTO" resultType="int">

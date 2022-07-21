@@ -86,6 +86,9 @@
             SELECT ROW_NUMBER() OVER (ORDER BY product_num) NUM
             , A.*
             FROM product A
+            <if test='codeId !=null and !codeId.equals("")'>
+                WHERE code_id=#{codeId}
+            </if> 
             ORDER BY product_num 
         )
         WHERE NUM BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
@@ -96,6 +99,9 @@
             COUNT(*)
         FROM 
             product
+        <if test='codeId !=null and !codeId.equals("")'>
+         WHERE code_id=#{codeId}
+        </if> 
     </select>
     
     <select id="selectProductMax" parameterType="com.yum.domain.ProductDTO" resultType="int">

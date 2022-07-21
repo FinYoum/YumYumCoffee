@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.yum.SessionConstants;
+import com.yum.constant.SessionConstants;
 import com.yum.domain.MemberDTO;
 import com.yum.service.EmailService;
 //import com.yum.service.EmailService;

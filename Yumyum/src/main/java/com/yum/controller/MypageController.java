@@ -28,7 +28,7 @@ public class MypageController {
 		params.setUserNum(userNum);
 		int couponTotalCount = mypageService.countCoupon(params);
 		model.addAttribute("couponTotalCount",couponTotalCount);
-		return "mypage/mypage2";
+		return "mypage/mypage";
 	}
 		
 //	마이페이지 >> 과거 주문 내역 페이지

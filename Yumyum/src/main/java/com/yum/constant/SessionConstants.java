@@ -1,4 +1,4 @@
-package com.yum;
+package com.yum.constant;
 
 public interface SessionConstants {
 	
