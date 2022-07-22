@@ -29,6 +29,10 @@ public class MypageController {
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
 
+//회원탈퇴
+	
+	
+//정보수정페이지 이동시 뜨는 모달
 	@ResponseBody
 	@PostMapping(value="/identification")
 	public int identification(@ModelAttribute MemberDTO params,
@@ -49,9 +53,6 @@ public class MypageController {
 
 			if(member != null && pwCheck) { 
 				result = 1;
-				// 22일 해야할 것: 내정보수정 페이지 이동 되었으니 
-				// 페이지 띄우고 정보 업데이트 할 수있게 하고
-				// 회원탈퇴까지 하기!!!
 		        logger.info("확인 결과:"+result);
 			} else {
 				result = 0;
@@ -81,25 +82,27 @@ public class MypageController {
 		
 		return "mypage/mypage";
 	}
-		
-//	마이페이지 >> 과거 주문 내역 페이지
-	@GetMapping(value="/orderhistory")
-	public String orderhistory(@RequestParam(value = "userNum", required = true) int userNum
-								, Model model) {
-		MemberDTO member = mypageService.getUserDetail(userNum);
-		model.addAttribute("member", member);		
-		
-		return "mypage/orderHistory";
-	}
 	
 //	마이페이지 >> 내 정보 수정
 	@GetMapping(value="/updateuser")
-	public String updateuser(@RequestParam(value = "userNum", required = true) int userNum
-								, Model model) {
-		MemberDTO member = mypageService.getUserDetail(userNum);
+	public String updateuser(Model model,
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+		
+		MemberDTO member = mypageService.getUserDetail(loginMember.getUserNum());
 		model.addAttribute("member", member);		
 		
 		return "mypage/updateUser";
+	}
+		
+//	마이페이지 >> 과거 주문 내역 페이지
+	@GetMapping(value="/orderhistory")
+	public String orderhistory(Model model,
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+		
+		MemberDTO member = mypageService.getUserDetail(loginMember.getUserNum());
+		model.addAttribute("member", member);		
+		
+		return "mypage/orderHistory";
 	}
 	
 }
