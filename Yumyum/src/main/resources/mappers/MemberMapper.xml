@@ -44,7 +44,6 @@
 		UPDATE MEMBER
 		   SET name = #{name}
 				, id = #{id}
-				, pw = #{pw}
 				, tel = #{tel}
 				, email = #{email}
 				, birth = #{birth}

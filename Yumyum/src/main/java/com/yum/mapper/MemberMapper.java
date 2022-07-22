@@ -15,6 +15,7 @@ public interface MemberMapper {
 	public String findId(@Param("name")String name, @Param("email")String email);
 	
 	public int findPw(@Param("id")String id, @Param("email")String email);
+	
 	public void updatePw(@Param("pw")String pw, @Param("id")String id);
 	
 	public int idOverlapCheck(String id);

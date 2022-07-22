@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yum.mapper.MypageMapper">
-<!--  
-    <insert id="insertMember" parameterType="com.yum.domain.MemberDTO">
-        insert into sign_in (id, name, tel, email, birth, authority)
-        values(#{id},#{name},#{tel},#{email},#{birth},#{authority});
-    </insert>
-    -->
 
+<mapper namespace="com.yum.mapper.MypageMapper">
+	
 	<select id="identification" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
 		SELECT user_num, id, pw
 		  FROM MEMBER 
