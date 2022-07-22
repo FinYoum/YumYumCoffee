@@ -4,6 +4,7 @@ build/
 .settings/
 
 application.properties
+WebConfiguration.java  #윈도우와 맥의 경로 차이점으로 인해 커밋&푸시 차단을 위해 업데이트
 
 build.gradle
 .gradle
