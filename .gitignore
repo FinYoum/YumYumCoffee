@@ -1,4 +1,4 @@
-bin/
+Yumyum/bin/
 
 build/
 
@@ -7,11 +7,7 @@ build/
 .settings/
 
 application.properties
-src/**/application.properties
-src/main/resources/application.properties
 
-#윈도우와 맥의 경로 차이점으로 인해 커밋&푸시 차단을 위해 업데이트
-Yumyum/src/main/java/com/yum/configuration/WebConfiguration.java
 
 build.gradle
 
