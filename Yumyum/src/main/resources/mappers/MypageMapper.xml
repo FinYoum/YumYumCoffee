@@ -7,6 +7,13 @@
         values(#{id},#{name},#{tel},#{email},#{birth},#{authority});
     </insert>
     -->
+
+	<select id="identification" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
+		SELECT user_num, id, pw
+		  FROM MEMBER 
+		 WHERE id = #{id}
+	</select>
+	
     <sql id="couponColumns">
         CP_NUM
         , USER_NUM

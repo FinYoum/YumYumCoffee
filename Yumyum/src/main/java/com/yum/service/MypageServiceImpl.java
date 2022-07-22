@@ -16,6 +16,11 @@ public class MypageServiceImpl implements MypageService {
 	@Autowired
 	private MypageMapper mypageMapper;
 		
+
+	@Override
+	public MemberDTO identification(String pw, String id) {
+		return mypageMapper.identification(pw,id);
+	}
 	
 	@Override
 	public MemberDTO getUserDetail(int userNum) {

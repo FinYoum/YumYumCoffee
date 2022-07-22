@@ -37,12 +37,11 @@ public class LoginController {
     private PasswordEncoder passwordEncoder;
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-	/* private SqlSession sqlSession; */
 	
 	@GetMapping(value = "/home")
-	public String home(@SessionAttribute(name = SessionConstants.loginMember, required = false)MemberDTO loginMember,
-						HttpServletRequest request, Model model) {
-		//sessionCall(request, model);
+	public String home(
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember,
+			HttpServletRequest request, Model model) {
 		
 		model.addAttribute("member", loginMember);
 		System.out.println(request);
@@ -75,7 +74,11 @@ public class LoginController {
 		}
 		
 		//MemberDTO login = memberService.login(params, session);
+        logger.info("전달받은 pw:"+member.getPw());
+        logger.info("matches pw:"+params.getPw());
 		boolean pwCheck = passwordEncoder.matches(params.getPw(), member.getPw());
+        logger.info("pwCheck:"+pwCheck);
+        
 		if(member != null && pwCheck) { 
 			
 			session.setAttribute(SessionConstants.loginMember, member);
