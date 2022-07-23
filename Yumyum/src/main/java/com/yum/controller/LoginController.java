@@ -37,12 +37,11 @@ public class LoginController {
     private PasswordEncoder passwordEncoder;
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-	/* private SqlSession sqlSession; */
 	
 	@GetMapping(value = "/home")
-	public String home(@SessionAttribute(name = SessionConstants.loginMember, required = false)MemberDTO loginMember,
-						HttpServletRequest request, Model model) {
-		//sessionCall(request, model);
+	public String home(
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember,
+			HttpServletRequest request, Model model) {
 		
 		model.addAttribute("member", loginMember);
 		System.out.println(request);
@@ -75,7 +74,11 @@ public class LoginController {
 		}
 		
 		//MemberDTO login = memberService.login(params, session);
+        logger.info("전달받은 pw:"+member.getPw());
+        logger.info("matches pw:"+params.getPw());
 		boolean pwCheck = passwordEncoder.matches(params.getPw(), member.getPw());
+        logger.info("pwCheck:"+pwCheck);
+        
 		if(member != null && pwCheck) { 
 			
 			session.setAttribute(SessionConstants.loginMember, member);
@@ -124,11 +127,20 @@ public class LoginController {
 	public String registerBoard(final MemberDTO params) {
 		
 		try {
-			boolean isRegistered = memberService.registerMember(params);
-			if (isRegistered == false) {
+			int isRegistered = memberService.registerMember(params);
+			if (isRegistered == 0) {
 				System.out.println(isRegistered);
 				// TODO => 회원 등록에 실패하였다는 메시지를 전달
+				
+			} else if (isRegistered == 1) {
+				System.out.println(isRegistered);
+				return "redirect:/login";
+				
+			} else if (isRegistered == 2) {
+				System.out.println(isRegistered);
+				return "redirect:/mypage";
 			}
+			
 		} catch (DataAccessException e) {
 			System.out.println(e.getMessage());
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -203,5 +215,22 @@ public class LoginController {
 		
 		return result;
 	}
-	
+
+	@ResponseBody
+	@PostMapping(value = "/updatePw")
+	public String updatePw(@RequestParam("pw") String pw,
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+		
+		String result = "";
+			try {
+				memberService.updatePw(pw, loginMember.getId());
+				result = pw;
+				
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				result = "";
+			}
+		
+		return result;
+	}
 }

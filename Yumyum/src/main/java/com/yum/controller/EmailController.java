@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yum.service.EmailService;
 import com.yum.service.EmailServiceImpl;
+import com.yum.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,8 @@ public class EmailController {
 	
 	@Autowired
 	private EmailService emailservice;
+	@Autowired
+	private MemberService memberService;
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
 
@@ -51,7 +54,7 @@ public class EmailController {
 			logger.info("post emailConfirm");
 			System.out.println("전달 받은 이메일 : "+email);
 			emailservice.sendNewPW(email);	
-			emailservice.updatePw(EmailServiceImpl.ePw, id);
+			memberService.updatePw(EmailServiceImpl.ePw, id);
 			text = email;
 			
 		} catch (Exception e) {

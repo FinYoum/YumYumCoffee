@@ -19,4 +19,15 @@ public class PaymentDTO {
 	private String orderTime;
 	// 결제 금액(총 금액)
 	private int totalPrice;
+	
+	// 고유 번호
+	
+	// 주문 고유 번호
+	
+	// 결제 방법
+	
+	// 결제 될 금액
+
+	// 결제 시간
+	
 }

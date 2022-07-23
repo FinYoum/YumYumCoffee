@@ -8,7 +8,7 @@ import com.yum.domain.MemberDTO;
 
 public interface MemberService {
 	
-	public boolean registerMember(MemberDTO params);
+	public int registerMember(MemberDTO params);
 	
 	public MemberDTO getMemberDetail(Long user_num);
 	
@@ -23,6 +23,8 @@ public interface MemberService {
 	public int findPw(String id, String email);
 	
 	public MemberDTO login(String id, String pw);
+	
+	public void updatePw(String pw, String id);
 	
 	//public MemberDTO login(MemberDTO params, HttpSession session);
 }
