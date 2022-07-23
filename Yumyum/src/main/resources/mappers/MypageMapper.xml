@@ -21,22 +21,22 @@
     </sql>
         
     <insert id="insertCoupon"> 
-                 INSERT INTO COUPON (
-                    CP_NUM 
-        , USER_NUM
-        , INSERT_DATE 
-        , EXPIRATION_DATE 
-        , KIND 
-        , DELETE_YN 
-        , DESCRIPTION
-        ) VALUES (
-             SEQ.NEXTVAL  
-            , #{userNum}
-            , CURRENT_DATE
-            , CURRENT_DATE+29
-            , '스탬프'
-            , 'N'
-            , '아메리카노 1잔과 교환할 수 있습니다.'
+        INSERT INTO COUPON (
+	        CP_NUM 
+	        , USER_NUM
+	        , INSERT_DATE 
+	        , EXPIRATION_DATE 
+	        , KIND 
+	        , DELETE_YN 
+	        , DESCRIPTION
+	        ) VALUES (
+	             SEQ.NEXTVAL  
+	            , #{userNum}
+	            , CURRENT_DATE
+	            , CURRENT_DATE+29
+	            , '스탬프'
+	            , 'N'
+	            , '아메리카노 1잔과 교환할 수 있습니다.'
         )
     </insert>
     

@@ -1,25 +1,31 @@
 package com.yum.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class CartDTO {
-	
-	// 장바구니 번호 추가
-	private int cartNum;
-	// 제품번호 
-	private int productNum;
+
 	// 회원번호
-	private int userNum;
+	private Long userNum;
+	// 제품번호 
+	private Long productNum;
+	// 지점번호
+	private Long branchNum;
+	// 커스텀여부
+	private Long shotCustom;
+	
 	// 개수
-	private int qty;
-	// 금액
-	private int price;
-	// 커스텀여부_yn
-	private int shotCustom;
+	private Long qty;
 	// 총 금액
-	private int totalPrice;
+	private Long totalPrice;
+	// 장바구니 추가 시간
+	LocalDateTime insertTime;
+	
+	// 제품명
+	private String name;
 
 }
