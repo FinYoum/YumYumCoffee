@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yum.domain.OrderDTO;
 import com.yum.domain.PaymentDTO;
 import com.yum.mapper.PaymentMapper;
 
@@ -41,5 +42,19 @@ public class PaymentServiceImpl implements PaymentService {
 	public int getTotalPrice(int orderNum) {
 		int totalPrice = paymentMapper.selectTotalPrice(orderNum);
 		return totalPrice;
+	}
+
+	@Override
+	public String getBranchName(int orderNum) {
+		// TODO 주문 시 선택한 지점의 번호를 받아 지점명을 넘겨줌
+		String branchName = paymentMapper.selectBranchName(orderNum);
+		return branchName;
+	}
+
+	@Override
+	public List<OrderDTO> selectOrder(int orderNum) {
+		// TODO 주문 내역
+		List<OrderDTO> selectOrder = paymentMapper.selectOrder(orderNum);
+		return selectOrder;
 	}
 }

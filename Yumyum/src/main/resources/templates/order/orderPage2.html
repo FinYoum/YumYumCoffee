@@ -12,12 +12,33 @@
 	<div class="container ">
 		<div class="row">
 			<div class="col-sm-6">
-				<h2>지점</h2>
-				<hr style="margin:15px">
-				<div class="card" th:if="${not #lists.isEmpty( orderList )}"
+			    <!-- 지점명 -->
+				<h2 th:text="${ branchName }"></h2>
+				<hr style="margin: 15px">
+                <!-- 주문내역 카드 -->
+				<div class="card mb-3" style="max-width: 540px;">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img
+								th:src="@{https://post-phinf.pstatic.net/MjAxODA4MDZfMjk0/MDAxNTMzNTM4NTQ4MTQ4.pdll3gpCJSDuXAlC220ftibn5TO4X0ut9JYNAUDolR8g.accOY-GL391JdedGhq0DsdY04N5z7TUhVa2i4geujPog.JPEG/image_4332933811533538235161.jpg?type=w1200}"
+								class="img-fluid rounded-start" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body" th:if="${not #lists.isEmpty( orderList )}"
+								th:each="order : ${ orderList }">
+								<h5 class="card-title">주문 내역</h5>
+								<p class="card-text" th:text="|품목 ${ order.name }|"></p>
+								<p class="card-text" th:text="|가격 ${ order.price }|"></p>
+								<p class="card-text" th:text="|수량 ${ order.ea }|"></p>
+								<small class="text-muted" th:utext="|변경사항 ${ order.shotCustom }|"></small>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="card" th:if="${not #lists.isEmpty( orderList )}"
 					th:each="order : ${ orderList }">
 					<div class="card-header">
-						<!-- <img><name><costom><price><qty><each> -->
+						<img><name><costom><price><qty><each>
 						주문 내역
 					</div>
 					<ul class="list-group list-group-flush">
@@ -25,29 +46,41 @@
 						<li class="list-group-item" th:text="${ order.price }"></li>
 						<li class="list-group-item" th:text="${ order.info }"></li>
 					</ul>
-				</div>
-				<hr style="margin:15px">
+				</div> -->
+				<hr style="margin: 15px">
+
+
 				<div>
 					<h2>픽업 옵션</h2>
 					<input type="radio">매장 <input type="radio">포장
 				</div>
-				<hr style="margin:15px">
+				<hr style="margin: 15px">
 				<div>
 					<h2>픽업 시간</h2>
-					<!-- checked button 바로 5분후 10분후 15분 -->
+					<div class="btn-group" role="group" aria-label="...">
+						<button type="button" class="btn btn-default button-class1"
+							value="바로">바로</button>
+						<button type="button" class="btn btn-default button-class2"
+							value="5분후">5분 후</button>
+						<button type="button" class="btn btn-default button-class3"
+							value="10분후">10분 후</button>
+						<button type="button" class="btn btn-default button-class4"
+							value="15분후">15분 후</button>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-6">
 				<div>
 					<h2>할인 쿠폰</h2>
-					<select>
-						<option><!-- <each>쿠폰목록</each> --></option>
+					<select th:if="${not #lists.isEmpty( couponList )}"
+						th:each="coupon : ${ couponList }">
+						<option th:text="${coupon.kind}"></option>
 					</select>
 				</div>
 				<br>
 				<h2>결제수단</h2>
 				<input type="radio">신용카드
-				<hr style="margin:15px">
+				<hr style="margin: 15px">
 				<!-- <th:text ="총 수량:qty + 개">총수량</th:text>
 				<th:text ="할인금액:coupon + 원">할인금액</th:text>
 				<th:text ="총액:qty*price-coupon + 원">총액</th:text> -->
@@ -139,6 +172,87 @@
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
 		/*<![CDATA[*/
+
+		//버튼 토글
+		$(function() {
+
+			$('.button-class1').click(function() {
+				if ($(this).hasClass('btn-default'))
+					$(this).removeClass('btn-default');
+				if (!$(this).hasClass('btn-primary'))
+					$(this).addClass('btn-primary');
+				if ($('.button-class2').hasClass('btn-primary'))
+					$('.button-class2').removeClass('btn-primary');
+				if (!$('.button-class2').hasClass('btn-default'))
+					$('.button-class2').addClass('btn-default');
+				if ($('.button-class3').hasClass('btn-primary'))
+					$('.button-class3').removeClass('btn-primary');
+				if (!$('.button-class3').hasClass('btn-default'))
+					$('.button-class3').addClass('btn-default');
+				if ($('.button-class4').hasClass('btn-primary'))
+					$('.button-class4').removeClass('btn-primary');
+				if (!$('.button-class4').hasClass('btn-default'))
+					$('.button-class4').addClass('btn-default');
+			});
+
+			$('.button-class2').click(function() {
+				if ($(this).hasClass('btn-default'))
+					$(this).removeClass('btn-default');
+				if (!$(this).hasClass('btn-primary'))
+					$(this).addClass('btn-primary');
+				if ($('.button-class1').hasClass('btn-primary'))
+					$('.button-class1').removeClass('btn-primary');
+				if (!$('.button-class1').hasClass('btn-default'))
+					$('.button-class1').addClass('btn-default');
+				if ($('.button-class3').hasClass('btn-primary'))
+					$('.button-class3').removeClass('btn-primary');
+				if (!$('.button-class3').hasClass('btn-default'))
+					$('.button-class3').addClass('btn-default');
+				if ($('.button-class4').hasClass('btn-primary'))
+					$('.button-class4').removeClass('btn-primary');
+				if (!$('.button-class4').hasClass('btn-default'))
+					$('.button-class4').addClass('btn-default');
+			});
+
+			$('.button-class3').click(function() {
+				if ($(this).hasClass('btn-default'))
+					$(this).removeClass('btn-default');
+				if (!$(this).hasClass('btn-primary'))
+					$(this).addClass('btn-primary');
+				if ($('.button-class1').hasClass('btn-primary'))
+					$('.button-class1').removeClass('btn-primary');
+				if (!$('.button-class1').hasClass('btn-default'))
+					$('.button-class1').addClass('btn-default');
+				if ($('.button-class2').hasClass('btn-primary'))
+					$('.button-class2').removeClass('btn-primary');
+				if (!$('.button-class2').hasClass('btn-default'))
+					$('.button-class2').addClass('btn-default');
+				if ($('.button-class4').hasClass('btn-primary'))
+					$('.button-class4').removeClass('btn-primary');
+				if (!$('.button-class4').hasClass('btn-default'))
+					$('.button-class4').addClass('btn-default');
+			});
+
+			$('.button-class4').click(function() {
+				if ($(this).hasClass('btn-default'))
+					$(this).removeClass('btn-default');
+				if (!$(this).hasClass('btn-primary'))
+					$(this).addClass('btn-primary');
+				if ($('.button-class1').hasClass('btn-primary'))
+					$('.button-class1').removeClass('btn-primary');
+				if (!$('.button-class1').hasClass('btn-default'))
+					$('.button-class1').addClass('btn-default');
+				if ($('.button-class2').hasClass('btn-primary'))
+					$('.button-class2').removeClass('btn-primary');
+				if (!$('.button-class2').hasClass('btn-default'))
+					$('.button-class2').addClass('btn-default');
+				if ($('.button-class3').hasClass('btn-primary'))
+					$('.button-class3').removeClass('btn-primary');
+				if (!$('.button-class3').hasClass('btn-default'))
+					$('.button-class3').addClass('btn-default');
+			});
+
+		});
 
 		//페이징
 		function movePage(uri, queryString) {
