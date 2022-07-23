@@ -46,12 +46,13 @@ public class LoginCheck {
 				return joinPoint.proceed();
 			} 
 		}	
-		Object objAfterAop = joinPoint.proceed();
-		ModelAndView mv = (ModelAndView)objAfterAop;
-		mv.setViewName("alert");
-		mv.addObject("message", "잘못된 경로입니다.");
-		mv.addObject("redirectRUL","login/login");
-		return objAfterAop;
+//		Object objAfterAop = joinPoint.proceed();
+//		ModelAndView mv = (ModelAndView)objAfterAop;
+//		mv.setViewName("alert");
+//		mv.addObject("message", "잘못된 경로입니다.");
+//		mv.addObject("redirectRUL","login/login");
+		logger.debug("세션이 없습니다.");
+		return joinPoint.proceed();
 
 	}
 }
