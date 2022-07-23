@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yum.domain.BranchDTO;
+import com.yum.domain.ImgDTO;
 import com.yum.mapper.BranchMapper;
+import com.yum.mapper.ImgMapper;
 
 @Service
 public class BranchServiceImpl implements BranchService{
@@ -14,6 +16,9 @@ public class BranchServiceImpl implements BranchService{
 	@Autowired
 	private BranchMapper branchMapper;
 	
+	
+	@Autowired
+	private ImgMapper imgMapper;
 	
 	@Override
 	public List<BranchDTO> getBranchList() {
@@ -24,6 +29,12 @@ public class BranchServiceImpl implements BranchService{
 		List<BranchDTO>branchList = branchMapper.selectBranchList();
 		
 		return branchList;
+	}
+
+
+	@Override
+	public ImgDTO getImg(Long imgNum) {
+		return imgMapper.selectAttachDetail(imgNum);
 	}
 
 

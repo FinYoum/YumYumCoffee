@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
+<th:block layout:fragment="title">
+	<title>YumYum Coffee</title>
+</th:block>
+
+
+
+
+<th:block layout:fragment="header">
+	<h4 class="display-3 fw-bolder">yumyum</h4>
+	<p class="lead fw-normal text-white-50 mb-0"></p>
+</th:block>
+
+<th:block layout:fragment="content">
+	<div class="container px-4 px-lg-5">
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+	
+
+		<div class="row">
+			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
+				<select onchange="categoryChange(this)" class="form-select" id="category1">
+					<option value="all">전체</option>
+					<option value="b">음료</option>
+					<option value="d">베이커리</option>
+				</select>
+			</div>
+
+			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
+				<select id="good" name="codeId" class="form-select" onchange="categorySubChange(this)" disabled>
+					<option></option>
+				</select>
+			</div>
+		</div>
+
+
+		<!-- 상품로드 영역 -->
+		<div class="row text-center" id="productList" ></div>
+
+		<!-- 페이지네이션로드 영역 -->
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-lg-12 text-center">
+				<ul id="pagingul"></ul>
+			</div>
+		</div>
+
+
+	</div>
+
+
+
+ 	<div th:replace="yumyum/fragments/modal::modal"></div>
+
+
+<script>
+let totalData; //총 데이터 수
+let dataPerPage; //한 페이지에 나타낼 글 수
+let pageCount; //페이징에 나타낼 페이지 수
+let currentPage; //현재 페이지
+
+$(function(){
+	getMenuOne("all");
+});
+
+
+//카테고리 표시 함수
+function categoryChange(e) {
+    var good_b = ["전체", "커피", "주스","스무디", "에이드", "티"];
+    var good_d = ["전체","빵", "케이크"];
+
+    var good_b_v = ["all", "b1", "b2", "b3", "b4","b5"];
+    var good_d_v = ["all", "d1", "d2"];
+
+    var target = document.getElementById("good");
+
+    if(e.value == "b") {
+        var d = good_b; 
+        var b = good_b_v;
+        
+        $("#good").attr("disabled", false);
+       
+    } else if(e.value == "d") {
+        var d = good_d;
+        var b = good_d_v;
+        
+        $("#good").attr("disabled", false);
+    }else{
+    	$("#good").attr("disabled", true);
+    }
+    
+    getMenuOne(e.value);    
+    target.options.length = 0;
+
+    for (x in d) {
+        var opt = document.createElement("option");
+            for (i in b){
+                opt.value = b[x];
+            }
+        opt.innerHTML = d[x];
+        target.appendChild(opt);
+    }
+
+}
+
+//첫번째 카테고리 변경시 데이터 가져오기
+function getMenuOne(codeId){	
+	$.get("/product/catgoryProductList/"+codeId, function(res){
+		getHtmlParsing(res);
+	});
+}
+
+//두번 카테고리 변경시 데이터 가져오기
+function categorySubChange(e){	
+	let codeId=e.value;
+	
+	if(codeId=="all"){
+		codeId=$("#category1").val();
+	}
+	
+	//console.log(codeId);
+	$.get("/product/catgoryProductList/"+codeId, function(res){		
+		getHtmlParsing(res);
+	}); 
+}
+
+//html로 파싱하기
+function getHtmlParsing(res){		
+	let html="";
+	let cnt=0;
+	
+	console.log(res.length);
+	if(res.length==0){
+		totalData=0;
+	}
+	
+	console.log(res);
+	console.log("res.totalData " , res.totalData);
+	
+	res.forEach(function(item){
+		if(cnt==0){
+			totalData=item.totalRecordCount;
+			dataPerPage=item.recordsPerPage; 
+			pageCount=item.totalPageCount; 
+			currentPage=item.currentPageNo;
+		}	
+		const price=priceToString(item.price);
+		
+		
+		html +=`			
+	        <div class="col-md-3 col-sm-12 col-lg-3">    
+	           <div class="card mb-3">		                             
+	               <div class="image" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum})"  href="#MyModal">
+	                <img src="${item.imgPath}"  class="img-fluid img-thumbnail" >		                	           
+	                </div>
+	               <div class="card-body">
+	                 <div class="row">
+	                   <div class="col-8 text-left">
+	                   <p>${item.name}</p>
+	                   </div>
+	                   <div class="col-md-4">
+	                    <button type="button" data-id="105" class="fa far-card-icon cart-icon"> 
+	                    <i class="fa fa-shopping-cart fa-2x"></i></button>
+	                   </div>
+	                  <div class="col-md-12 text-right">
+	                   <strong>${price}원 </strong>                    
+	                  </div>		                  
+	                 </div>
+	               </div>
+	           </div>
+	         </div>			
+		`;
+		
+		cnt++;
+	});
+	
+	//console.log(html);
+	
+	if(totalData>0){
+		$("#productList").html(html);			
+	}else{
+		$("#productList").html(`<h1 style="font-size: 2.0rem;margin-top: 50px; text-algin:center" >등록된 데이터가 없습니다.</h1>`);
+	}
+		
+	pagingNation();
+}
+
+
+
+
+// 페이징 표시 함수 
+function pagingNation(){
+    console.log("currentPage : " + currentPage);
+
+    totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
+
+    if (totalPage < pageCount) {
+        pageCount = totalPage;
+    }
+
+    let pageGroup = Math.ceil(currentPage / pageCount); // 페이지 그룹
+    let last = pageGroup * pageCount; //화면에 보여질 마지막 페이지 번호
+
+    if (last > totalPage) {
+        last = totalPage;
+    }
+
+    let first = last - (pageCount - 1); //화면에 보여질 첫번째 페이지 번호
+    let next = last + 1;
+    let prev = first - 1;
+
+    let pageHtml = "";
+
+    if (prev > 0) {
+        pageHtml += "<li><a href='#' id='prev'> « </a></li>";
+    }
+
+    //페이징 번호 표시 
+    for (var i = first; i <= last; i++) {
+
+        if (currentPage == i) {
+            pageHtml +=
+                "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
+        } else {
+            pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
+        }
+    }
+
+
+    if (last < totalPage) {
+        pageHtml += "<li><a href='#' id='next'> » </a></li>";
+    }
+
+
+    if(totalData>0){
+    	document.querySelector("#pagingul").innerHTML = pageHtml;    		
+    }else{
+    	document.querySelector("#pagingul").innerHTML = "";
+    }
+    
+
+   // let displayCount = "";
+   // displayCount = "현재 1 - " + totalPage + " (" + currentPage + "페이지) / " + totalData + "건";
+   // document.querySelector("#displayCount").innerText = displayCount;
+
+    //페이징 번호 클릭 이벤트 
+    const paginationClass = document.querySelectorAll("#pagingul li a");
+    for (let i = 0; i < paginationClass.length; i++) {
+        paginationClass[i].addEventListener("click", function(e) {
+            e.preventDefault();
+
+            let $id = this.getAttribute("id")
+            selectedPage = this.innerText;
+
+            //console.log("선택한 페이지 ", selectedPage);
+            if ($id == "next") selectedPage = next;
+            if ($id == "prev") selectedPage = prev;
+            
+            
+            let codeId=$("#good").val();
+
+            if(codeId=="" || codeId=="all"){
+            	codeId=$("#category1").val();
+            }
+            if(codeId==null){
+            	codeId="all";
+            }
+                        
+            $.get("/product/catgoryProductList/"+codeId+"?currentPageNo="+selectedPage, function(res){		
+        		getHtmlParsing(res);
+        	}); 	
+            
+        });
+    }
+
+}
+
+//3자리수마다 콤마
+function priceToString(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function detailProduct(productNum){
+	$.get("/product/detail/"+productNum, function(res){
+		res =JSON.parse(res);
+		
+		console.log(res);
+		
+		const price=res.product.price;
+		const info=res.product.info;
+		const productNum=res.product.productNum;
+		const name=res.product.name;		
+		const saveName=res.fileList[0].saveName;
+		const imgNum=res.fileList[0].imgPath;
+		
+		
+		console.log(price, info, productNum, name,saveName);	
+		$("#modal-price").html(priceToString(price)+"원");
+		$("#modal-info").html(info);
+		$("#modal-name").html(name);
+		$("#modal-imgNum").attr("src", imgNum);
+		
+		
+	});
+	
+	
+	
+	
+}
+</script>
+
+
+
+
+</th:block>
+</html>

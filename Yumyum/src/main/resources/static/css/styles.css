@@ -11408,4 +11408,62 @@ select{
     padding: 0.5px 1.5px 1.5px 6px;
     background: #f1efe9;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+ul#pagingul {
+	text-align: center !important;
+	display: inline-block !important;
+	border: 1px solid #ccc !important;
+	border-right: 0 !important;
+	padding-left: 0rem !important;
+}
+
+ul#pagingul li {
+	text-align: center !important;
+	float: left !important;
+	list-style: none !important;
+}
+
+ul#pagingul li a {
+	display: block !important;
+	font-size: 14px !important;
+	padding: 9px 12px !important;
+	border-right: solid 1px #ccc !important;
+	box-sizing: border-box !important;
+	color: #000 !important;
+}
+
+ul#pagingul li.on {
+	background: #000 !important;
+	border-color: #000 !important;
+}
+
+ul#pagingul li.on a {
+	color: #fff !important;
+}
+  
+  
+.modal-dialog{
+	max-width: 970px;
+}
+
+.btn:focus,.btn:active {
+	 outline: none !important;
+   box-shadow: none;
+	
+}
+
+.image{
+	cursor: pointer;
+}
   
