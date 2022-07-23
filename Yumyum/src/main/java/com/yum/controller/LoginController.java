@@ -129,15 +129,15 @@ public class LoginController {
 		try {
 			int isRegistered = memberService.registerMember(params);
 			if (isRegistered == 0) {
-				System.out.println(isRegistered);
+				logger.info("isRegistered: "+isRegistered);
 				// TODO => 회원 등록에 실패하였다는 메시지를 전달
 				
 			} else if (isRegistered == 1) {
-				System.out.println(isRegistered);
+				logger.info("isRegistered: "+isRegistered);
 				return "redirect:/login";
 				
 			} else if (isRegistered == 2) {
-				System.out.println(isRegistered);
+				logger.info("isRegistered: "+isRegistered);
 				return "redirect:/mypage";
 			}
 			

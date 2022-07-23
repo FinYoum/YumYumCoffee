@@ -16,6 +16,7 @@ public interface MemberService {
 	
 	public List<MemberDTO> getMemberList();
 	
+	
 	public int idOverlapCheck(String id);
 
 	public String findId(String name, String email);
