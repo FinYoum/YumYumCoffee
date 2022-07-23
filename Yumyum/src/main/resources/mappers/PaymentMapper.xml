@@ -38,7 +38,50 @@
        FROM
            "order"
        WHERE
-           "order_num" = #{orderNum}
+           "order_num" = #{ orderNum }
+    </select>
+    
+    <select id="selectBranchName" parameterType="int" resultType="String">
+        SELECT 
+            b.BRANCH_NAME  
+        FROM 
+            BRANCH b 
+        WHERE 
+            b.BRANCH_NUM = (SELECT 
+                                o."branch_num"  
+                            FROM 
+                                "order" o 
+                            WHERE 
+                            o."order_num" = #{ orderNum })
+    </select>
+    
+    <select id="selectOrder" parameterType="int" resultType="com.yum.domain.OrderDTO">
+        <!-- SELECT * FROM "order_detail" WHERE "order_num" = #{ orderNum } -->
+        SELECT 
+            *
+        FROM 
+            (SELECT 
+                od."order_num"
+                , p.PRODUCT_NUM
+                , p.NAME
+                , p.PRICE
+                , p.INFO
+                , od."ea"
+                , od."shot_custom"  
+             FROM 
+                "order_detail" od
+                , PRODUCT p 
+             WHERE 
+                p.PRODUCT_NUM = od."product_num")
+        WHERE 
+            PRODUCT_NUM = (SELECT 
+                                "product_num" 
+                           FROM 
+                                "order_detail" 
+                           WHERE 
+                                "order_num" = #{ orderNum })
+        AND
+            "order_num" = #{ orderNum }
     </select>
     
     <!-- <insert id="insertCoupon"> 

@@ -1,5 +1,7 @@
 package com.yum.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -68,27 +69,27 @@ public class MypageController {
 	
 //	마이페이지 회원정보 불러오기
 	@GetMapping(value="/mypage")
-	public String openMypage(Model model,
-			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+	public String openMypage(Model model, HttpSession session) {
 		
-		int userNum=loginMember.getUserNum(); //회원번호
-		MemberDTO member = mypageService.getUserDetail(userNum);
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		model.addAttribute("member",member);
-		
 		CouponDTO params = new CouponDTO();
-		params.setUserNum(userNum);
+		params.setUserNum(member.getUserNum());
 		int couponTotalCount = mypageService.countCoupon(params);
 		model.addAttribute("couponTotalCount",couponTotalCount);
 		
 		return "mypage/mypage";
-	}
+	}	
+
 	
 //	마이페이지 >> 내 정보 수정
 	@GetMapping(value="/updateuser")
-	public String updateuser(Model model,
-			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
-		
-		MemberDTO member = mypageService.getUserDetail(loginMember.getUserNum());
+	public String updateuser(Model model, HttpSession session,
+		@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+//		HttpSession session
+//		MemberDTO member = mypageService.getUserDetail(loginMember.getUserNum());
+//		이부분 수정 >> 파라미터 (HttpSession session)
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		model.addAttribute("member", member);		
 		
 		return "mypage/updateUser";
@@ -96,10 +97,9 @@ public class MypageController {
 		
 //	마이페이지 >> 과거 주문 내역 페이지
 	@GetMapping(value="/orderhistory")
-	public String orderhistory(Model model,
-			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+	public String orderhistory(Model model, HttpSession session) {
 		
-		MemberDTO member = mypageService.getUserDetail(loginMember.getUserNum());
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		model.addAttribute("member", member);		
 		
 		return "mypage/orderHistory";
