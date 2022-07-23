@@ -119,7 +119,7 @@ public class APIController {
 		}
 		
 //		장바구니 제품 삭제
-		@RequestMapping(value = { "/yumyum/cart/delete", "/yumyum/cart/delete/{shotCustom}/{userNum}/{branchNum}/{productNum}" }, method = { RequestMethod.POST, RequestMethod.PATCH })
+		@RequestMapping(value = { "/yumyum/cart/delete", "/yumyum/cart/delete/{shotCustom}/{userNum}/{branchNum}/{productNum}" }, method = { RequestMethod.POST, RequestMethod.DELETE })
 		public JsonObject updateCartQty(
 				@PathVariable(value = "shotCustom", required = false) Long shotCustom
 				, @PathVariable(value = "userNum", required = false) Long userNum

@@ -43,7 +43,6 @@
 					console.log("제품 개수 0 이상")
 					let uri = /*[[ @{/yumyum/cart/update/} ]]*/
 					uri+= thisCustom+'/'+thisUser+'/'+thisBranch+'/'+thisProduct+'/'+updateQty;
-			/* 		+${thisUser}+'/'+${thisBranch}+'/'+${thisProduct}+'/'+${updateQty} ]] */
 					let headers = {"Content-Type": "application/json", "X-HTTP-Method-Override": "PATCH"};
 					let params = {"shotCustom": thisCustom, "userNum": thisUser, "branchNum": thisBranch, "productNum": thisProduct, "qty": updateQty};
 		console.log(uri)
@@ -68,13 +67,15 @@
 					});
 				} else {
 					/* 삭제 실행  */
-					let uri = /*[[ @{/yumyum/cart/update/}+${thisCustom}+'/'+${thisUser}+'/'+${thisBranch}+'/'+${thisProduct} ]]*/null;
+					let uri = /*[[ @{/yumyum/cart/delete/} ]]*/null;
+					uri+= thisCustom+'/'+thisUser+'/'+thisBranch+'/'+thisProduct;
+					console.log(uri)
 					let headers = {"Content-Type": "application/json", "X-HTTP-Method-Override": "PATCH"};
 					let params = {"shotCustom": thisCustom, "userNum": thisUser, "branchNum": thisBranch, "productNum": thisProduct};
 	
 					$.ajax({
 						url: uri,
-						type: "PATCH",
+						type: "DELETE",
 						headers: headers,
 						dataType: "json",
 						data: JSON.stringify(params),
