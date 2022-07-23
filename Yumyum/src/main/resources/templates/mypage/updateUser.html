@@ -8,7 +8,7 @@
         <p class="lead fw-normal text-white-50 mb-0"></p>
     </th:block>
 
-<th:block layout:fragment="content">
+	<th:block layout:fragment="content">
         <div class="card-content col">
             <form class="form-horizontal" th:action="@{/register}" th:object="${member}" method="post" >
             
@@ -82,7 +82,7 @@
 		  </div>
         <!-- /.card-content -->
         <!-- <div th:replace="yumyum/fragments/mypageSidebar :: sidebar"> </div> -->
-</th:block>
+	</th:block>
 
 <th:block layout:fragment="modal">
 
@@ -246,7 +246,6 @@
 		        }
 			});
         }
-    	
     })
     
     .on('click', '#btnChangeEmail', function(){
@@ -255,7 +254,6 @@
             return false;
             
         };
-    	
     })
     .on('click', '#btnConfirm', function(){
         if (!emailCheck($('#changeEmail').val())) {
@@ -352,7 +350,7 @@
             return false;
             
         } else {
-            alert('가입이 완료되었습니다.');
+            alert('수정이 완료되었습니다.');
             return true;
         };
     });

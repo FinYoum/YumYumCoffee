@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import com.yum.domain.CouponDTO;
 import com.yum.domain.MemberDTO;
 import com.yum.service.MypageService;
 
-
 @Controller
 public class MypageController {
 	
@@ -31,7 +31,15 @@ public class MypageController {
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
 
 //회원탈퇴
-	
+	@GetMapping(value="/quit")
+	public String quitMember(Model model, HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);	
+		model.addAttribute("ID", member.getId());	
+		
+		return "mypage/quitMember";
+	}
 	
 //정보수정페이지 이동시 뜨는 모달
 	@ResponseBody
@@ -60,6 +68,10 @@ public class MypageController {
 		        logger.info("확인 결과:"+result);
 			}
 	        
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+
 		} catch (Exception e) {
 			result=0;
 			System.out.println(e.getMessage());
@@ -84,8 +96,8 @@ public class MypageController {
 	
 //	마이페이지 >> 내 정보 수정
 	@GetMapping(value="/updateuser")
-	public String updateuser(Model model, HttpSession session,
-		@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+	public String updateuser(Model model, HttpSession session) {
+//		@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember
 //		HttpSession session
 //		MemberDTO member = mypageService.getUserDetail(loginMember.getUserNum());
 //		이부분 수정 >> 파라미터 (HttpSession session)
