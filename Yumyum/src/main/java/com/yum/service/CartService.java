@@ -7,7 +7,7 @@ import com.yum.domain.CartDTO;
 public interface CartService {
 
 	// 장바구니 추가
-	public int insertCart(CartDTO params);
+	public boolean insertCart(CartDTO params);
 	
 	// 장바구니 리스팅
 	public List<CartDTO> getCartList(Long userNum, Long branchNum);
