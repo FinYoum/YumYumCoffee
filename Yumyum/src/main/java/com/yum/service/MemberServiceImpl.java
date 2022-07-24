@@ -36,7 +36,6 @@ public class MemberServiceImpl implements MemberService {
 			queryResult = memberMapper.insertMember(params);
 			
 		} else {
-	    	params.setPw(passwordEncoder.encode(params.getPw()));
 			queryResult = memberMapper.updateMember(params) + 1;
 		}
 		        

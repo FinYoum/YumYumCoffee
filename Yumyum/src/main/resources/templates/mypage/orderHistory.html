@@ -71,7 +71,6 @@
             });
             
             function printOrderList(selectedTerm, index) { 
-            	console.log(1)
             	if (index == 1){
             		firstIndex = 1;
                     orderHistoryHtml = "";   
@@ -93,8 +92,6 @@
                         function groupArrayOfObjects(list, key) {
                               return list.reduce(function(rv, x) {
                                 (rv[x[key]] = rv[x[key]] || []).push(x);
-                                console.log(x);
-                                console.log(key);
                                 return rv;
                               }, {});
                             };

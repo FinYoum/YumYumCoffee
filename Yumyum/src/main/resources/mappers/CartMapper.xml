@@ -4,59 +4,137 @@
 <mapper namespace="com.yum.mapper.CartMapper">
 
 	<sql id="cartColums">
-		  cart_num
-		, user_num
-		, product_num
-		, qty
-		, price
-		, shot_custom
-		, total_price
-		
+		USER_NUM
+		, PRODUCT_NUM
+		, BRANCH_NUM
+		, SHOT_CUSTOM
+		, TOTAL_PRICE		
+	</sql>
+	
+	<!-- 고객이 선택한 제품과 커스텀에 대한 전체 가격 계산 -->
+	<sql id = "calcTotalPrice">
+		SELECT 
+			(p.PRICE+s.PRICE)*#{qty}
+		FROM
+			PRODUCT p
+			, SHOTCUSTOM s
+		WHERE
+			p.PRODUCT_NUM = #{productNum}
+		AND
+			s.SHOT_CUSTOM = #{shotCustom}
 	</sql>
 
-	<!-- 카트 추가 -->
+	<!-- 제품 추가 -->
 	<insert id ="insertCart" parameterType="com.yum.domain.CartDTO">
-		INSERT into Cart (
-			<include refid="cartColums"></include>
-		)VALUES(#{cartNum}, #{userNum}, #{productNum}, #{qty}, #{price}, #{shotCustom}, #{totalPrice})
+		INSERT INTO CART (
+			<include refid="cartColums">
+		)VALUES(
+			  #{userNum}
+			, #{productNum}
+			, #{branchNum}
+			, #{shotCustom}
+			, #{totalPrice}
+		<!--	1. sql id total price 되는지 확인하고 안되면아래 sql문 사용
+			<include refid="calcTotalPrice"></include>
+			
+					
+		-->
+				)
 	</insert>
 	
-	
-	<!-- 카트 수량 수정 -->
-	<update id="updateCart">
-	UPDATE cart
-	SET qty = #{qty}
-	WHERE cart_num = #{cartNum}
+	<!-- 제품 수량 수정 -->
+	<update id="updateCartQty" parameterType="com.yum.domain.CartDTO">
+		UPDATE 
+			CART
+		SET 
+			QTY = #{qty}
+		<!--	, TOTAL_PRICE= 	
+				(SELECT 
+					(p.PRICE+s.PRICE)*#{qty}
+				FROM
+					PRODUCT p
+					, SHOTCUSTOM s
+				WHERE
+					p.PRODUCT_NUM = #{productNum}
+ 				AND
+					s.SHOT_CUSTOM = #{shotCustom})
+
+ -->
+			, INSERT_TIME=CURRENT_DATE
+		WHERE 
+			USER_NUM = #{userNum} 
+		AND 
+			PRODUCT_NUM = #{productNum}
+		AND 
+			BRANCH_NUM = #{branchNum}
+		AND 
+			SHOT_CUSTOM = #{shotCustom}
 	</update>
-	
-	<!-- 카트 삭제 -->
-	<delete id="deleteCart">
-		DELETE FROM cart
-		WHERE cart_num = #{cartNum}
-	</delete>
-	
-	<!-- 카트 목록 -->
-	<select id="getCart" resultType="com.yum.domain.CartDTO">
-		SELECT *
-		FROM cart 
-		WHERE user_num = #{userNum}
+			
+	<!-- 제품이 장바구니에 있는지 확인 -->
+	<select id="countCartQty" parameterType="com.yum.domain.CartDTO" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			CART
+		WHERE 
+			USER_NUM = #{userNum} 
+		AND 
+			PRODUCT_NUM = #{productNum}
+		AND 
+			BRANCH_NUM = #{branchNum}
+		AND 
+			SHOT_CUSTOM = #{shotCustom}
 	</select>
 	
-	<!-- 카트 확인 -->
- 	<select id="check_cart" resultType="com.yum.domain.CartDTO">
-		SELECT * 
-		FROM cart 
-		WHERE user_num = #{userNum} and product_num = #{productNum}
-	</select> 
+	<!-- 제품 삭제 -->
+	<delete id="deleteCart" parameterType="com.yum.domain.CartDTO">
+		DELETE FROM CART
+		WHERE 
+			USER_NUM = #{userNum} 
+		AND 
+			PRODUCT_NUM = #{productNum}
+		AND 
+			BRANCH_NUM = #{branchNum}
+		AND 
+			SHOT_CUSTOM = #{shotCustom}
+	</delete>
 	
+	<!-- 선택한 지점에 대한 장바구니 목록 -->
+	<select id="selectCartList" parameterType="map" resultType="com.yum.domain.CartDTO">
+		SELECT 
+	 		c.USER_NUM 
+	 		, c.PRODUCT_NUM 
+	 		, c.BRANCH_NUM 
+	 		, c.SHOT_CUSTOM 
+	 		, c.QTY 
+	 		, c.TOTAL_PRICE 
+	 		, p.NAME 
+	 	FROM 
+	 		CART c 
+	 		, PRODUCT p 
+	 	WHERE 
+	 		c.USER_NUM = #{userNum}
+	 	AND 
+	 		c.BRANCH_NUM = #{branchNum}
+	 	AND 
+	 		c.PRODUCT_NUM = p.PRODUCT_NUM 
+	 	ORDER BY 
+	 		c.INSERT_TIME DESC
+	</select>
 	
+	<!-- 선택한 지점에 대한 장바구니 확인 -->
+	<select id="countTotalCart" parameterType="map" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			CART
+		WHERE 
+			USER_NUM = #{userNum} 
+	  	AND 
+	  		BRANCH_NUM = #{branchNum}
+  	  	ORDER BY 
+  	  		INSERT_TIME DESC
+	</select>
 	
-	
-	
-	
-
-
-
-
-
 </mapper>

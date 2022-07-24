@@ -35,7 +35,7 @@
 	</insert>
 
 	<select id="selectMemberDetail" parameterType="long" resultType="com.yum.domain.MemberDTO">
-		SELECT name, id, pw, tel, email, birth
+		SELECT name, id, pw, tel, email, birth, authority, stamp, delete_yn, branch_num
 		  FROM MEMBER
 		 WHERE user_num = #{userNum}
 	</select>
@@ -73,5 +73,6 @@
 		SELECT USER_NUM, ID, PW, NAME, TEL, EMAIL, BIRTH, AUTHORITY, STAMP, DELETE_YN
 		  FROM MEMBER
 		 WHERE ID = #{id}
+		   AND delete_yn = 'N'
 	</select>
 </mapper>

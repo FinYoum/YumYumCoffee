@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
+    <th:block layout:fragment="title">
+        <title>YumYum 주문페이지</title>
+    </th:block>
+    <th:block layout:fragment="header">
+        <h4 class="display-3 fw-bolder">Order</h4>
+        <p class="lead fw-normal text-white-50 mb-0"></p>
+    </th:block>
+    
+    <th:block layout:fragment="content">
+        <div class="row gx-4 gx-lg-5 justify-content-end">
+	        <div class="flex flex-col col mx-8">
+		    </div>
+		     
+		     <!-- 장바구니 -->
+		     <div class=" flex flex-wrap content-between bg-slate-700 p-4 w-48 col-md-4 min-h-[60vh]">
+				<div>
+					<h4 class="text-white font-semibold mb-2 text-xl leading-6 dark:text-slate-100">
+						지점명 입력</h4>
+					<ul id="cart-list"></ul>
+				</div>
+			</div>
+			<!-- 장바구니 END-->
+		 </div>
+    </th:block>
+    
+<!-- 자바스크립트 -->
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+            /*<![CDATA[*/	
+           	/* 매개변수 : 변경된 장바구니갯수, 커스텀, 유저번호, 지점번호, 제품번호 */
+			function updateCartQty(updateQty, thisCustom, thisUser, thisBranch, thisProduct) {
+           		console.log("업데이트 카트 갯수 함수 진입")
+           		console.log(updateQty);
+           		console.log(thisCustom);
+           		console.log(thisUser);
+           		console.log(thisBranch);
+           		console.log(thisProduct);
+           		let shotCustom = thisCustom
+           		
+				if (updateQty >0){
+					console.log("제품 개수 0 이상")
+					let uri = /*[[ @{/yumyum/cart/update/} ]]*/
+					uri+= thisCustom+'/'+thisUser+'/'+thisBranch+'/'+thisProduct+'/'+updateQty;
+					let headers = {"Content-Type": "application/json", "X-HTTP-Method-Override": "PATCH"};
+					let params = {"shotCustom": thisCustom, "userNum": thisUser, "branchNum": thisBranch, "productNum": thisProduct, "qty": updateQty};
+		console.log(uri)
+					$.ajax({
+						url: uri,
+						type: "PATCH",
+						headers: headers,
+						dataType: "json",
+						data: JSON.stringify(params),
+						success: function(response) {
+							if (response.result == false) {
+								alert("에러가 발생하였습니다.");
+								return false;
+							}
+							printCartList();
+						},
+						error: function(xhr, status, error) {
+							alert("에러가 발생하였습니다.");
+							return false;
+						}
+						
+					});
+				} else {
+					/* 삭제 실행  */
+					let uri = /*[[ @{/yumyum/cart/delete/} ]]*/null;
+					uri+= thisCustom+'/'+thisUser+'/'+thisBranch+'/'+thisProduct;
+					console.log(uri)
+					let headers = {"Content-Type": "application/json", "X-HTTP-Method-Override": "PATCH"};
+					let params = {"shotCustom": thisCustom, "userNum": thisUser, "branchNum": thisBranch, "productNum": thisProduct};
+	
+					$.ajax({
+						url: uri,
+						type: "DELETE",
+						headers: headers,
+						dataType: "json",
+						data: JSON.stringify(params),
+						success: function(response) {
+							if (response.result == false) {
+								alert("에러가 발생하였습니다.");
+								return false;
+							}
+							printCartList();
+						},
+						error: function(xhr, status, error) {
+							alert("에러가 발생하였습니다.");
+							return false;
+						}
+						
+					});
+				}
+            }
+	     	
+  
+			
+          
+            /* 매개변수 : 기호, 현재 갯수, 커스텀, 유저번호, 지점번호, 제품번호 */
+	        function update(input, thisQty, thisCustom, thisUser, thisBranch, thisProduct){
+	        	/* 현재 화면에 표시된 값 */
+	        	let updateQty = thisQty;
+	        	
+				switch(input){
+				case 'minus':
+					updateQty-=1;
+					/* qty 마이너스되는 경우 값을 0으로 변경  */
+	            	if(updateQty<0){
+	            		updateQty=0;
+	            	}
+					break;
+				case 'plus':
+					updateQty+=1;
+					break;
+				case 'delete':
+					updateQty=0
+					break;
+				}
+				updateCartQty(updateQty, thisCustom, thisUser, thisBranch, thisProduct);
+            }
+            
+	        /*장바구니 내역 출력*/        
+            $(function() {
+            	printCartList();
+            });
+            
+            function printCartList() { 
+       /* 매개변수 형식 json으로 변경할것  */
+                let uri = /*[[ @{/yumyum/cart/}+${member.userNum}+'/'+${branchNum}]]*/null;
+                $.get(uri, function(response) {
+                    if (isEmpty(response) == false) {
+                    	let cartListHtml = "";
+                    	
+        				$(response.cartList).each(function(num, cart) {
+        					
+        					cartListHtml += `
+        						<li>
+	        						<div>${cart.name}</div>
+	    							<div>${cart.shotCustom}</div>
+	    							<div onclick="update('minus', ${cart.qty}, ${cart.shotCustom}, ${cart.userNum}, ${cart.branchNum}, ${cart.productNum});" style="cursor:pointer;">-</div>
+	    							<div id="${num}">${cart.qty}</div>
+	    							<div>잔</div>
+	    							<div onclick="update('plus', ${cart.qty}, ${cart.shotCustom}, ${cart.userNum}, ${cart.branchNum}, ${cart.productNum});" style="cursor:pointer;">+</div>
+	    							<div onclick="update('delete', ${cart.qty}, ${cart.shotCustom}, ${cart.userNum}, ${cart.branchNum}, ${cart.productNum});" style="cursor:pointer;">+</div>
+	    							<div>${cart.totalPrice}</div>
+	    							<div>test</div>
+        						</li>
+        					`;
+        				});
+
+        				$("#cart-list").html(cartListHtml);
+        			}
+        		}, "json");
+        	}
+            /*[- end of function -]*/
+            
+        /*]]>*/
+        </script>
+    </th:block>
+</html>

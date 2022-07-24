@@ -19,9 +19,6 @@
                ) 
     </select>
     
-    <select id="selectBranchProductDetail" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
-        
-    </select>
     
     <!-- 지점별 제품화면 목록 -->
     <select id="selectBPList" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">

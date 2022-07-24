@@ -14,25 +14,25 @@ public class CartServiceTests {
 	private CartService cartService;
 	
 	//등록 테스트
-		@Test
-		public void addCartTest() {
-			//given
-				int userNum = 33;
-				int productNum = 22;
-				int qty = 5;
-				
-				CartDTO dto = new CartDTO(); 
-				dto.setUserNum(userNum);
-				dto.setProductNum(productNum);
-				dto.setQty(qty);
-			
-			//when
-				int result = cartService.insertCart(dto);
-			
-			//then
-				System.out.println("** result : " + result);
-			
-			
-		}
+//		@Test
+//		public void addCartTest() {
+//			//given
+//				int userNum = 33;
+//				int productNum = 22;
+//				int qty = 5;
+//				
+//				CartDTO dto = new CartDTO(); 
+//				dto.setUserNum(userNum);
+//				dto.setProductNum(productNum);
+//				dto.setQty(qty);
+//			
+//			//when
+//				int result = cartService.insertCart(dto);
+//			
+//			//then
+//				System.out.println("** result : " + result);
+//			
+//			
+//		}
 
 }

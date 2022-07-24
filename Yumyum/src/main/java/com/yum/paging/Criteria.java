@@ -6,9 +6,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Criteria {
 
 	/** 현재 페이지 번호 */
@@ -19,7 +21,14 @@ public class Criteria {
 
 	/** 화면 하단에 출력할 페이지 사이즈 */
 	private int pageSize;
+	
+	/** 전체 데이터 개수 */
+	private int totalRecordCount;
 
+	/** 전체 페이지 개수 */
+	private int totalPageCount;
+	
+	
 	/** 검색 키워드 */
 	private String searchKeyword;
 
@@ -33,7 +42,7 @@ public class Criteria {
 	}
 
 	public int getStartPage() {
-		return (currentPageNo - 1) * recordsPerPage;
+		return (currentPageNo - 1) * getRecordsPerPage();
 	}
 	
 	public String makeQueryString(int pageNo) {

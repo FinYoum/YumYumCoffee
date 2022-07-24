@@ -3,6 +3,7 @@ package com.yum.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.yum.domain.CartDTO;
 
@@ -10,14 +11,25 @@ import com.yum.domain.CartDTO;
 @Mapper
 public interface CartMapper {
 
-	// 카트 추가
-	public int insertCart(CartDTO cartdto) throws Exception;
-	// 카트 수량 수정
-	public int updateCart(CartDTO cartdto);
-	// 카트 삭제
-	public int deleteCart (int cart_num);
-	// 카트 목록 (전체 카트 목록(을 가져올 필요가 없지 현재만 보여줄 거니까))
-	public List<CartDTO> getCart (int user_num);
-	// 카트 확인 (현재 카트. 두 개 나눌 이유가 없지) 
-	public CartDTO checkCart(CartDTO cartdto);
+	// 제품 추가
+	public int insertCart(CartDTO params) throws Exception;
+	
+	// 제품 수량 수정
+	public int updateCartQty(CartDTO params);
+	
+	// 제품이 장바구니에 있는지 확인
+	public int countCartQty(CartDTO params);
+	
+	// 제품 삭제
+	public int deleteCart(CartDTO params);
+	
+	// 장바구니 목록 
+	public List<CartDTO> selectCartList(
+			@Param("userNum") Long userNum
+			, @Param("branchNum") Long branchNum);
+	
+	// 선택한 지점에 대한 장바구니 확인
+	public int countTotalCart(
+			@Param("userNum") Long userNum
+			, @Param("branchNum") Long branchNum);
 }

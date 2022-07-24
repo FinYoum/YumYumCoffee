@@ -78,20 +78,62 @@
             product_num=#{productNum}
     </delete>
     
+	<sql id="searchQuery">
+		
+		<if test='codeId !=null and codeId.equals("b") '>
+			 and   code_id like 'b%'
+		</if>		
+		<if test='codeId !=null and codeId.equals("d") '>
+			 and   code_id like 'd%'
+		</if>
+		
+		<if test='codeId !=null and !codeId.equals("all") and !codeId.equals("b") and !codeId.equals("d") '>
+			 and   code_id = #{codeId}
+		</if>
+
+	</sql>
+    
     <select id="selectProductList" parameterType="com.yum.domain.ProductDTO" resultType="com.yum.domain.ProductDTO">
 
        SELECT
-        <include refid="productColumns" />
+        
+             product_num
+	        , code_id
+	        , name
+	        , price
+	        , info
+	        , img_num
+	        , original_name
+	        , save_name
+	        , img_path
+        
         FROM (
-            SELECT ROW_NUMBER() OVER (ORDER BY product_num) NUM
+            SELECT ROW_NUMBER() OVER (ORDER BY A.product_num) NUM
             , A.*
+            , I.IMG_NUM
+            , I.ORIGINAL_NAME
+            , I.SAVE_NAME
+            , I.IMG_PATH
+           
             FROM product A
-            <if test='codeId !=null and !codeId.equals("")'>
-                WHERE code_id=#{codeId}
-            </if> 
-            ORDER BY product_num 
+            
+            INNER JOIN img I  ON 
+            
+            A.product_num=I.product_num  
+                 
+	     <![CDATA[   
+	      WHERE  A.product_num > 0
+	     ]]>
+	     
+	     
+	     <include refid="searchQuery" />            
+            
+            ORDER BY A.product_num 
         )
-        WHERE NUM BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
+        WHERE 
+
+     	
+        NUM BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
     </select>
     
     <select id="selectProductTotalCount" parameterType="com.yum.domain.ProductDTO" resultType="int">
@@ -99,9 +141,11 @@
             COUNT(*)
         FROM 
             product
-        <if test='codeId !=null and !codeId.equals("")'>
-         WHERE code_id=#{codeId}
-        </if> 
+        WHERE    
+	     <![CDATA[   
+	        product_num > 0
+	     ]]>
+	     <include refid="searchQuery" />           
     </select>
     
     <select id="selectProductMax" parameterType="com.yum.domain.ProductDTO" resultType="int">
