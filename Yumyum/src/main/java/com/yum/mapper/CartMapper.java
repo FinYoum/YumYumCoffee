@@ -29,7 +29,7 @@ public interface CartMapper {
 			, @Param("branchNum") Long branchNum);
 	
 	// 선택한 지점에 대한 장바구니 확인
-	public Long countTotalCart(
+	public int countTotalCart(
 			@Param("userNum") Long userNum
 			, @Param("branchNum") Long branchNum);
 }
