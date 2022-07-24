@@ -8,7 +8,6 @@
 		, PRODUCT_NUM
 		, BRANCH_NUM
 		, SHOT_CUSTOM
-		, QTY
 		, TOTAL_PRICE		
 	</sql>
 	
@@ -27,14 +26,13 @@
 
 	<!-- 제품 추가 -->
 	<insert id ="insertCart" parameterType="com.yum.domain.CartDTO">
-		INSERT into CART (
+		INSERT INTO CART (
 			<include refid="cartColums">
 		)VALUES(
 			  #{userNum}
 			, #{productNum}
 			, #{branchNum}
 			, #{shotCustom}
-			, #{qty} 
 			, #{totalPrice}
 		<!--	1. sql id total price 되는지 확인하고 안되면아래 sql문 사용
 			<include refid="calcTotalPrice"></include>
