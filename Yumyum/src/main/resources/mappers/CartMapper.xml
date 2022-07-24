@@ -126,7 +126,7 @@
 	</select>
 	
 	<!-- 선택한 지점에 대한 장바구니 확인 -->
-	<select id="countTotalCart" parameterType="map" resultType="Long">
+	<select id="countTotalCart" parameterType="map" resultType="int">
 		SELECT 
 			COUNT(*)
 		FROM 
