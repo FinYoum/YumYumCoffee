@@ -19,5 +19,9 @@ public class OrderDTO {
 	private int ea;
 	//메뉴 커스텀
 	private String shotCustom;
+	//이미지 경로
+	private String imgPath;
+//	//픽업여부
+//	private String pickupYn;
 	
 }

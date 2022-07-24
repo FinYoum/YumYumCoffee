@@ -14,23 +14,26 @@
 			<div class="col-sm-6">
 			    <!-- 지점명 -->
 				<h2 th:text="${ branchName }"></h2>
-				<hr style="margin: 15px">
+				<hr style="margin: 20px">
                 <!-- 주문내역 카드 -->
-				<div class="card mb-3" style="max-width: 540px;">
+				<div class="card mb-3" style="max-width: 540px;"
+				th:if="${not #lists.isEmpty( orderList )}"
+                                th:each="order : ${ orderList }">
 					<div class="row g-0">
-						<div class="col-md-4">
-							<img
-								th:src="@{https://post-phinf.pstatic.net/MjAxODA4MDZfMjk0/MDAxNTMzNTM4NTQ4MTQ4.pdll3gpCJSDuXAlC220ftibn5TO4X0ut9JYNAUDolR8g.accOY-GL391JdedGhq0DsdY04N5z7TUhVa2i4geujPog.JPEG/image_4332933811533538235161.jpg?type=w1200}"
+						<div class="col-md-4" >
+							<img 
+								th:src="${ order.imgPath }"
 								class="img-fluid rounded-start" alt="...">
+							 	<!-- th:src="@{https://post-phinf.pstatic.net/MjAxODA4MDZfMjk0/MDAxNTMzNTM4NTQ4MTQ4.pdll3gpCJSDuXAlC220ftibn5TO4X0ut9JYNAUDolR8g.accOY-GL391JdedGhq0DsdY04N5z7TUhVa2i4geujPog.JPEG/image_4332933811533538235161.jpg?type=w1200}" -->
 						</div>
 						<div class="col-md-8">
-							<div class="card-body" th:if="${not #lists.isEmpty( orderList )}"
-								th:each="order : ${ orderList }">
+							<div class="card-body" >
 								<h5 class="card-title">주문 내역</h5>
 								<p class="card-text" th:text="|품목 ${ order.name }|"></p>
 								<p class="card-text" th:text="|가격 ${ order.price }|"></p>
 								<p class="card-text" th:text="|수량 ${ order.ea }|"></p>
 								<small class="text-muted" th:utext="|변경사항 ${ order.shotCustom }|"></small>
+								<!-- <hr Style="margin-top:10px"> -->
 							</div>
 						</div>
 					</div>
@@ -47,14 +50,14 @@
 						<li class="list-group-item" th:text="${ order.info }"></li>
 					</ul>
 				</div> -->
-				<hr style="margin: 15px">
+				<hr style="margin: 20px">
 
 
 				<div>
 					<h2>픽업 옵션</h2>
 					<input type="radio">매장 <input type="radio">포장
 				</div>
-				<hr style="margin: 15px">
+				<hr style="margin: 20px">
 				<div>
 					<h2>픽업 시간</h2>
 					<div class="btn-group" role="group" aria-label="...">
@@ -80,7 +83,7 @@
 				<br>
 				<h2>결제수단</h2>
 				<input type="radio">신용카드
-				<hr style="margin: 15px">
+				<hr style="margin: 20px">
 				<!-- <th:text ="총 수량:qty + 개">총수량</th:text>
 				<th:text ="할인금액:coupon + 원">할인금액</th:text>
 				<th:text ="총액:qty*price-coupon + 원">총액</th:text> -->

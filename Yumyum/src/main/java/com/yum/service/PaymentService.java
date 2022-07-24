@@ -19,4 +19,7 @@ public interface PaymentService {
 	
 	//주문내역
 	public List<OrderDTO> selectOrder(int orderNum);
+	
+//	//제품번호 얻어오기
+//	public String getProductName(int orderNum);
 }
