@@ -12,13 +12,13 @@ import com.yum.domain.CartDTO;
 public interface CartMapper {
 
 	// 제품 추가
-	public int insertCart(CartDTO params) throws Exception;
+	public int insertCart(CartDTO params);
 	
 	// 제품 수량 수정
 	public int updateCartQty(CartDTO params);
 	
 	// 제품이 장바구니에 있는지 확인
-	public int countCartQty(CartDTO params);
+	public CartDTO countCartQty(CartDTO params);
 	
 	// 제품 삭제
 	public int deleteCart(CartDTO params);

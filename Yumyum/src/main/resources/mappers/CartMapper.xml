@@ -27,20 +27,22 @@
 	<!-- 제품 추가 -->
 	<insert id ="insertCart" parameterType="com.yum.domain.CartDTO">
 		INSERT INTO CART (
-			<include refid="cartColums">
+			<include refid="cartColums"></include>
 		)VALUES(
 			  #{userNum}
 			, #{productNum}
 			, #{branchNum}
 			, #{shotCustom}
 			, #{totalPrice}
+	
+				)
+	</insert>
+	
 		<!--	1. sql id total price 되는지 확인하고 안되면아래 sql문 사용
 			<include refid="calcTotalPrice"></include>
 			
 					
 		-->
-				)
-	</insert>
 	
 	<!-- 제품 수량 수정 -->
 	<update id="updateCartQty" parameterType="com.yum.domain.CartDTO">
@@ -72,9 +74,9 @@
 	</update>
 			
 	<!-- 제품이 장바구니에 있는지 확인 -->
-	<select id="countCartQty" parameterType="com.yum.domain.CartDTO" resultType="int">
+	<select id="countCartQty" parameterType="com.yum.domain.CartDTO" resultType="com.yum.domain.CartDTO">
 		SELECT
-			COUNT(*)
+			*
 		FROM
 			CART
 		WHERE 

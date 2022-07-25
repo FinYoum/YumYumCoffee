@@ -21,14 +21,14 @@ public class CartServiceImpl implements CartService{
 				
 		int queryResult = 0;
 // 		장바구니에 데이터가 존재하는지 확인
-		int checkCart = cartMapper.countCartQty(CartDTO params);
+		CartDTO checkCart = cartMapper.countCartQty(params); 
 		
 // 		장바구니에 데이터가 없다면, insert
-		if(checkCart == 0) {
+		if(checkCart == null) {
 			queryResult = cartMapper.insertCart(params);
 		} else{
 // 		장바구니에 데이터가 있다면, update 	
-			params.setQty(1);
+			params.setQty(checkCart.getQty()+Long.valueOf(1));
 			queryResult = cartMapper.updateCartQty(params);
 		}
 
