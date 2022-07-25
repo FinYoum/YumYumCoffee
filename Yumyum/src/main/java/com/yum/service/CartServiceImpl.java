@@ -18,7 +18,7 @@ public class CartServiceImpl implements CartService{
 	
 	@Override		
 	public boolean insertCart(CartDTO params) {
-				
+//				
 		int queryResult = 0;
 // 		장바구니에 데이터가 존재하는지 확인
 		CartDTO checkCart = cartMapper.countCartQty(params); 
@@ -31,7 +31,6 @@ public class CartServiceImpl implements CartService{
 			params.setQty(checkCart.getQty()+Long.valueOf(1));
 			queryResult = cartMapper.updateCartQty(params);
 		}
-
 		return (queryResult == 1) ? true : false;
 	}
 

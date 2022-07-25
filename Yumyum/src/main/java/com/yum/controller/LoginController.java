@@ -47,7 +47,7 @@ public class LoginController {
 		System.out.println(request);
 		System.out.println(model);
 		
-		return "yumyum/layout/index";
+		return "Home/homePage";
 	}
 	
 	@GetMapping(value = "/login")
