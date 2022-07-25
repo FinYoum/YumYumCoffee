@@ -18,20 +18,20 @@ public class CartServiceImpl implements CartService{
 	
 	@Override		
 	public boolean insertCart(CartDTO params) {
-				
+//				
 		int queryResult = 0;
-// 		장바구니에 데이터가 존재하는지 확인
-		int checkCart = cartMapper.countCartQty(CartDTO params);
-		
-// 		장바구니에 데이터가 없다면, insert
-		if(checkCart == 0) {
-			queryResult = cartMapper.insertCart(params);
-		} else{
-// 		장바구니에 데이터가 있다면, update 	
-			params.setQty(1);
-			queryResult = cartMapper.updateCartQty(params);
-		}
-
+//// 		장바구니에 데이터가 존재하는지 확인
+//		int checkCart = cartMapper.countCartQty(CartDTO params);
+//		
+//// 		장바구니에 데이터가 없다면, insert
+//		if(checkCart == 0) {
+//			queryResult = cartMapper.insertCart(params);
+//		} else{
+//// 		장바구니에 데이터가 있다면, update 	
+//			params.setQty(1);
+//			queryResult = cartMapper.updateCartQty(params);
+//		}
+//
 		return (queryResult == 1) ? true : false;
 	}
 

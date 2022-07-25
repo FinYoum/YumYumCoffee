@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
 
 <th:block layout:fragment="title">
 	<title>YumYum Coffee</title>
@@ -43,7 +43,7 @@
 				<p th:text="${couponTotalCount}" onclick="openModal()" style="cursor: pointer; font-size: xx-large;"></p>
 			</div>
 		</div>
-		<div th:replace="yumyum/fragments/mypageSidebar :: sidebar"></div>
+		<div th:replace="fragments/mypageSidebar :: sidebar"></div>
 	</div>
 </th:block>
 
