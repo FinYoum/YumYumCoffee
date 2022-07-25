@@ -31,11 +31,29 @@
 				관리자 페이지</h4>
 			<ul>
 				<!--     지점장 메뉴 관리  -->
-				<li><a class="block py-1 text-white cursor-pointer"> 메뉴 관리 </a></li>
+                <th:block th:if="${member.authority}==2">
+	                <li>
+	                   <a th:href="@{/product/list2}" 
+	                   class="block py-1 text-white cursor-pointer"> 메뉴 관리 </a>
+	                </li>
+	                <li>
+	                   <a 
+                       class="block py-1 text-white cursor-pointer"> 매출 관리 </a>
+	                </li>
+                </th:block>
+				
 				<!--  관리자만 접근 가능 -->
 				<th:block th:if="${member.authority}==3">
+				    <li>
+				        <a th:href="@{/product/list}" 
+                        class="block py-1 text-white cursor-pointer"> 메뉴 관리 </a>
+                    </li>
+				    <li>
+				        <a 
+                        class="block py-1 text-white cursor-pointer"> 매출 관리 </a>
+                    </li>
 					<li><a class="block py-1 text-white cursor-pointer"> 게시판 관리 </a></li>
-					<li><a class="block py-1 text-white cursor-pointer"> 회원 관리 </a></li>
+					<!-- <li><a class="block py-1 text-white cursor-pointer"> 회원 관리 </a></li>  -->
 				</th:block>
 			</ul>
 		</div>
