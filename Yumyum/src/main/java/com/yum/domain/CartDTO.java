@@ -9,6 +9,9 @@ import lombok.Setter;
 @Setter
 public class CartDTO {
 
+	// 장바구니 번호 추가
+	private int cartNum;
+	
 	// 회원번호
 	private Long userNum;
 	// 제품번호 
@@ -27,5 +30,23 @@ public class CartDTO {
 	
 	// 제품명
 	private String name;
+	
+	
+	// 금액
+	private int price;
+	
+	
+	private String option1;
+	
+	private String option2;	
+	
+	private String option3;
+	
+	private String option4;
+	
+
+	
+	/** 지점명 */
+	private String branchName;
 
 }

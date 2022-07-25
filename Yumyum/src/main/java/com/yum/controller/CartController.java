@@ -47,8 +47,8 @@ public class CartController {
 //		} 
 		
 		// 카트 등록
-//		int add = cartService.insertCart(cartdto);
-		return "";
+		int add = cartService.insertCart(cartdto);
+		return add + "";
 	}
 	
 	

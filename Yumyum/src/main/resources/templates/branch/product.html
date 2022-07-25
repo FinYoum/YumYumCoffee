@@ -2,14 +2,36 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
 <th:block layout:fragment="title">
 	<title>YumYum Coffee</title>
+	
+<style>
+.py-5{
+	position: relative !important;
+	left: 100px !important;
+}
+
+</style>	
 </th:block>
 
 <th:block layout:fragment="header">
-	<h4 class="display-3 fw-bolder">yumyum</h4>
+	<h4 class="display-3 fw-bolder">yumyum
+	
+	
+    <input type="hidden" th:value="${session.loginMember}"  id="loginMemberInput" >    	   
+
+	
+	</h4>
 	<p class="lead fw-normal text-white-50 mb-0"></p>
 </th:block>
 
+		
+	
+
+	
 <th:block layout:fragment="content">
+	
+	<input type="text" id="paramCategoy" th:value="${param.category1}">
+	
+		
 	<div class="container px-4 px-lg-5">
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
 			aria-label="Toggle navigation">
@@ -17,10 +39,25 @@
 		</button>
 		
 		<div class="row">
+
+	
+		<input type="hidden" th:value="${param.branchNum}" id="branchNum">
+		
+		<div class="row">		
+		<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
+		  <select th:if="${not #lists.isEmpty( branchList )}"  class="form-select" required="required" disabled >
+		   		  
+                  <option value="${row.branchNum}" th:text="${row.branchName}"  th:each="row : ${branchList}"                   	
+                  	th:if="${#strings.equals(param.branchNum,row.branchNum)}"
+                  
+                  		></option>
+         </select>
+		</div>
+		
 			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
 				<select onchange="categoryChange(this)" class="form-select" id="category1">
 					<option value="all">전체</option>
-					<option value="b">음료</option>
+					<option value="b"  >음료</option>
 					<option value="d">베이커리</option>
 				</select>
 			</div>
@@ -34,7 +71,13 @@
 
 
 		<!-- 상품로드 영역 -->
-		<div class="row text-center" id="productList" ></div>
+		<div class="row text-center" id="productList"  >
+			
+		</div>
+			
+		
+		
+
 
 		<!-- 페이지네이션로드 영역 -->
 		<div class="row">
@@ -47,16 +90,16 @@
 	</div>
 
 
+	<div style="margin-bottom: 150px">
+	
+	</div>
+</div>
+	<div th:replace="fragments/modal::modal"></div>
 
- 	<div th:replace="fragments/modal::modal"></div>
+
 
 
 <script>
-let totalData; //총 데이터 수
-let dataPerPage; //한 페이지에 나타낼 글 수
-let pageCount; //페이징에 나타낼 페이지 수
-let currentPage; //현재 페이지
-
 $(function(){
 	getMenuOne("all");
 });
@@ -122,7 +165,7 @@ function categorySubChange(e){
 	}); 
 }
 
-//html로 파싱하기
+//html 로 파싱하기
 function getHtmlParsing(res){		
 	let html="";
 	let cnt=0;
@@ -131,9 +174,6 @@ function getHtmlParsing(res){
 	if(res.length==0){
 		totalData=0;
 	}
-	
-	console.log(res);
-	console.log("res.totalData " , res.totalData);
 	
 	res.forEach(function(item){
 		if(cnt==0){
@@ -144,20 +184,21 @@ function getHtmlParsing(res){
 		}	
 		const price=priceToString(item.price);
 		
+		console.log(item);
 		
 		html +=`			
-	        <div class="col-md-3 col-sm-12 col-lg-3">    
+	        <div class="col-md-3 col-sm-3 col-lg-3">    
 	           <div class="card mb-3">		                             
 	               <div class="image" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum})"  href="#MyModal">
-	                <img src="${item.imgPath}"  class="img-fluid img-thumbnail" >		                	           
-	                </div>
+	                <img src="${item.imgPath}"  class="img-fluid img-thumbnail" >		                
+	               </div>
 	               <div class="card-body">
 	                 <div class="row">
-	                   <div class="col-8 text-left">
+	                   <div class="col-8 text-left" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum})"  href="#MyModal" style="cursor:pointer">
 	                   <p>${item.name}</p>
 	                   </div>
 	                   <div class="col-md-4">
-	                    <button type="button" data-id="105" class="fa far-card-icon cart-icon"> 
+	                    <button type="button" data-id="105" class="fa far-card-icon cart-icon" onclick="addCart(${item.productNum})"> 
 	                    <i class="fa fa-shopping-cart fa-2x"></i></button>
 	                   </div>
 	                  <div class="col-md-12 text-right">
@@ -172,18 +213,40 @@ function getHtmlParsing(res){
 		cnt++;
 	});
 	
-	//console.log(html);
-	
 	if(totalData>0){
 		$("#productList").html(html);			
 	}else{
 		$("#productList").html(`<h1 style="font-size: 2.0rem;margin-top: 50px; text-algin:center" >등록된 데이터가 없습니다.</h1>`);
 	}
-		
+	
+	const loginMemberInput=$("#loginMemberInput").val();
+	//console.log(loginMemberInput);
+	
+	if(loginMemberInput	!=""){
+		//사이드바 존재 확인
+		if(!$("#sidebar").hasClass("d-flex")){			
+			$("main").css("display", "flex");
+			$("main").css("flex-wrap", "nowrap");
+			$("main").css("height", "110vh");
+			$("main").css("height", "webkit-fill-available");
+			$("main").css("max-height", "200vh");
+			$("main").css("overflow-x", "auto");
+			$("main").css("overflow-y", "scroll !important"); 		
+			$("#sidebar").addClass("d-flex");			
+			//장바구니 목록 가져오기
+			cartList();
+		}
+	}
+
+	
 	pagingNation();
 }
 
 
+let totalData; //총 데이터 수
+let dataPerPage; //한 페이지에 나타낼 글 수
+let pageCount; //페이징에 나타낼 페이지 수
+let currentPage; //현재 페이지
 
 
 // 페이징 표시 함수 
@@ -292,23 +355,307 @@ function detailProduct(productNum){
 		const imgNum=res.fileList[0].imgPath;
 		
 		
-		console.log(price, info, productNum, name,saveName);	
+	//	console.log(price, info, productNum, name,saveName);
+		
+		$("#modal-productNum").val(productNum);		
 		$("#modal-price").html(priceToString(price)+"원");
 		$("#modal-info").html(info);
 		$("#modal-name").html(name);
-		$("#modal-imgNum").attr("src", imgNum);
+		$("#modal-imgNum").attr("src",  imgNum);
 		
-		
+		$("input:checkbox[id='option1']").prop("checked", false);    
+		$("input:checkbox[id='option2']").prop("checked", false);    
+		$("input:checkbox[id='option3']").prop("checked", false);    
+		$("input:checkbox[id='option4']").prop("checked", false);   
+		  
 	});
 	
 	
 	
 	
 }
+
+function handleOnInput(el) {
+  var maxlength=el.getAttribute('max');	  
+  if(el.value.length > maxlength)  {
+    el.value = el.value.substr(0, maxlength);
+  }
+}
+
+
+
+function addCart(productNum){	
+	console.log(productNum);
+	const branchNum=$("#branchNum").val();
+	//console.log(branchNum);
+	
+	let params;
+	if(productNum==undefined){
+		 params={
+				"branchNum":branchNum,
+				"productNum":$("#modal-productNum").val(),
+				"qty":1,
+				"option1":$("#option1").is(":checked"),
+				"option2":$("#option2").is(":checked"),
+				"option3":$("#option3").is(":checked"),
+				"option4":$("#option4").is(":checked")					
+		}
+	}else{
+		 params={
+				"branchNum":branchNum,
+				"productNum":productNum,
+				"qty":1,
+				"option1":"false",
+				"option2":"false",
+				"option3":"false",
+				"option4":"false",					
+		}
+	}
+	
+	
+	fetch('/product/addCart',{
+		method:"POST",
+		headers:{
+			"Content-type":"application/json"
+		},
+		body:JSON.stringify(params)
+	})
+	.then((response)=>response.json())
+	.then((res)=>{
+		if(res=="login error"){			
+			alert("로그인 후 이용가능합니다.");
+			return;
+		}
+			
+		if(res=="success"){
+			alert("장바구니에 담았습니다.");
+			cartList();
+		}
+	})
+	.catch((error) => {
+    	console.log('에러 발생');
+    	
+	})
+	
+}
+
+
+
+function cartList(){
+	console.log("장바구니 목록 가져오기");
+	
+	fetch('/product/cartList',{
+		method:"GET",
+		headers:{
+			"Content-type":"application/json"
+		},
+	})
+	.then((response)=>response.json())
+	.then((res)=>{
+		if(res=="login error"){			
+			console.log("로그인 후 이용가능합니다.");
+			return;
+		}
+			
+
+		
+		let html="";
+		res.forEach(function(item){	
+
+			let price= priceToString(item.price);
+			let totalPrice=priceToString(item.totalPrice);
+			
+			console.log(item);
+			
+			html +=`	<li id="cartLi-${item.cartNum}">		
+			 <div id="cartId-${item.cartNum}" class="cartlistDiv">	             
+		         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${item.cartNum}" onchange="cartCheck('${item.cartNum}')">
+		         <span class="cart-text">${item.name}(<strong>${item.branchName}</strong>)</span>     
+		         <button class="cart-btn" onclick="cartMius('${item.cartNum}')">-</button>
+		         <input type="number"  class="cart-input" id="cartNumber-${item.cartNum}" value="${item.qty}"
+		         	readonly
+		         oninput='handleOnInput(this)' max="2" size="2" > 
+		         <button class="cart-btn" onclick="cartPlus('${item.cartNum}')" >+</button>
+		      	 <button type="button" class="cart-delete"  onclick='deleteCart("${item.cartNum}")' ><i class="fa fa-trash"
+		      	 style="font-size: 22px;"
+		      	 ></i></button>
+				 <input type="hidden"  id="cart-price-${item.cartNum}"  value="${price}">	         
+	         <div>
+	          원가 ${price}원 /  합계 <span id='sum-${item.cartNum}'>${totalPrice}</span>원<br>
+			`;				
+			
+			if(item.option1=="true"){
+				html +='<small>선택안함</small> &nbsp;';
+			}
+			if(item.option2=="true"){
+				html +='<small>연하게</small> &nbsp;';
+			}
+			if(item.option3=="true"){
+				html +='<small>샷 추가(+500)</small> &nbsp;';
+			}
+			if(item.option4=="true"){
+				html +='<small>2샷 추가(+1,000)</small>';
+			}
+			
+			html +="<div></div></li> ";
+			
+		});
+		
+		html +=`
+			<li style="margin-top: 100px; margin-bottom:100px">
+		    <hr style="border: 1px">
+	   <p class="mt-2 mb-2" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 70px;" id="total-number">총 0개</p>		
+	   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;" id="total-sum">합계 0원</p>		
+	 
+	 
+	 	 <button class="btn btn-outline-dark " type="button" onclick="addCartList()">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart                          
+       </button>
+	   <button class="btn btn-info text-white " style="margin-left: 150px; width: 81px;">구매</button>
+	   	
+	</li>
+		
+		`;
+		
+		$("#cartList").html(html);	
+		
+		
+/* 		var height=$("#cartList").css("height");
+		console.log(res.length);
+		console.log(355*res.length);
+		$("#cartList").css("height" , 155*res.length+"px");
+		 */
+		
+	})
+	.catch((error) => {
+    	console.log('에러 발생');    	
+	})
+		
+}
+
+function cartPlus(id){
+	let qty=$("#cartNumber-"+id).val();
+	if(qty>=99){
+		alert("99 이상은 주문이 안됩니다.");
+		return ;
+	}
+	qty++;
+	
+	cartUpdatePirce(id, qty);
+}
+
+function cartMius(id){
+	let qty=$("#cartNumber-"+id).val();
+	if(qty<=1){
+		alert("1개 이하는 주문이 안됩니다.");
+		return ;
+	}
+	qty--;
+	
+	
+	cartUpdatePirce(id, qty);
+	
+}
+
+function cartUpdatePirce(id, qty){
+	let price=$("#cart-price-"+id).val().replace(",", "");
+	let sum =parseInt(price)*qty;
+
+	const params={
+			"cartNum" :id,
+			"qty":qty,
+			"price":price,
+			"totalPrice":sum
+	}
+	
+	fetch('/product/updateCart2',{
+		method:"PUT",
+		headers:{
+			"Content-type":"application/json"
+		},
+		body:JSON.stringify(params)
+	})
+	.then((response)=>response.json())
+	.then((res)=>{
+		if(res=="login error"){			
+			console.log("로그인 후 이용가능합니다.");
+			return;
+		}
+		
+		if(res=="success"){
+			$("#cartNumber-"+id).val(qty);
+			$("#sum-"+id).text(priceToString(sum));
+			cartCheck(id);
+		}					
+	})
+	.catch((error) => {
+    	console.log('에러 발생');    	
+	});
+	
+}
+
+
+function deleteCart(id){	
+	if(confirm("정말 삭제 하시겠습니까?")){
+			const params={
+					"cartNum":id
+			}
+			console.log(id);
+			
+			fetch('/product/deleteCart2',{
+				method:"DELETE",
+				headers:{
+					"Content-type":"application/json"
+				},
+				body:JSON.stringify(params)
+			})
+			.then((response)=>response.json())
+			.then((res)=>{
+				if(res=="login error"){			
+					console.log("로그인 후 이용가능합니다.");
+					return;
+				}
+				if(res=="success"){
+					$("#cartLi-"+id).remove();	
+				}					
+			})
+			.catch((error) => {
+		    	console.log('에러 발생');    	
+			});
+	
+	}
+}
+
+
+function cartCheck(cartNum){
+
+//	console.log(cartNum);
+	let totalSum =0;
+
+	let cnt=0;
+	$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
+		cnt++;
+		const cartNum=$(this).attr("data-id");
+
+		let sum=$("#sum-"+cartNum).text();
+		sum =parseInt(sum.replace(",", ""));
+
+		totalSum +=sum;
+		
+	});
+
+	$("#total-number").html("총 "+cnt +"개");
+	$("#total-sum").html("합계 " +priceToString(totalSum) + "원");
+	
+	
+}
+
 </script>
 
 
-
-
 </th:block>
+
+
+
 </html>

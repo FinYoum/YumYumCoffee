@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class=" flex-column flex-shrink-0 p-3 bg-light" id="sidebar"  th:fragment="sidebar"
+style="width: 420px;right: -40px;position: relative; display: none ;">
+
+<style>
+.cart-btn{
+    font-size: 35px;
+    vertical-align: baseline;
+}
+.cart-input{
+	width: 60px; 
+	height: 45px;
+	text-align: center;
+	background: #9e9e9e3b
+}
+.cart-input:focus, .cart-input:active{
+	border: none !important;
+	box-shadow: 0px;
+}
+.cart-text{
+	margin-right: 10px;
+}
+.cart-delete{
+	margin-left: 20px;
+}
+.cartlistDiv{
+	margin-bottom: 50px;
+}
+</style>
+
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none ">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4 mb-3 mt-3">장바구니</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto" id="cartList" >
+<!--     
+      <li>
+	      <div>	             
+	         <input type="checkbox" class="cart-checkbox">
+	         <span class="cart-text">아메리카노</span>     
+	         <button class="cart-btn">-</button>
+	         <input type="number"  class="cart-input" oninput='handleOnInput(this)' max="2" size="2" > 
+	         <button class="cart-btn">+</button>
+	      	 <button type="button" class="cart-delete"><i class="fa fa-trash fa-2x"></i></button>	      	      	      
+        </div>        
+      </li> -->
+
+	
+<!-- 
+	<li style="margin-top: 100px">
+		    <hr style="border: 1px">
+	   <p class="mt-2 mb-2" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 70px;">총 2개</p>		
+	   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;">합계 5000 원</p>		
+	 
+	 
+	 	 <button class="btn btn-outline-dark " type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart                          
+       </button>
+	   <button class="btn btn-info text-white " style="margin-left: 150px; width: 81px;">구매</button>
+	   	
+	</li> -->
+
+    </ul>
+    
+
+
+
+
+  </div>
+  
+
+  
+
+</html>  
