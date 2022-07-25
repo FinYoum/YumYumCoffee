@@ -66,6 +66,7 @@ public class BranchController {
 	
 	@GetMapping(value = "/yumyum/branch")
 	public String openBranchList(Model model) {
+		
 		List<BranchDTO> branchList = branchService.getBranchList();
 		model.addAttribute("branchList", branchList);
 		return "branch/branch";
@@ -74,7 +75,8 @@ public class BranchController {
 	
 	
 	@GetMapping(value = "/product")
-	public String openproductList( @RequestParam(value = "branchNum", required = false) Long branchNum, Model model ) {
+	public String openproductList( 
+			@RequestParam(value = "branchNum", required = false) Long branchNum, Model model ) {
 //		List<BranchProductDTO> branchProductList = BranchProductService.getBranchProductList();
 //		model.addAttribute("branchProductList", branchProductList);
 		
