@@ -10,13 +10,18 @@
     </sql>
     
     
-    <select id="selectBranchProductList" parameterType="com.yum.domain.BranchProductDTO" resultType="com.yum.domain.BranchProductDTO">
+    <select id="selectBranchProductList" parameterType="long" resultType="com.yum.domain.ProductDTO">
 
-         SELECT name,price FROM product
-            WHERE PRODUCT_NUM in (
-                  SELECT PRODUCT_NUM  FROM BRANCH_PRODUCT
-                  WHERE BRANCH_NUM  = 1
-               ) 
+         SELECT *
+		  FROM 
+		       PRODUCT p 
+		  WHERE 
+		       p.PRODUCT_NUM  IN (   
+		     SELECT PRODUCT_NUM 
+		     FROM BRANCH_PRODUCT  
+		     WHERE BRANCH_NUM = #{branchNum}
+		     AND HIDEN_YN ='N'
+		);
     </select>
     
     

@@ -9,6 +9,7 @@
 		<!-- Modal -->
 		<th:block layout:fragment="modal"></th:block>
 
+		<main>  
 		<!-- Section-->
 		<section class="py-5">
 			<div class="container px-4 px-lg-5 mt-3">
@@ -17,6 +18,9 @@
 				<!-- </div> -->
 			</div>
 		</section>
+		
+			 <div th:replace="fragments/sidebar::sidebar"></div>
+		</main>
 	</div>
 
 	<!-- Footer-->
