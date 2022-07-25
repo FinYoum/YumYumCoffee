@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yum.constant.Method;
+import com.yum.constant.SessionConstants;
 import com.yum.domain.BranchDTO;
 import com.yum.domain.ImgDTO;
+import com.yum.domain.MemberDTO;
 import com.yum.domain.ProductDTO;
 import com.yum.service.BranchService;
 import com.yum.service.ProductService;
@@ -72,8 +76,20 @@ public class BranchController {
 		return "branch/branch";
 	}
 	
-	
-	
+	@GetMapping(value = "/map")
+	public String viewMap(@RequestParam(value = "branchNum", required = false) Long branchNum, Model model, HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);	
+		model.addAttribute("branchNum", branchNum);
+		if (branchNum == null) {
+			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 지점 리스트로 리다이렉트
+			return "redirect:/yumyum/branch";
+		}
+		
+		return "branch/map";
+	}
+
 	@GetMapping(value = "/product")
 	public String openproductList( 
 			@RequestParam(value = "branchNum", required = false) Long branchNum, Model model ) {
@@ -94,9 +110,7 @@ public class BranchController {
 //		
 		return "branch/product";
 	}
-	
-	
-	
+
 	@GetMapping(value = "/product/catgoryProductList/{codeId}")
 	@ResponseBody
 	public ResponseEntity<?> catgoryProductList(@PathVariable("codeId") String codeId,
