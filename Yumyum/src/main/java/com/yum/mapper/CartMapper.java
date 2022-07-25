@@ -18,7 +18,7 @@ public interface CartMapper {
 	public int updateCartQty(CartDTO params);
 	
 	// 제품이 장바구니에 있는지 확인
-	public CartDTO countCartQty(CartDTO params);
+	public CartDTO selectCart(CartDTO params);
 	
 	// 제품 삭제
 	public int deleteCart(CartDTO params);

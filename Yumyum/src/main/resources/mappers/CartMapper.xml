@@ -11,18 +11,6 @@
 		, TOTAL_PRICE		
 	</sql>
 	
-	<!-- 고객이 선택한 제품과 커스텀에 대한 전체 가격 계산 -->
-	<sql id = "calcTotalPrice">
-		SELECT 
-			(p.PRICE+s.PRICE)*#{qty}
-		FROM
-			PRODUCT p
-			, SHOTCUSTOM s
-		WHERE
-			p.PRODUCT_NUM = #{productNum}
-		AND
-			s.SHOT_CUSTOM = #{shotCustom}
-	</sql>
 
 	<!-- 제품 추가 -->
 	<insert id ="insertCart" parameterType="com.yum.domain.CartDTO">
@@ -33,14 +21,18 @@
 			, #{productNum}
 			, #{branchNum}
 			, #{shotCustom}
-			, #{totalPrice}
-	
+			, (SELECT 
+                    (p.PRICE+s.PRICE)
+                FROM
+                    PRODUCT p
+                    , SHOTCUSTOM s
+                WHERE
+                    p.PRODUCT_NUM = #{productNum}
+                AND
+                    s.SHOT_CUSTOM = #{shotCustom})
 				)
 	</insert>
 	
-		<!--	1. sql id total price 되는지 확인하고 안되면아래 sql문 사용
-			<include refid="calcTotalPrice">		
-		-->
 	
 	<!-- 제품 수량 수정 -->
 	<update id="updateCartQty" parameterType="com.yum.domain.CartDTO">
@@ -48,7 +40,7 @@
 			CART
 		SET 
 			QTY = #{qty}
-		<!--	, TOTAL_PRICE= 	
+			, TOTAL_PRICE= 	
 				(SELECT 
 					(p.PRICE+s.PRICE)*#{qty}
 				FROM
@@ -58,8 +50,6 @@
 					p.PRODUCT_NUM = #{productNum}
  				AND
 					s.SHOT_CUSTOM = #{shotCustom})
-
- -->
 			, INSERT_TIME=CURRENT_DATE
 		WHERE 
 			USER_NUM = #{userNum} 
@@ -72,7 +62,7 @@
 	</update>
 			
 	<!-- 제품이 장바구니에 있는지 확인 -->
-	<select id="countCartQty" parameterType="com.yum.domain.CartDTO" resultType="com.yum.domain.CartDTO">
+	<select id="selectCart" parameterType="com.yum.domain.CartDTO" resultType="com.yum.domain.CartDTO">
 		SELECT
 			*
 		FROM
@@ -103,13 +93,9 @@
 	<!-- 선택한 지점에 대한 장바구니 목록 -->
 	<select id="selectCartList" parameterType="map" resultType="com.yum.domain.CartDTO">
 		SELECT 
-	 		c.USER_NUM 
-	 		, c.PRODUCT_NUM 
-	 		, c.BRANCH_NUM 
-	 		, c.SHOT_CUSTOM 
-	 		, c.QTY 
-	 		, c.TOTAL_PRICE 
-	 		, p.NAME 
+	 		c.*
+	 		, p.NAME
+	 		, p.PRICE 
 	 	FROM 
 	 		CART c 
 	 		, PRODUCT p 
@@ -136,5 +122,4 @@
   	  	ORDER BY 
   	  		INSERT_TIME DESC
 	</select>
-	
 </mapper>

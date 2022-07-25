@@ -21,7 +21,7 @@ public class CartServiceImpl implements CartService{
 //				
 		int queryResult = 0;
 // 		장바구니에 데이터가 존재하는지 확인
-		CartDTO checkCart = cartMapper.countCartQty(params); 
+		CartDTO checkCart = cartMapper.selectCart(params); 
 		
 // 		장바구니에 데이터가 없다면, insert
 		if(checkCart == null) {

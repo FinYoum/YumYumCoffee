@@ -27,5 +27,7 @@ public class CartDTO {
 	
 	// 제품명
 	private String name;
+	// 제품 금액
+	private Long price;
 
 }

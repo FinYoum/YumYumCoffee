@@ -3,16 +3,16 @@ package com.yum.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
@@ -37,7 +37,10 @@ public class APIController {
 	
 //유저번호에 따른 쿠폰 리스트 불러오기
 	@GetMapping(value = "yumyum/coupon/{userNum}")
-	public JsonObject getCouponList(@PathVariable("userNum") int userNum, @ModelAttribute("params") CouponDTO params) {
+	public JsonObject getCouponList(
+			@PathVariable("userNum") int userNum
+			, @ModelAttribute("params") CouponDTO params
+			, HttpSession session) {
 		
 		JsonObject jsonObj = new JsonObject();
 
@@ -56,6 +59,7 @@ public class APIController {
 				@PathVariable("userNum") int userNum
 				, @PathVariable("period") int period
 				, @PathVariable("firstIndex") int firstIndex
+				, HttpSession session
 				) {
 		
 		JsonObject jsonObj = new JsonObject();
@@ -71,8 +75,9 @@ public class APIController {
 	//유저번호, 지점번호에 따른 장바구니 리스트 불러오기
 		@GetMapping(value = "yumyum/cart/{userNum}/{branchNum}")
 		public JsonObject getCommentList(
-				@PathVariable("userNum") Long userNum, 
-				@PathVariable("branchNum") Long branchNum) {
+				@PathVariable("userNum") Long userNum
+				, @PathVariable("branchNum") Long branchNum
+				, HttpSession session) {
 			
 			JsonObject jsonObj = new JsonObject();
 
@@ -93,6 +98,7 @@ public class APIController {
 				, @PathVariable(value = "branchNum", required = false) Long branchNum
 				, @PathVariable(value = "productNum", required = false) Long productNum
 				, @PathVariable(value = "qty", required = false) Long qty
+				, HttpSession session
 				) {
 
 			JsonObject jsonObj = new JsonObject();
@@ -125,6 +131,7 @@ public class APIController {
 				, @PathVariable(value = "userNum", required = false) Long userNum
 				, @PathVariable(value = "branchNum", required = false) Long branchNum
 				, @PathVariable(value = "productNum", required = false) Long productNum
+				, HttpSession session
 				) {
 
 			JsonObject jsonObj = new JsonObject();
