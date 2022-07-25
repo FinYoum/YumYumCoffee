@@ -65,7 +65,9 @@
             var uri = /*[[ @{/product/list2} ]]*/null;
             var html = "";
             
-            var hidenYn=document.getElementById("hidenYn"+(productNum%10));
+            var idNum=(productNum%10)==0? '10':(productNum%10);
+            
+            var hidenYn=document.getElementById("hidenYn"+idNum);
             var hidenYnValue=hidenYn.options[hidenYn.selectedIndex].value;
             //alert("hidenYn.selectedIndex: "+hidenYn.selectedIndex+" hidenYnValue: "+hidenYnValue); 
            
