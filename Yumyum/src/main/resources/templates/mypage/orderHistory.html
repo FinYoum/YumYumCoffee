@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="yumyum/layout/basic">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
     <th:block layout:fragment="title">
         <title>YumYum 과거 주문 내역</title>
     </th:block>
@@ -71,7 +71,6 @@
             });
             
             function printOrderList(selectedTerm, index) { 
-            	console.log(1)
             	if (index == 1){
             		firstIndex = 1;
                     orderHistoryHtml = "";   
@@ -93,8 +92,6 @@
                         function groupArrayOfObjects(list, key) {
                               return list.reduce(function(rv, x) {
                                 (rv[x[key]] = rv[x[key]] || []).push(x);
-                                console.log(x);
-                                console.log(key);
                                 return rv;
                               }, {});
                             };

@@ -1,11 +1,16 @@
-bin/
+Yumyum/bin/
+
 build/
+
 .gradle/
+
 .settings/
 
 application.properties
 
+
 build.gradle
+
 .gradle
 
 gradle/wrapper/gradle-wrapper.jar
@@ -14,9 +19,13 @@ gradle/wrapper/gradle-wrapper.jar
 .apt_generated
 .classpath
 .factorypath
+
 .project
+
 .settings
+
 .springBeans
 
 bin/**/*.class
+
 src/**/*.scss

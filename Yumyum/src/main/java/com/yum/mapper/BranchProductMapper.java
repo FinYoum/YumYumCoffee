@@ -5,11 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.yum.domain.BranchProductDTO;
+import com.yum.domain.ProductDTO;
 
 @Mapper
 public interface BranchProductMapper {
 	
 	public List<BranchProductDTO> selectBranchProductList(Long productNum);
+	public List<ProductDTO> selectBranchDrinkList(Long branchNum);
+	public List<ProductDTO> selectBranchDessertList(Long branchNum);
 	
 	public BranchProductDTO selectBranchProductDetail();
 	

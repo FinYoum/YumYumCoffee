@@ -28,18 +28,18 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public boolean registerMember(MemberDTO params) {
+	public int registerMember(MemberDTO params) {
 		int queryResult = 0;
 		
 		if (params.getUserNum() == 0) {
 	    	params.setPw(passwordEncoder.encode(params.getPw()));
 			queryResult = memberMapper.insertMember(params);
+			
 		} else {
-	    	params.setPw(passwordEncoder.encode(params.getPw()));
-			queryResult = memberMapper.updateMember(params);
+			queryResult = memberMapper.updateMember(params) + 1;
 		}
 		        
-		return (queryResult == 1) ? true : false;
+		return queryResult;
 	}
 	
 	@Override
@@ -88,6 +88,13 @@ public class MemberServiceImpl implements MemberService {
 		int result = memberMapper.findPw(id, email);
 		
 		return result;
+	}
+
+	@Override
+	public void updatePw(String pw, String id) {
+
+		String newPw = passwordEncoder.encode(pw);
+		memberMapper.updatePw(newPw, id);
 	}
 	
 	

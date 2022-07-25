@@ -37,18 +37,17 @@ public class LoginController {
     private PasswordEncoder passwordEncoder;
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-	/* private SqlSession sqlSession; */
 	
 	@GetMapping(value = "/home")
-	public String home(@SessionAttribute(name = SessionConstants.loginMember, required = false)MemberDTO loginMember,
-						HttpServletRequest request, Model model) {
-		//sessionCall(request, model);
+	public String home(
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember,
+			HttpServletRequest request, Model model) {
 		
 		model.addAttribute("member", loginMember);
 		System.out.println(request);
 		System.out.println(model);
 		
-		return "yumyum/layout/index";
+		return "Home/homePage";
 	}
 	
 	@GetMapping(value = "/login")
@@ -75,7 +74,11 @@ public class LoginController {
 		}
 		
 		//MemberDTO login = memberService.login(params, session);
+        logger.info("전달받은 pw:"+member.getPw());
+        logger.info("matches pw:"+params.getPw());
 		boolean pwCheck = passwordEncoder.matches(params.getPw(), member.getPw());
+        logger.info("pwCheck:"+pwCheck);
+        
 		if(member != null && pwCheck) { 
 			
 			session.setAttribute(SessionConstants.loginMember, member);
@@ -124,11 +127,20 @@ public class LoginController {
 	public String registerBoard(final MemberDTO params) {
 		
 		try {
-			boolean isRegistered = memberService.registerMember(params);
-			if (isRegistered == false) {
-				System.out.println(isRegistered);
+			int isRegistered = memberService.registerMember(params);
+			if (isRegistered == 0) {
+				logger.info("isRegistered: "+isRegistered);
 				// TODO => 회원 등록에 실패하였다는 메시지를 전달
+				
+			} else if (isRegistered == 1) {
+				logger.info("isRegistered: "+isRegistered);
+				return "redirect:/login";
+				
+			} else if (isRegistered == 2) {
+				logger.info("isRegistered: "+isRegistered);
+				return "redirect:/mypage";
 			}
+			
 		} catch (DataAccessException e) {
 			System.out.println(e.getMessage());
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -139,6 +151,41 @@ public class LoginController {
 		}
 
 		return "redirect:/login";
+	}
+	
+	@PostMapping(value = "/quitMember")
+	public String doQuitMember(HttpServletRequest request,
+			@RequestParam(value = "userNum", required = false) Long userNum) {
+
+        logger.info("doQuitMember 진입");
+        if (userNum == null) {
+			System.out.println("userNum: "+userNum);
+			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
+			return "redirect:/quit";
+		}
+
+		try {
+			boolean isDeleted = memberService.deleteMember(userNum);
+			if (isDeleted == false) {
+				logger.info("isDeleted: "+isDeleted);
+				// TODO => 회원 삭제에 실패하였다는 메시지를 전달
+			}
+			logger.info("isDeleted: "+isDeleted);
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			// TODO => 시스템에 문제가 발생하였다는 메시지를 전달
+		}
+		
+	    HttpSession session = request.getSession(false);
+	    
+	    if (session != null) {
+	        session.invalidate();   // 세션 날림
+	    }
+		return "redirect:/home";
 	}
 	
 	@ResponseBody
@@ -203,5 +250,22 @@ public class LoginController {
 		
 		return result;
 	}
-	
+
+	@ResponseBody
+	@PostMapping(value = "/updatePw")
+	public String updatePw(@RequestParam("pw") String pw,
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+		
+		String result = "";
+			try {
+				memberService.updatePw(pw, loginMember.getId());
+				result = pw;
+				
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				result = "";
+			}
+		
+		return result;
+	}
 }

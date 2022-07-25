@@ -103,13 +103,29 @@ public class ProductServiceImpl implements ProductService {
 		
 		PaginationInfo paginationInfo = new PaginationInfo(params);
 		paginationInfo.setTotalRecordCount(productTotalCount);
-
-		params.setPaginationInfo(paginationInfo);
+		params.setPaginationInfo(paginationInfo);		
 		
 		if(productTotalCount >0) {
 			productList = productMapper.selectProductList(params);
+			
+			if(productList!=null) {
+				
+
+				productList.get(0).setTotalRecordCount(productTotalCount);//총 데이터 수
+				productList.get(0).setTotalPageCount(paginationInfo.getTotalPageCount());//전체 페이지 갯수
+				productList.get(0).setCurrentPageNo(paginationInfo.getCriteria().getCurrentPageNo()); // 현재 페이지 번호
+				productList.get(0).setRecordsPerPage(paginationInfo.getCriteria().getRecordsPerPage());	//페이지당 나타낼 글 수				
+			}
+			
 		}
-		return productList;
+		
+	//		/** 전체 데이터 개수 */
+	//		private int totalRecordCount;
+	//
+	//		/** 전체 페이지 개수 */
+	//		private int totalPageCount;
+			return productList;
+			
 	}
 	
 	@Override

@@ -17,4 +17,5 @@ public interface MypageService {
 	public List<OrderHistoryDTO> getOrderHistory(int userNum, int period, int firstIndex);
 	public int countOrder(int userNum, int period);
 	
+	public MemberDTO identification(String pw, String id);
 }

@@ -24,6 +24,7 @@ public interface MypageMapper {
 				@Param("userNum") int userNum
 				, @Param("period") int period
 			);
+	public MemberDTO identification(@Param("pw")String pw, @Param("id")String id);
 
 
 	

@@ -20,10 +20,6 @@ public class EmailServiceImpl implements EmailService {
 	
 	@Autowired
 	JavaMailSender emailSender;
-	@Autowired
-	private MemberMapper memberMapper;
-	@Autowired
-    private PasswordEncoder passwordEncoder;
 	/* @Autowired */
 	public static final String ePw = createKey();
 	
@@ -135,12 +131,5 @@ public class EmailServiceImpl implements EmailService {
 				es.printStackTrace();
 				throw new IllegalArgumentException();
 			}
-	}
-
-	@Override
-	public void updatePw(String pw, String id) {
-
-		String newPw = passwordEncoder.encode(pw);
-		memberMapper.updatePw(newPw, id);
 	}
 }

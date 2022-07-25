@@ -8,5 +8,5 @@ public interface EmailService {
 	public void sendSimpleMessage(String to)throws Exception;
 	//비밀번호 찾기 시 임시비밀번호 전송
 	public void sendNewPW(String to)throws Exception;
-	public void updatePw(String pw, String id);
+	
 }
