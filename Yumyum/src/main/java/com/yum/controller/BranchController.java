@@ -6,23 +6,36 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yum.constant.Method;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.yum.constant.SessionConstants;
 import com.yum.domain.BranchDTO;
+import com.yum.domain.CartDTO;
 import com.yum.domain.ImgDTO;
+import com.yum.domain.MemberDTO;
 import com.yum.domain.ProductDTO;
 import com.yum.service.BranchService;
+import com.yum.service.CartService;
 import com.yum.service.ProductService;
 import com.yum.util.DownloadView;
 
@@ -37,6 +50,12 @@ public class BranchController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	
+	@Autowired
+	private CartService cartService;
+	
+	
 	
 	/** 업로드 */
 	private final String uploadPath = Paths.get("C:", "Users", System.getProperty("user.name"),"Pictures","yumyum").toString();
@@ -65,8 +84,10 @@ public class BranchController {
 	
 	
 	@GetMapping(value = "/yumyum/branch")
-	public String openBranchList(Model model) {
-		
+	public String openBranchList(Model model, HttpSession session 
+			) {
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);  
 		List<BranchDTO> branchList = branchService.getBranchList();
 		model.addAttribute("branchList", branchList);
 		return "branch/branch";
@@ -76,23 +97,90 @@ public class BranchController {
 	
 	@GetMapping(value = "/product")
 	public String openproductList( 
-			@RequestParam(value = "branchNum", required = false) Long branchNum, Model model ) {
-//		List<BranchProductDTO> branchProductList = BranchProductService.getBranchProductList();
-//		model.addAttribute("branchProductList", branchProductList);
-		
+			@RequestParam(value = "branchNum", required = false) Long branchNum
+			, Model model, HttpSession session) {
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);		
 		if (branchNum == null) {
 			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 지점 리스트로 리다이렉트
 			return "redirect:/yumyum/branch";
+		} else {
+			model.addAttribute("member", member);  
+			List<BranchDTO> branchList = branchService.getBranchList();
+			model.addAttribute("branchList", branchList);
+			model.addAttribute("branchNum", branchNum);
+			//log.debug(model.toString());
+			return "branch/product";
 		}
-		
-//		BranchDTO branch = BranchProductService.getBoardDetail(idx);
-//		if (branch == null ) {
-//			// TODO => 없는 지점이거나, 이미 삭제된 지점이라는 메시지를 전달하고, 지점 리스트로 리다이렉트
-//			return "redirect:/yumyum/branch";
-//		}
-//		model.addAttribute("branch", branch);
-//		
-		return "branch/product";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = {"/product/addcart"}, method = { RequestMethod.POST, RequestMethod.PATCH })
+	public ResponseEntity<?> addCart(@RequestBody CartDTO cartDTO,  HttpSession session, Model model) {		
+		try {
+			cartService.insertCart(cartDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("success"));			
+		} catch (Exception e) {			
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}		
+	}
+
+	
+	/**
+	 * 장바구니 목록 불러오기
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value="/product/cartlist/{userNum}/{branchNum}")
+	@ResponseBody
+	public Object cartList(
+//			public ResponseEntity<?> cartList(
+			@PathVariable("userNum") Long userNum
+			, @PathVariable("branchNum") Long branchNum
+			, HttpSession session, Model model) {		
+			try {
+				List<CartDTO> cartList = cartService.getCartList(userNum, branchNum);
+//				return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(cartList));			
+				return cartList;
+			} catch (Exception e) {			
+				e.printStackTrace();
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+			}		
+		}
+
+	
+	@PutMapping(value="/product/updateCart2")
+	@ResponseBody
+	public ResponseEntity<?> updateCart2(@RequestBody CartDTO cartDTO , HttpSession session, Model model) {		
+		try {
+			MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);			
+			if(member==null) {			
+				return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("login error"));	
+			}
+
+			cartDTO.setUserNum(Long.valueOf(member.getUserNum()));
+			int result= cartService.updatePriceCart2(cartDTO);
+						
+			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("success"));			
+		} catch (Exception e) {			
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}		
+	}
+	
+	
+	@RequestMapping(value={"/product/deletecart"}, method= {RequestMethod.DELETE} )
+	@ResponseBody
+	public ResponseEntity<?> deleteCart(@RequestBody CartDTO cartDTO, HttpSession session, Model model) {		
+		try {
+			cartService.deleteCart(cartDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("success"));			
+		} catch (Exception e) {			
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}		
 	}
 	
 	
@@ -120,7 +208,7 @@ public class BranchController {
 
 		ProductDTO product = productService.getProductDetail(productNum);
 		if (product == null) {			
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 게시글이거나, 이미 삭제된 게시글입니다");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("없는 제품이거나, 이미 삭제된 제품입니다");
 		}
 		
 		Map<String,Object> map=new LinkedHashMap<>();
@@ -133,7 +221,10 @@ public class BranchController {
 	}
 	
 	
-
+	
+		
+	
+	
 	
 	/*
 	 * @GetMapping(value = "/drink") public String openDrinkList(Model model) { //

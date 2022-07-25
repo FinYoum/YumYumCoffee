@@ -15,19 +15,19 @@ public class CartServiceImpl implements CartService{
 	@Autowired
 	private CartMapper cartMapper;
 	
-	
+	// 추가 기능
 	@Override		
 	public boolean insertCart(CartDTO params) {
-//				
+//		
 		int queryResult = 0;
-// 		장바구니에 데이터가 존재하는지 확인
-		CartDTO checkCart = cartMapper.selectCart(params); 
+		//	장바구니에 데이터가 존재하는지 확인
+		CartDTO checkCart = cartMapper.checkCart(params); 
 		
-// 		장바구니에 데이터가 없다면, insert
+		//	장바구니에 데이터가 없다면, insert
 		if(checkCart == null) {
 			queryResult = cartMapper.insertCart(params);
 		} else{
-// 		장바구니에 데이터가 있다면, update 	
+		//	장바구니에 데이터가 있다면, update 	
 			params.setQty(checkCart.getQty()+Long.valueOf(1));
 			queryResult = cartMapper.updateCartQty(params);
 		}
@@ -39,8 +39,8 @@ public class CartServiceImpl implements CartService{
 	public List<CartDTO> getCartList(Long userNum, Long branchNum) {
 		
 		List<CartDTO> cartList = Collections.emptyList();
-		int countTotalCart= cartMapper.countTotalCart(userNum, branchNum);
-		if (countTotalCart != 0 ) {
+		Long countTotalCart= cartMapper.countTotalCart(userNum, branchNum);
+		if (countTotalCart != null ) {
 			cartList = cartMapper.selectCartList(userNum, branchNum);
 		}
 		
@@ -68,6 +68,7 @@ public class CartServiceImpl implements CartService{
 		} 
 		return (queryResult == 1) ? true : false;
 	}
+	
 	
 	
 }

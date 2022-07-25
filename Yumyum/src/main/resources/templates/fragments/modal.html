@@ -35,7 +35,7 @@
 							
 							
 								<!-- Project details-->
-																
+									<input type="hidden" id="modal-productNum">						
 				<div class="image" >
 	                <img src="" class="img-fluid img-thumbnail" id="modal-imgNum" >		                
 	             </div>								
@@ -65,31 +65,31 @@
 						
 						<hr>
 						<div class="col-lg-12 mt-2">
-									<h2 class="text-uppercase mt-2 mb-5" style="font-size: 1.2rem; font-weight: bold;">농도</h2>
+							<h2 class="text-uppercase mt-2 mb-5" style="font-size: 1.2rem; font-weight: bold;">농도</h2>
 								
 								
 							<div class="form-check">
-							  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-							  <label class="form-check-label" for="flexCheckDefault">
+							  <input class="form-check-input" type="radio" value="" id="option1" >
+							  <label class="form-check-label" for="flexRadioDefault1">
 							    선택안함
 							  </label>
 							</div>
 							<div class="form-check">
-							  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-							  <label class="form-check-label" for="flexCheckChecked">
+							  <input class="form-check-input" type="radio" value="" id="option2" >
+							  <label class="form-check-label" for="flexRadioDefault1">
 							    연하게
 							  </label>
 							</div>
 		
 							<div class="form-check">
-							  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
-							  <label class="form-check-label" for="flexCheckDefault">
+							  <input class="form-check-input" type="radio" value="" id="option3" >
+							  <label class="form-check-label" for="flexRadioDefault1">
 							   샷 추가(+500)
 							  </label>
 							</div>
 							<div class="form-check">
-							  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-							  <label class="form-check-label" for="flexCheckChecked">
+							  <input class="form-check-input" type="radio" value="" id="option4" >
+							  <label class="form-check-label" for="flexRadioDefault1">
 							     2샷 추가(+1,000)
 							  </label>
 							</div>
@@ -100,6 +100,7 @@
 						<div class="text-center">	
 								<button class="btn btn-default me-5"  type="button"
 								style="background: #5E5E5E; color: #fff; border-color: #5E5E5E; outline: none !important;"
+									onclick="addCart()"
 								>
 									<i class="fas fa-xmark me-1"></i> 장바구니
 								</button>
@@ -133,7 +134,8 @@
 		</div>
 	</div>
 
-     
+
+
      
 </div>
 </html>

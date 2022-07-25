@@ -12,8 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yum.constant.SessionConstants;
 
-@Component
-@Aspect
+//@Component
+//@Aspect
 public class LoginCheck {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());

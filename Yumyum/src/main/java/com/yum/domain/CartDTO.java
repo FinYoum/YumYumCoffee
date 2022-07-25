@@ -2,13 +2,12 @@ package com.yum.domain;
 
 import java.time.LocalDateTime;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+
+@Data
 public class CartDTO {
-
+	
 	// 회원번호
 	private Long userNum;
 	// 제품번호 
@@ -27,7 +26,7 @@ public class CartDTO {
 	
 	// 제품명
 	private String name;
-	// 제품 금액
+	// 제품금액
 	private Long price;
 
 }

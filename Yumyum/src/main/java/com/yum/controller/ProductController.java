@@ -65,7 +65,7 @@ public class ProductController extends UiUtils{
 	}
 	
 	@GetMapping(value = "/product/list")
-	public String openProductList(@ModelAttribute("params") ProductDTO params, Model model) {
+	public String openProductList(@ModelAttribute("params") ProductDTO params, Model model, HttpSession session) {
 		List<ProductDTO> productList = productService.getProductList(params);
 		model.addAttribute("productList", productList);
 
@@ -122,7 +122,7 @@ public class ProductController extends UiUtils{
 	
 	//지점장페이지 
 	@GetMapping(value = "/product/list2")
-	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model) {
+	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model, HttpSession session) {
 		System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
 		List<BranchProductDTO> BranchProductList = productService.getBranchProductList(params);
 		model.addAttribute("BranchProductList", BranchProductList);

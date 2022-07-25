@@ -12,10 +12,10 @@
 	</sql>
 	
 
-	<!-- 제품 추가 -->
+	<!-- 카트 추가 -->
 	<insert id ="insertCart" parameterType="com.yum.domain.CartDTO">
-		INSERT INTO CART (
-			<include refid="cartColums"></include>
+		INSERT into Cart (
+		<include refid="cartColums"></include>
 		)VALUES(
 			  #{userNum}
 			, #{productNum}
@@ -64,7 +64,7 @@
 	<!-- 제품이 장바구니에 있는지 확인 -->
 	<select id="selectCart" parameterType="com.yum.domain.CartDTO" resultType="com.yum.domain.CartDTO">
 		SELECT
-			*
+			QTY
 		FROM
 			CART
 		WHERE 
@@ -77,7 +77,7 @@
 			SHOT_CUSTOM = #{shotCustom}
 	</select>
 	
-	<!-- 제품 삭제 -->
+	<!-- 카트 삭제 -->
 	<delete id="deleteCart" parameterType="com.yum.domain.CartDTO">
 		DELETE FROM CART
 		WHERE 
@@ -90,7 +90,7 @@
 			SHOT_CUSTOM = #{shotCustom}
 	</delete>
 	
-	<!-- 선택한 지점에 대한 장바구니 목록 -->
+	<!-- 카트 목록 -->
 	<select id="selectCartList" parameterType="map" resultType="com.yum.domain.CartDTO">
 		SELECT 
 	 		c.*
@@ -109,8 +109,8 @@
 	 		c.INSERT_TIME DESC
 	</select>
 	
-	<!-- 선택한 지점에 대한 장바구니 확인 -->
-	<select id="countTotalCart" parameterType="map" resultType="int">
+	<!-- 카트 갯수 확인 -->
+	<select id="countTotalCart" parameterType="map" resultType="Long">
 		SELECT 
 			COUNT(*)
 		FROM 
@@ -122,4 +122,20 @@
   	  	ORDER BY 
   	  		INSERT_TIME DESC
 	</select>
+	<!-- 카트 확인 -->
+ 	<select id="checkCart" parameterType="com.yum.domain.CartDTO" resultType="com.yum.domain.CartDTO">
+	   SELECT *
+        FROM
+            CART
+        WHERE 
+            USER_NUM = #{userNum} 
+        AND 
+            PRODUCT_NUM = #{productNum}
+        AND 
+            BRANCH_NUM = #{branchNum}
+        AND 
+            SHOT_CUSTOM = #{shotCustom}
+	</select> 
+	
+	
 </mapper>
