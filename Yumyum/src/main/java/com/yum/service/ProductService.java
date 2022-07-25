@@ -24,8 +24,7 @@ public interface ProductService {
 	public List<ImgDTO> getAttachFileList(Long productNum);
 	
 	//branchProduct
-	public List<BranchProductDTO> getBranchProductList(BranchProductDTO params);
-	//public BranchProductDTO getBranchProductList(Long branchNum);
+	public List<BranchProductDTO> getBranchProductList(int userNum,BranchProductDTO params);
 	
 	public void updateBProduct(BranchProductDTO params);
 	

@@ -16,7 +16,10 @@ public class BranchProductDTO extends CommonDTO{
 	/** 가리기 여부  */
 	private String hidenYn;
 	
-	/**product_name*/
+	/** 제품명*/
 	private String name;
+	
+	/** 회원번호 */
+	private int userNum;
 
 }

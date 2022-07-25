@@ -18,19 +18,19 @@ public class ImgDTO {
 	/** 원본 파일명 */
 	private String originalName;
 	
-	//저장 파일명
+	/** 저장 파일명 */
 	private String saveName;
 	
-	//파일경로
+	/** 파일경로 */
 	private String imgPath;
 	
-	//입력 날짜
+	/** 입력 날짜 */
 	private Date insertTime;
 
 	/** 파일 크기 */
 	private long size;
 	
-	//삭제여부
+	/** 삭제여부 */
 	private String deleteYn;
 
 }

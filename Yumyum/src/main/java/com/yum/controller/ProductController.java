@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yum.constant.Method;
+import com.yum.constant.SessionConstants;
 import com.yum.domain.BranchProductDTO;
 import com.yum.domain.ImgDTO;
+import com.yum.domain.MemberDTO;
 import com.yum.domain.ProductDTO;
 import com.yum.service.ProductService;
 import com.yum.util.UiUtils;
@@ -101,45 +103,27 @@ public class ProductController extends UiUtils{
 			return showMessageWithRedirect("올바르지 않은 접근입니다.", "/product/list", Method.GET, null, model);
 		}
 		productService.deleteProduct(productNum);
-		/*
-		try {
-			boolean isDeleted = productService.deleteImg(productNum);
-			if (isDeleted == false) { // TODO => 게시글 삭제에 실패하였다는 메시지를 전달
-				System.out.println("게시글 삭제에 실패"); 
-				}
-			 
-		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-			System.out.println("데이터베이스 처리 과정에 문제");
-
-		} catch (Exception e) {
-			// TODO => 시스템에 문제가 발생하였다는 메시지를 전달
-			System.out.println("시스템에 문제 발생");
-		}
-		*/
+		
 		return showMessageWithRedirect("게시글 삭제가 완료되었습니다.", "/product/list", Method.GET, null, model);
 	}
 	
 	//지점장페이지 
 	@GetMapping(value = "/product/list2")
-	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model) {
-		System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
-		List<BranchProductDTO> BranchProductList = productService.getBranchProductList(params);
+	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model, HttpSession session) {
+		//System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
+		
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);
+		
+		int userNum= member.getUserNum();
+		
+		List<BranchProductDTO> BranchProductList = productService.getBranchProductList(userNum,params);
 		model.addAttribute("BranchProductList", BranchProductList);
+		//System.out.println("userNum: "+member.getUserNum());
 
 		return "product/productList2";
 	}
 	
-	/*
-	@GetMapping(value = "/product/list2")
-	public String openProductList2(@RequestParam(value = "branchNum", required = false) Long branchNum, Model model) {
-		System.out.println("==========controller 시작: "+branchNum+"==========");
-		BranchProductDTO BranchProductList = productService.getBranchProductList(branchNum);
-		model.addAttribute("BranchProductList",BranchProductList);
-
-		return "product/productList2";
-	}
-	*/
 	@PostMapping(value = "/product/list2")
 	public String updateBProduct(BranchProductDTO params)  throws Exception {
 		productService.updateBProduct(params);

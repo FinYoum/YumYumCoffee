@@ -65,7 +65,14 @@
         FROM 
             branch_product
         WHERE
-            branch_num=#{branchNum}
+            branch_num=(
+               SELECT 
+                  b.BRANCH_NUM 
+               FROM 
+                  BRANCH b 
+               WHERE 
+                  MANAGER_NUM =#{userNum}
+            )
     </select>
     
     
@@ -76,7 +83,14 @@
         WHERE
             product_num=#{productNum}
         AND
-            branch_num=#{branchNum}
+            branch_num=(
+               SELECT 
+                  b.BRANCH_NUM 
+               FROM 
+                  BRANCH b 
+               WHERE 
+                  MANAGER_NUM =#{userNum}
+            )
     </update>
     
 </mapper>

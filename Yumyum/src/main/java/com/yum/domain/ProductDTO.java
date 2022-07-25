@@ -10,31 +10,27 @@ import lombok.Setter;
 @Setter
 public class ProductDTO extends CommonDTO {
 	
-	//상품 번호	
+	/** 상품 번호 */	
 	private Long productNum;
 	
-	//상품코드
+	/** 상품코드 */
 	private String codeId;
 	
-	//상품이름
+	/** 상품이름 */
 	private String name;
 	
-	//상품 가격
+	/** 상품 가격 */
 	private int price;
 	
-	//상품정보
+	/** 상품정보 */
 	private String info;
 	
-	//상품이미지
-	private String img;
-
-	//-----------------------------
-	//파일 변경 여부
+	/**-----------------------------*/
+	/** 파일 변경 여부 */
 	private String changeYn;
-	//파일 인덱스 리스트
+	
+	/** 파일 인덱스 리스트 */
 	private List<Long> fileIdxs;
 	
 	
-	private String imgPath;
-
 }

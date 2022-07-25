@@ -140,15 +140,20 @@ public class ProductServiceImpl implements ProductService {
 
 	//BranchProduct관련
 	@Override
-	public List<BranchProductDTO> getBranchProductList(BranchProductDTO params) {
+	public List<BranchProductDTO> getBranchProductList(int userNum,BranchProductDTO params) {
 		List<BranchProductDTO> BPList=Collections.emptyList();
-		params.setBranchNum((long)1);
-		int BproductTotalCount=BPMapper.selectBProductTotalCount(params);
+		params.setBranchNum((long)userNum);
+		int BproductTotalCount=BPMapper.selectBProductTotalCount(userNum);
 		
 		PaginationInfo paginationInfo = new PaginationInfo(params);
 		paginationInfo.setTotalRecordCount(BproductTotalCount);
 		
+		System.out.println("------------------BproductTotalCount:"+BproductTotalCount+"---------");
+		
 		params.setPaginationInfo(paginationInfo);
+		
+		System.out.println("------------paginationInfo: "+paginationInfo+"---------");
+		System.out.println("userNum : "+userNum);
 		
 		if(BproductTotalCount >0) {
 			BPList = BPMapper.selectBPList(params);
