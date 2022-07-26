@@ -155,7 +155,7 @@ public class LoginController {
 	
 	@PostMapping(value = "/quitMember")
 	public String doQuitMember(HttpServletRequest request,
-			@RequestParam(value = "userNum", required = false) Long userNum) {
+			@RequestParam(value = "userNum", required = false) Long userNum, HttpSession session) {
 
         logger.info("doQuitMember 진입");
         if (userNum == null) {
@@ -180,7 +180,7 @@ public class LoginController {
 			// TODO => 시스템에 문제가 발생하였다는 메시지를 전달
 		}
 		
-	    HttpSession session = request.getSession(false);
+	    session = request.getSession(false);
 	    
 	    if (session != null) {
 	        session.invalidate();   // 세션 날림
@@ -254,7 +254,7 @@ public class LoginController {
 	@ResponseBody
 	@PostMapping(value = "/updatePw")
 	public String updatePw(@RequestParam("pw") String pw,
-			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember, HttpSession session) {
 		
 		String result = "";
 			try {

@@ -45,7 +45,7 @@ public class MypageController {
 	@ResponseBody
 	@PostMapping(value="/identification")
 	public int identification(@ModelAttribute MemberDTO params,
-			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember, HttpSession session) {
 		
 		MemberDTO member = mypageService.identification(params.getPw(),loginMember.getId());
 		int result=0;
