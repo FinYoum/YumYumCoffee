@@ -1,5 +1,6 @@
 package com.yum.aop;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -8,12 +9,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
 import com.yum.constant.SessionConstants;
 
-//@Component
-//@Aspect
+@Component
+@Aspect
 public class LoginCheck {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -25,9 +26,23 @@ public class LoginCheck {
 //	LoginController, APIController 제외
 //  LoginController의 logout메서드 추가
 	
-    @Around("execution(* com.yum.controller.*.*(..)) "
-    		+ "and !execution(* com.yum.controller.LoginController.*(..))"
-    		+ "and execution(* com.yum.controller.LoginController.logout())")
+	@Around("execution(* com.yum.controller.APIController.*(..)) "
+			+"execution(* com.yum.controller.BranchController.*(..)) "
+			+"execution(* com.yum.controller.CartController.*(..)) "
+			+"execution(* com.yum.controller.ImpContoroller.*(..)) "
+			+"execution(* com.yum.controller.MypageController.*(..)) "
+			+"execution(* com.yum.controller.OrderController.*(..)) "
+			+"execution(* com.yum.controller.PaymentController.*(..)) "
+			+"execution(* com.yum.controller.ProductController.*(..)) "
+			+ "and execution(* com.yum.controller.LoginController.logout())"
+    		+ "and execution(* com.yum.controller.LoginController.updatePw())"
+			)
+	
+//    @Around("execution(* com.yum.controller.*.*(..)) "
+//    		+ "and !execution(* com.yum.controller.LoginController.*(..))"
+//    		+ "and !execution(* com.yum.controller.EmailController.*(..))"
+//    		+ "and execution(* com.yum.controller.LoginController.logout())"
+//    		+ "and execution(* com.yum.controller.LoginController.updatePw())")
     public Object loginCheck(ProceedingJoinPoint  joinPoint) throws Throwable {
 //	매개변수로 HttpSession이나 HttpServletRequest를 넣으면 null값이 전달되어 에러 발생
     	logger.debug("AOP 로그인 체크 진입");
@@ -37,22 +52,22 @@ public class LoginCheck {
 //		값을 안쓰는 컨트롤러라면 에러 발생>> try
     	
 //    	주문 >지점 리스트 페이지 에서는 어떻게 할지?
-    	
-    	
     	Object[] obj = joinPoint.getArgs();
 		for (Object ele : obj) {
 			if (ele instanceof HttpSession) {
 				HttpSession session = (HttpSession)ele;
-				logger.debug("세션인스턴스 OK");
-				logger.debug(""+session.getAttribute(SessionConstants.loginMember));
-				return joinPoint.proceed();
-			} else {
-				logger.debug("세션이 없습니다.");
-//				알러트 추가
-			}
+				logger.debug("================세션인스턴스 OK================");
+				if (session.getAttribute(SessionConstants.loginMember)!=null) {
+					logger.debug("================유저 정보 확인================");
+					logger.debug(session.getAttribute(SessionConstants.loginMember).toString());
+					
+					return joinPoint.proceed();
+				}
+			} 
 		}
-//    	return "login/login";
-    	return joinPoint.proceed();
+		logger.debug("================세션에 멤버정보 없음================");
+		return "redirect:/login";
+//		return joinPoint.proceed();
 	}
 }
 
