@@ -82,7 +82,7 @@ public class BranchController {
 			return downloadView;			
 	}
 	
-	
+//	주문할 지점 선택
 	@GetMapping(value = "/yumyum/branch")
 	public String openBranchList(Model model, HttpSession session 
 			) {
@@ -94,7 +94,7 @@ public class BranchController {
 	}
 	
 	
-	
+//	선택한 지점에 대해 가리기가 적용된 제품 목록
 	@GetMapping(value = "/product")
 	public String openproductList( 
 			@RequestParam(value = "branchNum", required = false) Long branchNum
@@ -114,12 +114,14 @@ public class BranchController {
 		}
 	}
 	
+
+//	장바구니에 제품 추가
 	@ResponseBody
 	@RequestMapping(value = {"/product/addcart"}, method = { RequestMethod.POST, RequestMethod.PATCH })
 	public ResponseEntity<?> addCart(@RequestBody CartDTO cartDTO,  HttpSession session, Model model) {		
 		try {
-			cartService.insertCart(cartDTO);
-			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("success"));			
+			boolean result= cartService.insertCart(cartDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString(result));			
 		} catch (Exception e) {			
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -127,22 +129,15 @@ public class BranchController {
 	}
 
 	
-	/**
-	 * 장바구니 목록 불러오기
-	 * @param session
-	 * @param model
-	 * @return
-	 */
+//	장바구니 목록 불러오기
 	@GetMapping(value="/product/cartlist/{userNum}/{branchNum}")
 	@ResponseBody
 	public Object cartList(
-//			public ResponseEntity<?> cartList(
 			@PathVariable("userNum") Long userNum
 			, @PathVariable("branchNum") Long branchNum
 			, HttpSession session, Model model) {		
 			try {
 				List<CartDTO> cartList = cartService.getCartList(userNum, branchNum);
-//				return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(cartList));			
 				return cartList;
 			} catch (Exception e) {			
 				e.printStackTrace();
@@ -150,9 +145,9 @@ public class BranchController {
 			}		
 		}
 
-	
-	@PutMapping(value="/product/updateCart2")
+//	장바구니 제품 수량 변경
 	@ResponseBody
+	@RequestMapping(value={"/product/updatecart"}, method = { RequestMethod.POST, RequestMethod.PATCH })
 	public ResponseEntity<?> updateCart2(@RequestBody CartDTO cartDTO , HttpSession session, Model model) {		
 		try {
 			MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);			
@@ -161,9 +156,8 @@ public class BranchController {
 			}
 
 			cartDTO.setUserNum(Long.valueOf(member.getUserNum()));
-			int result= cartService.updatePriceCart2(cartDTO);
-						
-			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("success"));			
+			boolean result= cartService.updateCartQty(cartDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString(result));			
 		} catch (Exception e) {			
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -171,12 +165,13 @@ public class BranchController {
 	}
 	
 	
-	@RequestMapping(value={"/product/deletecart"}, method= {RequestMethod.DELETE} )
+//	장바구니 제품 삭제
 	@ResponseBody
+	@RequestMapping(value={"/product/deletecart"}, method= {RequestMethod.DELETE} )
 	public ResponseEntity<?> deleteCart(@RequestBody CartDTO cartDTO, HttpSession session, Model model) {		
 		try {
-			cartService.deleteCart(cartDTO);
-			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("success"));			
+			boolean result= cartService.deleteCart(cartDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString(result));			
 		} catch (Exception e) {			
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -184,9 +179,9 @@ public class BranchController {
 	}
 	
 	
-	
-	@GetMapping(value = "/product/catgoryProductList/{codeId}")
+//	제품 카테고리에 따른 제품 목록 변경
 	@ResponseBody
+	@GetMapping(value = "/product/catgoryProductList/{codeId}")
 	public ResponseEntity<?> catgoryProductList(@PathVariable("codeId") String codeId,
 			ProductDTO  productDTO, Model model) {		
 		try {
@@ -201,9 +196,9 @@ public class BranchController {
 	}
 
 	
-	
-	@GetMapping(value = "/product/detail/{productNum}")
+//	제품 상제 정보
 	@ResponseBody
+	@GetMapping(value = "/product/detail/{productNum}")
 	public ResponseEntity<?> productDetail(@PathVariable Long productNum, Model model) throws JsonProcessingException {
 
 		ProductDTO product = productService.getProductDetail(productNum);
@@ -219,25 +214,5 @@ public class BranchController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(json);
 	}
-	
-	
-	
-		
-	
-	
-	
-	/*
-	 * @GetMapping(value = "/drink") public String openDrinkList(Model model) { //
-	 * List<BranchDTO> branchList = branchService.getBranchList(); //
-	 * model.addAttribute("branchList", branchList);
-	 * 
-	 * return "yumyum/drink"; }
-	 * 
-	 * @GetMapping(value = "/dessert") public String openDessertList(Model model) {
-	 * // List<BranchDTO> branchList = branchService.getBranchList(); //
-	 * model.addAttribute("branchList", branchList);
-	 * 
-	 * return "yumyum/dessert"; }
-	 */
 	
 }
