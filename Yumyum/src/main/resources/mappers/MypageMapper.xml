@@ -54,7 +54,7 @@
         AND
             EXPIRATION_DATE>=CURRENT_DATE
         ORDER BY
-            CP_NUM DESC
+            EXPIRATION_DATE ASC
     </select>
     <select id="selectUserDetail" parameterType="int" resultType="com.yum.domain.MemberDTO">
         SELECT 

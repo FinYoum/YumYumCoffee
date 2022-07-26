@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="layout/basic">
+	layout:decorate="yumyum/layout/basic">
 <th:block layout:fragment="title">
 	<title>결제</title>
 </th:block>
@@ -12,52 +12,42 @@
 	<div class="container ">
 		<div class="row">
 			<div class="col-sm-6">
-			    <!-- 지점명 -->
+				<!-- 지점명 -->
 				<h2 th:text="${ branchName }"></h2>
 				<hr style="margin: 20px">
-                <!-- 주문내역 카드 -->
+				<!-- 주문내역 카드 -->
 				<div class="card mb-3" style="max-width: 540px;"
-				th:if="${not #lists.isEmpty( orderList )}"
-                                th:each="order : ${ orderList }">
+					th:if="${not #lists.isEmpty( orderList )}"
+					th:each="order : ${ orderList }">
 					<div class="row g-0">
-						<div class="col-md-4" >
-							<img 
-								th:src="${ order.imgPath }"
-								class="img-fluid rounded-start" alt="...">
-							 	<!-- th:src="@{https://post-phinf.pstatic.net/MjAxODA4MDZfMjk0/MDAxNTMzNTM4NTQ4MTQ4.pdll3gpCJSDuXAlC220ftibn5TO4X0ut9JYNAUDolR8g.accOY-GL391JdedGhq0DsdY04N5z7TUhVa2i4geujPog.JPEG/image_4332933811533538235161.jpg?type=w1200}" -->
+						<div class="col-md-4">
+							<img th:src="${ order.imgPath }" class="img-fluid rounded-start"
+								alt="...">
 						</div>
 						<div class="col-md-8">
-							<div class="card-body" >
+							<div class="card-body">
 								<h5 class="card-title">주문 내역</h5>
 								<p class="card-text" th:text="|품목 ${ order.name }|"></p>
 								<p class="card-text" th:text="|가격 ${ order.price }|"></p>
 								<p class="card-text" th:text="|수량 ${ order.ea }|"></p>
-								<small class="text-muted" th:utext="|변경사항 ${ order.shotCustom }|"></small>
+								<small class="text-muted"
+									th:utext="|변경사항 ${ order.shotCustom }|"></small>
 								<!-- <hr Style="margin-top:10px"> -->
 							</div>
 						</div>
 					</div>
 				</div>
-				<!-- <div class="card" th:if="${not #lists.isEmpty( orderList )}"
-					th:each="order : ${ orderList }">
-					<div class="card-header">
-						<img><name><costom><price><qty><each>
-						주문 내역
-					</div>
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item" th:text="${ order.name }"></li>
-						<li class="list-group-item" th:text="${ order.price }"></li>
-						<li class="list-group-item" th:text="${ order.info }"></li>
-					</ul>
-				</div> -->
 				<hr style="margin: 20px">
 
 
+                <!-- 픽업 여부 -->
 				<div>
 					<h2>픽업 옵션</h2>
 					<input type="radio">매장 <input type="radio">포장
 				</div>
 				<hr style="margin: 20px">
+				
+				<!-- 픽업 시간 -->
 				<div>
 					<h2>픽업 시간</h2>
 					<div class="btn-group" role="group" aria-label="...">
@@ -72,18 +62,28 @@
 					</div>
 				</div>
 			</div>
+			
+			<!-- 화면 분할 -->
 			<div class="col-sm-6">
+			    <!-- 보유 쿠폰 목록 -->
 				<div>
 					<h2>할인 쿠폰</h2>
-					<select th:if="${not #lists.isEmpty( couponList )}"
-						th:each="coupon : ${ couponList }">
-						<option th:text="${coupon.kind}"></option>
+					<select>
+						<option th:if="${not #lists.isEmpty( couponList )}"
+							th:each="coupon, i : ${ couponList }" th:id="'CP'+${i.index+1}"
+							th:text="|${coupon.kind}, ${coupon.expirationDate}|"></option>
 					</select>
+					<button id="btn_select">+</button>
+					<div id="selectedCoupon"></div>
 				</div>
 				<br>
+				
+				<!-- 결제 수단 -->
 				<h2>결제수단</h2>
 				<input type="radio">신용카드
 				<hr style="margin: 20px">
+				
+				<!-- 결제 금액 -->
 				<!-- <th:text ="총 수량:qty + 개">총수량</th:text>
 				<th:text ="할인금액:coupon + 원">할인금액</th:text>
 				<th:text ="총액:qty*price-coupon + 원">총액</th:text> -->
@@ -91,84 +91,11 @@
 				<br>
 
 				<div>
-					<button th:link="javascript">결제</button>
+					<button th:href="javascript">결제</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
-
-
-
-	<!-- <div class="container">
-            <h2>제품 목록</h2>
-            <div th:style="${'float:right'}">
-            <select id="code">
-                <option value="">전체</option>
-                <option value="b1">커피</option>
-                <option value="b2">라떼</option>
-                <option value="b3">스무디</option>
-                <option value="b4">에이드</option>
-                <option value="b5">주스</option>
-                <option value="b6">티</option>
-                <option value="d1">빵</option>
-                <option value="d2">케이크</option>
-            </select>
-            <button type="button" onclick="search()" id="selectCodeId">
-               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-               </svg>
-            </button>
-        </div>
-        
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th class="col-sm-1" >선택사항</th>
-                        <th class="col-sm-1">상품번호</th>
-                        <th>분류</th>
-                        <th>제품명</th>
-                        <th>가격</th>
-                        <th>상세정보</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}" >
-                        <td><input type="checkbox"></td>
-                        <td scope="row" th:text="${row.productNum}"></td>
-                        <td class="text-left" th:text="${row.codeId}"></td>
-                        <td class="text-left" th:text="${row.name}"></td>
-                        <td th:text="${#numbers.formatInteger(row.price,3,'COMMA')+'원'}"></td>
-                        <td th:text="${row.info}"></td>
-                        <td>
-                            <button th:onclick="|location.href='@{/product/view( productNum=${row.productNum} )}'|" id="btn_info">상세정보보기</button>
-                            <a th:href="|@{/product/view}${params.makeQueryString(params.currentPageNo)}&productNum=${row.productNum}|" id="btn_info">상세정보보기</a>
-                        </td>
-                    </tr>
-
-                    <tr th:unless="${not #lists.isEmpty( productList )}">
-                        <td colspan="5">조회된 결과가 없습니다.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="btn_wrap1">
-                <a class="btn btn-dark" onclick="explain1()" id="openModal1">다중수정</a>
-            </div>
-            <div class="btn_wrap2" style="text-align:right;">
-                <a th:href="@{/product/write}" class="btn btn-dark">제품등록</a>
-            </div>
-            <div class="modal1">
-              <button class="close1">X</button>
-              <h4 title="mTitle">다중수정</h4><br>
-              <h6>다중 수정은 가격만 가능합니다.</h6><br>
-              가격:&nbsp;<input type="number"><br>
-              <button style="margin:auto; display:block;">수정하기</button>
-            </div>  
-        </div>
-        <br>
-        <nav th:replace="product/common :: pagination"></nav>  -->
 
 </th:block>
 
@@ -176,6 +103,30 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 
+		//셀렉트 박스 text() 가져오기
+		$('#btn_select').on("click", function() {
+			var coupon = $("select option:selected").text();
+			var couponId = $("select option:selected").attr('id');
+
+			var html = "";
+			var html = '<div id=\'' + couponId + '\'>' + coupon + '</div>';
+			
+			$('select option:selected').attr('disabled', true);
+			
+			//타겟의 첫번째 id값과 선택한 coupon의 id값을 비교하여 실행
+			if ($('#selectedCoupon').children('div').attr('id') != couponId) {
+				$('#selectedCoupon').prepend(html);
+			};
+		    
+			var ele = document.getElementById('selectedCoupon');
+			var eleCount = ele.childElementCount; //'#selectedCoupon' 밑의 요소갯수 출력
+
+			console.log(eleCount);
+			
+			/* return eleCount; */
+		});
+
+		
 		//버튼 토글
 		$(function() {
 
@@ -257,27 +208,7 @@
 
 		});
 
-		//페이징
-		function movePage(uri, queryString) {
-			location.href = uri + queryString;
-		}
-
-		//검색
-		function search() {
-			var uri = /*[[ @{/product/list} ]]*/null;
-			var html = "";
-
-			var code = document.getElementById('code');
-			var codeId = code.options[code.selectedIndex].value;
-			//alert(codeId);
-
-			html += '<form name="dataForm" action="'+uri+'" method="get">';
-			html += '<input type="hidden" name="codeId" value="'+codeId+'" />';
-			html += '</form>';
-
-			$("body").append(html);
-			document.dataForm.submit();
-		}
+		
 
 		// 모달1
 		const modal1 = document.querySelector(".modal1");
