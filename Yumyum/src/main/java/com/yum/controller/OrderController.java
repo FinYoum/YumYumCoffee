@@ -27,14 +27,22 @@ public class OrderController {
 
 	@GetMapping(value = "/order/{orderNum}")
 	public String openOrderList(HttpSession session, @PathVariable("orderNum") int orderNum, Model model) {
-		List<OrderDTO> orderList = paymentService.selectOrder(orderNum);
-		String branchName= paymentService.getBranchName(orderNum);
 		
+		//주문리스트와 이미지 테이블을 조인해서 모델에 저장
+		List<OrderDTO> orderList = paymentService.selectOrder(orderNum);
+		model.addAttribute("orderList", orderList);
+
+		//주문하는 지점명 저장
+		String branchName= paymentService.getBranchName(orderNum);
+		model.addAttribute("branchName", branchName);
+		
+		//로그인한 세션에서 UserNum을 받아와 해당하는 유저가 보유한 쿠폰 저장
 		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		CouponDTO params = new CouponDTO();
 		params.setUserNum(member.getUserNum());
 		System.out.println("userNum : "+params);
 		List<CouponDTO> couponList = mypageService.getCouponList(params);
+		model.addAttribute("couponList", couponList);
 
 		
 		//		List<ImgDTO> productImg = Collections.emptyList();
@@ -54,9 +62,6 @@ public class OrderController {
 //
 //		model.addAttribute("productImg", productImg);
 		
-		model.addAttribute("couponList", couponList);
-		model.addAttribute("orderList", orderList);
-		model.addAttribute("branchName", branchName);
 
 		return "order/orderPage2";
 	}

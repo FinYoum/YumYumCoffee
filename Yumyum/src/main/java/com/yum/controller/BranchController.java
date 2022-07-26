@@ -94,6 +94,24 @@ public class BranchController {
 		return "branch/branch";
 	}
 	
+
+	
+//	선택한 지점에 대해 가리기가 적용된 제품 목록
+	@GetMapping(value = "/map")
+	public String viewMap(@RequestParam(value = "branchNum", required = false) Long branchNum, Model model, HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);	
+		model.addAttribute("branchNum", branchNum);
+		if (branchNum == null) {
+			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 지점 리스트로 리다이렉트
+			return "redirect:/yumyum/branch";
+		}
+		
+		return "branch/map";
+	}
+
+
 	@GetMapping(value = "/product")
 	public String openproductList( 
 			@RequestParam(value = "branchNum", required = false) Long branchNum
