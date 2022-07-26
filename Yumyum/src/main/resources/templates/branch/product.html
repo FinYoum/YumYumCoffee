@@ -414,7 +414,7 @@ function addCart(productNum){
         dataType: "json",
         contentType: "application/json",
         success: function(res) {
-            if (res=="success") {
+            if (res==true) {
             	alert("장바구니에 담았습니다.");
             }
             cartList();
@@ -426,7 +426,6 @@ function addCart(productNum){
 	 
 }
 
-console.log(userNum, branchNum )
 
 function cartList(){
 	console.log("장바구니 목록 가져오기");
@@ -550,7 +549,7 @@ function cartUpdatePirce(item, qty){
 	    })
 	    .then((response)=>response.json())
 	    .then((res)=>{
-	    	if(res=="success"){
+	    	if(res==true){
 	    		cartList();
 	        }                   
 	    })
@@ -579,15 +578,14 @@ function deleteCart(productNum, shotCustom){
 	     })
 	     .then((response)=>response.json())
 	     .then((res)=>{
-	         if(res=="success"){
-	             
+	         if(res==true){
+	        	 cartList();
 	         }                   
 	     })
 	     .catch((error) => {
 	         console.log('에러 발생');    
 	     });
 	}
-	cartList();
 }
 
 
