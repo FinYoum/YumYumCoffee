@@ -75,10 +75,18 @@
 			<div class="col-sm-6">
 				<div>
 					<h2>할인 쿠폰</h2>
-					<select th:if="${not #lists.isEmpty( couponList )}"
-						th:each="coupon : ${ couponList }">
-						<option th:text="${coupon.kind}"></option>
+					<select >
+						<option th:if="${not #lists.isEmpty( couponList )}"
+                        th:each="coupon, i : ${ couponList }" value="'CP'+${i.index+1}" th:text="|${coupon.kind}, ${coupon.expirationDate}|"
+                        ></option>
 					</select>
+					<!-- <select onchange="handleOnChange(this)">
+						<option th:if="${not #lists.isEmpty( couponList )}"
+                        th:each="coupon, i : ${ couponList }" id="'CP'+${i.index+1}" th:text="|${coupon.kind}, ${coupon.expirationDate}|"
+                        ></option>
+					</select> -->
+                    <button id="btn_select">+</button>
+                    <div id="selectedCoupon"></div>
 				</div>
 				<br>
 				<h2>결제수단</h2>
@@ -91,7 +99,7 @@
 				<br>
 
 				<div>
-					<button th:link="javascript">결제</button>
+					<button th:href="javascript">결제</button>
 				</div>
 			</div>
 		</div>
@@ -175,6 +183,34 @@
 <th:block layout:fragment="script">
 	<script th:inline="javascript">
 		/*<![CDATA[*/
+			
+		
+		//셀렉트 박스 text() 가져오기
+		$('#btn_select').on("click", function(){
+			var coupon = $("select option:selected").text();
+			var cpVal = $("select option:selected").val();
+            /* alert(coupon); */
+            
+            /* document.getElementById('selectedCoupon').innerText += coupon; */
+            var html ="";
+            var html = '<div>' + coupon + '</div>';
+            
+            $('#selectedCoupon').append(html)
+           
+            var ele = document.getElementById('selectedCoupon');
+            var eleCount = ele.childElementCount; //'#selectedCoupon' 밑의 요소갯수 출
+
+            return eleCount;
+		});
+		/* function handleOnChange(e) {
+			var text = e.options[e.selectedIndex].text;
+			
+			alert(e.options);
+						
+			document.getElementById('selectedCoupon').innerText
+		    = text;
+		} */
+			
 
 		//버튼 토글
 		$(function() {
@@ -294,6 +330,8 @@
 			$(".modal1").draggable();
 		});
 
+		
+		
 		/*[- end of function -]*/
 
 		/*]]>*/
