@@ -12,7 +12,13 @@
 </style>	
 </th:block>
 
+
+
+
 <th:block layout:fragment="header">
+<!-- <input type="text" id="paramCategoy" th:value="${param.category1}"> -->
+	
+	
 	<h4 class="display-3 fw-bolder">yumyum
 	
 	
@@ -28,39 +34,56 @@
 
 	
 <th:block layout:fragment="content">
-	
-	<input type="text" id="paramCategoy" th:value="${param.category1}">
-	
 		
 	<div class="container px-4 px-lg-5">
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
 			aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		
+
+
 		<div class="row">
 
-	
-		<input type="hidden" th:value="${param.branchNum}" id="branchNum">
 		
-		<div class="row">		
-		<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
-		  <select th:if="${not #lists.isEmpty( branchList )}"  class="form-select" required="required" disabled >
-		   		  
-                  <option value="${row.branchNum}" th:text="${row.branchName}"  th:each="row : ${branchList}"                   	
-                  	th:if="${#strings.equals(param.branchNum,row.branchNum)}"
-                  
-                  		></option>
-         </select>
-		</div>
+
+			<th:block th:if="${param.branchNum.toString().equals('999')}">
+	
+						
+				<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
+				  <select th:if="${not #lists.isEmpty( branchList )}" 
+				  id="branchNum"
+				   class="form-select" required="required"  >		   		  
+		               <option th:value="${row.branchNum}" th:text="${row.branchName}"  th:each="row : ${branchList}"                   	
+		                  	></option>
+		         </select>
+				</div>
+			
+			</th:block>
+			<th:block th:unless="${param.branchNum.toString().equals('999')}">
+						
+				<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
+				  <select th:if="${not #lists.isEmpty( branchList )}" 
+				   id="branchNum"
+				   class="form-select" required="required" disabled >		   		  
+		                  <option th:value="${row.branchNum}" th:text="${row.branchName}"  th:each="row : ${branchList}"                   	
+		                  	th:if="${#strings.equals(param.branchNum,row.branchNum)}"></option>
+		         </select>
+				</div>
+			</th:block>
+	
+	
+
+
+		
 		
 			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
 				<select onchange="categoryChange(this)" class="form-select" id="category1">
 					<option value="all">전체</option>
-					<option value="b"  >음료</option>
+					<option value="b">음료</option>
 					<option value="d">베이커리</option>
 				</select>
 			</div>
+
 			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
 				<select id="good" name="codeId" class="form-select" onchange="categorySubChange(this)" disabled>
 					<option></option>
@@ -92,8 +115,10 @@
 	<div style="margin-bottom: 150px">
 	
 	</div>
-</div>
-	<div th:replace="fragments/modal::modal"></div>
+
+	<div th:replace="/fragments/modal::modal"></div>
+
+
 
 
 
@@ -615,7 +640,3 @@ function cartCheck(cartNum){
 
 
 </th:block>
-
-
-
-</html>

@@ -33,4 +33,8 @@ public class ProductDTO extends CommonDTO {
 	private List<Long> fileIdxs;
 	
 	
+	/*------------------------------------------*/
+	/* 이미지 경로 주문 페이지 이미지 경로 불러올떄 필요함*/    
+	private String imgPath;
+	
 }
