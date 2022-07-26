@@ -21,11 +21,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:if="${not #lists.isEmpty( BranchProductList )}" th:each="row : ${BranchProductList}" >
+                    <tr th:if="${not #lists.isEmpty( BranchProductList )}" th:each="row,index : ${BranchProductList}" >
                         <td scope="row" th:text="${row.productNum}"></td>
                         <td class="text-left" th:text="${row.name}"></td>
                         <td>
-                            <select name="hidenYn" id="Yn">
+                            <select th:id="'hidenYn'+${index.count}">
                                 <option value="N">판매</option>
                                 <option value="Y">가리기</option>
                             </select>
@@ -65,12 +65,15 @@
             var uri = /*[[ @{/product/list2} ]]*/null;
             var html = "";
             
-            var Yn=document.getElementById('Yn');
-            var hidenYn=Yn.options[Yn.selectedIndex].value;
+            var idNum=(productNum%10)==0? '10':(productNum%10);
+            
+            var hidenYn=document.getElementById("hidenYn"+idNum);
+            var hidenYnValue=hidenYn.options[hidenYn.selectedIndex].value;
+            //alert("hidenYn.selectedIndex: "+hidenYn.selectedIndex+" hidenYnValue: "+hidenYnValue); 
            
             html += '<form name="dataForm" action="'+uri+'" method="post">';
                 html += '<input type="hidden" name="productNum" value="'+productNum+'" />';
-                html += '<input type="hidden" name="hidenYn" value="'+hidenYn+'" />';
+                html += '<input type="hidden" name="hidenYn" value="'+hidenYnValue+'" />';
                 html += '<input type="hidden" name="branchNum" value="'+branchNum+'" />';
             html += '</form>'; 
 

@@ -3,6 +3,7 @@ package com.yum.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.yum.domain.BranchProductDTO;
 import com.yum.domain.ProductDTO;
@@ -19,9 +20,7 @@ public interface BranchProductMapper {
 	//select 
 	public List<BranchProductDTO> selectBPList(BranchProductDTO params);
 	
-	//public BranchProductDTO selectBProductDetail(long branchNum);
-	
-	public int selectBProductTotalCount(BranchProductDTO params);
+	public int selectBProductTotalCount(@Param("userNum") int userNum);
 	
 	//update(hidenYn)
 	public void updateBProductState(BranchProductDTO params);

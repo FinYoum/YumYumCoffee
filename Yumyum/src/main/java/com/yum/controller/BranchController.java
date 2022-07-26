@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yum.constant.Method;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.yum.constant.SessionConstants;
 import com.yum.domain.BranchDTO;
@@ -93,8 +94,25 @@ public class BranchController {
 		return "branch/branch";
 	}
 	
+<<<<<<< HEAD
 	
 //	선택한 지점에 대해 가리기가 적용된 제품 목록
+=======
+	@GetMapping(value = "/map")
+	public String viewMap(@RequestParam(value = "branchNum", required = false) Long branchNum, Model model, HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);	
+		model.addAttribute("branchNum", branchNum);
+		if (branchNum == null) {
+			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 지점 리스트로 리다이렉트
+			return "redirect:/yumyum/branch";
+		}
+		
+		return "branch/map";
+	}
+
+>>>>>>> refs/remotes/origin/main
 	@GetMapping(value = "/product")
 	public String openproductList( 
 			@RequestParam(value = "branchNum", required = false) Long branchNum
@@ -114,8 +132,12 @@ public class BranchController {
 		}
 	}
 	
+<<<<<<< HEAD
 
 //	장바구니에 제품 추가
+=======
+	@PostMapping(value = "/product/addCart")
+>>>>>>> refs/remotes/origin/main
 	@ResponseBody
 	@RequestMapping(value = {"/product/addcart"}, method = { RequestMethod.POST, RequestMethod.PATCH })
 	public ResponseEntity<?> addCart(@RequestBody CartDTO cartDTO,  HttpSession session, Model model) {		
@@ -179,7 +201,11 @@ public class BranchController {
 	}
 	
 	
+<<<<<<< HEAD
 //	제품 카테고리에 따른 제품 목록 변경
+=======
+	@GetMapping(value = "/product/catgoryProductList/{codeId}")
+>>>>>>> refs/remotes/origin/main
 	@ResponseBody
 	@GetMapping(value = "/product/catgoryProductList/{codeId}")
 	public ResponseEntity<?> catgoryProductList(@PathVariable("codeId") String codeId,

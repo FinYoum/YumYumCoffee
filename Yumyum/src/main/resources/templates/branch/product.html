@@ -12,9 +12,6 @@
 </style>	
 </th:block>
 
-
-
-
 <th:block layout:fragment="header">
 	<h4 class="display-3 fw-bolder">yumyum
 	
@@ -40,6 +37,8 @@
 			aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
+		
+		<div class="row">
 
 	
 		<input type="hidden" th:value="${param.branchNum}" id="branchNum">
@@ -54,7 +53,6 @@
                   		></option>
          </select>
 		</div>
-		
 		
 			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
 				<select onchange="categoryChange(this)" class="form-select" id="category1">
@@ -94,7 +92,7 @@
 	<div style="margin-bottom: 150px">
 	
 	</div>
-
+</div>
 	<div th:replace="fragments/modal::modal"></div>
 
 
