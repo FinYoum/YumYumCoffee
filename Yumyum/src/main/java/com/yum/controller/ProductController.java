@@ -30,7 +30,8 @@ public class ProductController extends UiUtils{
 	private ProductService productService;
 	
 	@GetMapping(value="/product/write")
-	public String openProductWrite(@RequestParam(value="productNum", required=false) Long productNum, Model model ) {
+	public String openProductWrite(@RequestParam(value="productNum", required=false) Long productNum, Model model, HttpSession session ) {
+		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		
 		if(productNum == null) {
 			//productNum이 null일 경우 비어있는 객체를 전달(ProductDTO 객체를 product라는 이름으로)
@@ -51,8 +52,9 @@ public class ProductController extends UiUtils{
 	
 	
 	@PostMapping(value = "/product/register")
-	public String registerProduct(final ProductDTO params, final MultipartFile[] files, Model model)  throws Exception {
+	public String registerProduct(final ProductDTO params, final MultipartFile[] files, Model model, HttpSession session)  throws Exception {
 		//Map<String, Object> pagingParmas = getPagingParams(params);
+		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		try {
 			boolean isRegistered = productService.registerProduct(params,files);
 			if (isRegistered == false) {
@@ -68,6 +70,7 @@ public class ProductController extends UiUtils{
 	
 	@GetMapping(value = "/product/list")
 	public String openProductList(@ModelAttribute("params") ProductDTO params, Model model, HttpSession session) {
+		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		List<ProductDTO> productList = productService.getProductList(params);
 		model.addAttribute("productList", productList);
 
@@ -75,7 +78,8 @@ public class ProductController extends UiUtils{
 	}
 		
 	@GetMapping(value = "/product/view")
-	public String openProductDetail(@RequestParam(value = "productNum", required = false) Long productNum, Model model) {
+	public String openProductDetail(@RequestParam(value = "productNum", required = false) Long productNum, Model model, HttpSession session) {
+		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		if (productNum == null) {
 			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
 			return showMessageWithRedirect("올바르지 않은 접근입니다.", "/product/list", Method.GET, null, model);
@@ -98,7 +102,8 @@ public class ProductController extends UiUtils{
 	
 	//제품 삭제하기
 	@PostMapping(value = "/product/delete")
-	public String deleteImg(@RequestParam(value = "productNum", required = false) Long productNum, Model model) {
+	public String deleteImg(@RequestParam(value = "productNum", required = false) Long productNum, Model model, HttpSession session) {
+		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		if (productNum == null) {
 			return showMessageWithRedirect("올바르지 않은 접근입니다.", "/product/list", Method.GET, null, model);
 		}
@@ -126,7 +131,7 @@ public class ProductController extends UiUtils{
 	}
 	
 	@PostMapping(value = "/product/list2")
-	public String updateBProduct(BranchProductDTO params)  throws Exception {
+	public String updateBProduct(BranchProductDTO params, HttpSession session)  throws Exception {
 		productService.updateBProduct(params);
 		return "redirect:/product/list2";
 	}

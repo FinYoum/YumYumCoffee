@@ -70,7 +70,8 @@ public class BranchController {
 	 * @throws Exception
 	 */
 	@GetMapping(value = "/fileDownload/{imgNum}")
-	public DownloadView fileDownload(@PathVariable Long imgNum , Model model) throws Exception {			
+	public DownloadView fileDownload(@PathVariable Long imgNum , Model model, HttpSession session) throws Exception {			
+			MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
 			ImgDTO imgDTO=branchService.getImg(imgNum);	
 			if(imgDTO==null) {
 				throw new RuntimeException("해당 파일 존재 하지 않습니다.");
@@ -99,7 +100,6 @@ public class BranchController {
 //	선택한 지점에 대해 가리기가 적용된 제품 목록
 	@GetMapping(value = "/map")
 	public String viewMap(@RequestParam(value = "branchNum", required = false) Long branchNum, Model model, HttpSession session) {
-		
 		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		model.addAttribute("member", member);	
 		model.addAttribute("branchNum", branchNum);
@@ -200,7 +200,7 @@ public class BranchController {
 	@ResponseBody
 	@GetMapping(value = "/product/catgoryProductList/{codeId}")
 	public ResponseEntity<?> catgoryProductList(@PathVariable("codeId") String codeId,
-			ProductDTO  productDTO, Model model) {		
+			ProductDTO  productDTO, Model model, HttpSession session) {		
 		try {
 			productDTO.setCodeId(codeId);	
 			productDTO.setRecordsPerPage(12);
@@ -216,7 +216,7 @@ public class BranchController {
 //	제품 상제 정보
 	@ResponseBody
 	@GetMapping(value = "/product/detail/{productNum}")
-	public ResponseEntity<?> productDetail(@PathVariable Long productNum, Model model) throws JsonProcessingException {
+	public ResponseEntity<?> productDetail(@PathVariable Long productNum, Model model, HttpSession session) throws JsonProcessingException {
 
 		ProductDTO product = productService.getProductDetail(productNum);
 		if (product == null) {			

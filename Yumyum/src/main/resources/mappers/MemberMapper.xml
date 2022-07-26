@@ -31,7 +31,8 @@
 		INSERT INTO MEMBER
 			(user_num, name, id, pw, tel, email, birth)
 		VALUES
-			(user_num.nextval, #{name}, #{id}, #{pw}, #{tel}, #{email}, #{birth})
+			(user_num.nextval, #{name}, #{id}, #{pw}, #{tel}, #{email}
+			, TO_DATE(#{birth},'YYYY-MM-DD'))
 	</insert>
 
 	<select id="selectMemberDetail" parameterType="long" resultType="com.yum.domain.MemberDTO">
@@ -43,10 +44,8 @@
 	<update id="updateMember" parameterType="com.yum.domain.MemberDTO">
 		UPDATE MEMBER
 		   SET name = #{name}
-				, id = #{id}
 				, tel = #{tel}
 				, email = #{email}
-				, birth = #{birth}
 		 WHERE user_num = #{userNum}
 	</update>
 
