@@ -187,6 +187,7 @@ function getHtmlParsing(res){
 			currentPage=item.currentPageNo;
 		}	
 		const price=priceToString(item.price);
+		console.log(item)
 		
 		
 		html +=`			
@@ -577,12 +578,13 @@ function deleteCart(productNum, shotCustom){
 	     .then((response)=>response.json())
 	     .then((res)=>{
 	         if(res==true){
-	        	 cartList();
+	        	 
 	         }                   
 	     })
 	     .catch((error) => {
 	         console.log('에러 발생');    
 	     });
+	    cartList();
 	}
 }
 

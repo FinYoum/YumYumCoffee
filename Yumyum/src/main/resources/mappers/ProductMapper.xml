@@ -96,7 +96,6 @@
     <select id="selectProductList" parameterType="com.yum.domain.ProductDTO" resultType="com.yum.domain.ProductDTO">
 
        SELECT
-        
              product_num
 	        , code_id
 	        , name
