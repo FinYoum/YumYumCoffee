@@ -94,10 +94,8 @@ public class BranchController {
 		return "branch/branch";
 	}
 	
-<<<<<<< HEAD
 	
 //	선택한 지점에 대해 가리기가 적용된 제품 목록
-=======
 	@GetMapping(value = "/map")
 	public String viewMap(@RequestParam(value = "branchNum", required = false) Long branchNum, Model model, HttpSession session) {
 		
@@ -112,7 +110,7 @@ public class BranchController {
 		return "branch/map";
 	}
 
->>>>>>> refs/remotes/origin/main
+
 	@GetMapping(value = "/product")
 	public String openproductList( 
 			@RequestParam(value = "branchNum", required = false) Long branchNum
@@ -132,12 +130,11 @@ public class BranchController {
 		}
 	}
 	
-<<<<<<< HEAD
+
 
 //	장바구니에 제품 추가
-=======
+
 	@PostMapping(value = "/product/addCart")
->>>>>>> refs/remotes/origin/main
 	@ResponseBody
 	@RequestMapping(value = {"/product/addcart"}, method = { RequestMethod.POST, RequestMethod.PATCH })
 	public ResponseEntity<?> addCart(@RequestBody CartDTO cartDTO,  HttpSession session, Model model) {		
@@ -201,13 +198,11 @@ public class BranchController {
 	}
 	
 	
-<<<<<<< HEAD
+
 //	제품 카테고리에 따른 제품 목록 변경
-=======
 	@GetMapping(value = "/product/catgoryProductList/{codeId}")
->>>>>>> refs/remotes/origin/main
 	@ResponseBody
-	@GetMapping(value = "/product/catgoryProductList/{codeId}")
+//	@GetMapping(value = "/product/catgoryProductList/{codeId}")
 	public ResponseEntity<?> catgoryProductList(@PathVariable("codeId") String codeId,
 			ProductDTO  productDTO, Model model) {		
 		try {
