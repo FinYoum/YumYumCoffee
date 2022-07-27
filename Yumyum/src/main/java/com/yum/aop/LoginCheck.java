@@ -39,7 +39,7 @@ public class LoginCheck {
 			)
 	
 //    @Around("execution(* com.yum.controller.*.*(..)) "
-//    		+ "and !execution(* com.yum.controller.LoginController.*(..))"
+//    		+ "and !(execution(* com.yum.controller.LoginController.*(..)) and "
 //    		+ "and !execution(* com.yum.controller.EmailController.*(..))"
 //    		+ "and execution(* com.yum.controller.LoginController.logout())"
 //    		+ "and execution(* com.yum.controller.LoginController.updatePw())")
