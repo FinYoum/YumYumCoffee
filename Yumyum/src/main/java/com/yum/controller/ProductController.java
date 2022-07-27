@@ -139,7 +139,7 @@ public class ProductController extends UiUtils{
 	//지점장페이지 
 	@GetMapping(value = "/product/list2")
 	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model, HttpSession session) {
-		System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
+		//System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
 		
 		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		model.addAttribute("member", member);
