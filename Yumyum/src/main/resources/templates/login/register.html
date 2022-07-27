@@ -73,14 +73,14 @@
 		<div class="input-group mt-2" style="width:500px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">이메일</span>
 		<!-- email -->	
-			<input type="text" id="email" name="email" th:field="*{email}" class="form-control"
+			<input type="text" th:field="*{email}" class="form-control"
 					placeholder="이메일을 입력해 주세요." required oninput = "emailCheck()" />
-			<input type="button" class="btn btn-secondary waves-effect waves-light" 
+			<input type="button" class="btn btn-outline-secondary waves-effect waves-light" 
 					id="btnCertify" name="btnCertify" value="인증하기">
 		<!-- 인증코드 -->		
 			<input type="text" id="certifyCode" name="certifyCode" style="display:none;"
 					class="form-control" placeholder="인증코드">
-			<input type="button" class="btn btn-secondary waves-effect waves-light" style="display:none;" 
+			<input type="button" class="btn btn-outline-secondary waves-effect waves-light" style="display:none;" 
 					id="btnCodeSubmit" name="btnCodeSubmit" value="전송">
 		</div>
 		<div class="input-group" style="width:500px; margin:auto;">
@@ -142,6 +142,10 @@
 	})
 	
 	.on('click', '#btnCertify', function(){
+		if($('#email').val()==null || $('#email').val()==""){
+			alert('이메일 주소를 입력해주세요.')
+			return false;
+		} else{
 		$.ajax({
 		   	url:'/mail',
 			type:'POST',
@@ -168,6 +172,7 @@
 		        return false;
 			}
 		});
+	}
 	})
 	
 	.on('submit', function() {
