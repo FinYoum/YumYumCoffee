@@ -27,13 +27,6 @@ public class Criteria {
 
 	/** 전체 페이지 개수 */
 	private int totalPageCount;
-	
-	
-	/** 검색 키워드 */
-	private String searchKeyword;
-
-	/** 검색 유형 */
-	private String searchType;
 
 	public Criteria() {
 		this.currentPageNo = 1;
@@ -51,8 +44,6 @@ public class Criteria {
 				.queryParam("currentPageNo", pageNo)
 				.queryParam("recordsPerPage", recordsPerPage)
 				.queryParam("pageSize", pageSize)
-				.queryParam("searchType", searchType)
-				.queryParam("searchKeyword", searchKeyword)
 				.build()
 				.encode();
 
