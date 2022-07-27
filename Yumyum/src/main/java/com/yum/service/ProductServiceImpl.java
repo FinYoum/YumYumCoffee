@@ -110,7 +110,6 @@ public class ProductServiceImpl implements ProductService {
 			
 			if(productList!=null) {
 				
-
 				productList.get(0).setTotalRecordCount(productTotalCount);//총 데이터 수
 				productList.get(0).setTotalPageCount(paginationInfo.getTotalPageCount());//전체 페이지 갯수
 				productList.get(0).setCurrentPageNo(paginationInfo.getCriteria().getCurrentPageNo()); // 현재 페이지 번호

@@ -32,6 +32,11 @@ public class ProductController extends UiUtils{
 	@GetMapping(value="/product/write")
 	public String openProductWrite(@RequestParam(value="productNum", required=false) Long productNum, Model model, HttpSession session ) {
 		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);
+	    
+		if(member == null || member.getAuthority()!=3) { 
+		   return showMessageWithRedirect("접근할수 없는 페이지입니다.", "/home", Method.GET, null, model);
+	    }
 		
 		if(productNum == null) {
 			//productNum이 null일 경우 비어있는 객체를 전달(ProductDTO 객체를 product라는 이름으로)
@@ -71,6 +76,13 @@ public class ProductController extends UiUtils{
 	@GetMapping(value = "/product/list")
 	public String openProductList(@ModelAttribute("params") ProductDTO params, Model model, HttpSession session) {
 		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);
+	    
+		if(member == null || member.getAuthority()!=3) { 
+		   return showMessageWithRedirect("접근할수 없는 페이지입니다.", "/home", Method.GET, null, model);
+	    }
+		 
+		
 		List<ProductDTO> productList = productService.getProductList(params);
 		model.addAttribute("productList", productList);
 
@@ -80,6 +92,12 @@ public class ProductController extends UiUtils{
 	@GetMapping(value = "/product/view")
 	public String openProductDetail(@RequestParam(value = "productNum", required = false) Long productNum, Model model, HttpSession session) {
 		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);
+	    
+		if(member == null || member.getAuthority()!=3) { 
+		   return showMessageWithRedirect("접근할수 없는 페이지입니다.", "/home", Method.GET, null, model);
+	    }
+		
 		if (productNum == null) {
 			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
 			return showMessageWithRedirect("올바르지 않은 접근입니다.", "/product/list", Method.GET, null, model);
@@ -104,6 +122,12 @@ public class ProductController extends UiUtils{
 	@PostMapping(value = "/product/delete")
 	public String deleteImg(@RequestParam(value = "productNum", required = false) Long productNum, Model model, HttpSession session) {
 		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);
+	    
+		if(member == null || member.getAuthority()!=3) { 
+		   return showMessageWithRedirect("접근할수 없는 페이지입니다.", "/home", Method.GET, null, model);
+	    }
+		
 		if (productNum == null) {
 			return showMessageWithRedirect("올바르지 않은 접근입니다.", "/product/list", Method.GET, null, model);
 		}
@@ -116,10 +140,13 @@ public class ProductController extends UiUtils{
 	@GetMapping(value = "/product/list2")
 	public String openProductList2(@ModelAttribute("params") BranchProductDTO params, Model model, HttpSession session) {
 		System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
-		//System.out.println("==========controller 시작: "+params.getBranchNum()+"==========");
 		
 		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
 		model.addAttribute("member", member);
+	    
+		if(member == null || member.getAuthority()!=2 ) { 
+		   return showMessageWithRedirect("접근할수 없는 페이지입니다.", "/home", Method.GET, null, model);
+	    }
 		
 		int userNum= member.getUserNum();
 		
