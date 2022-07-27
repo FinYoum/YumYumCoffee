@@ -1,15 +1,14 @@
 package com.yum.aop;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
 
 import com.yum.constant.SessionConstants;
 
@@ -18,6 +17,10 @@ import com.yum.constant.SessionConstants;
 public class LoginCheck {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Pointcut("* com.yum.controller.*.*(..)) ")
+    public void contain() {
+    }
 	    
 //  cut(), logout()의  메소드가 실행되는 지점의 이전에 Before()내의 메소드 수행
 //	execution(리턴타입 패키지.*.*(..)) >> * 모든 파일, (..)0개이상의 파라미터를 가진 메소드
@@ -27,22 +30,16 @@ public class LoginCheck {
 //  LoginController의 logout메서드 추가
 	
 	@Around("execution(* com.yum.controller.APIController.*(..)) "
-			+"execution(* com.yum.controller.BranchController.*(..)) "
-			+"execution(* com.yum.controller.CartController.*(..)) "
-			+"execution(* com.yum.controller.ImpContoroller.*(..)) "
-			+"execution(* com.yum.controller.MypageController.*(..)) "
-			+"execution(* com.yum.controller.OrderController.*(..)) "
-			+"execution(* com.yum.controller.PaymentController.*(..)) "
-			+"execution(* com.yum.controller.ProductController.*(..)) "
-			+ "and execution(* com.yum.controller.LoginController.logout())"
-    		+ "and execution(* com.yum.controller.LoginController.updatePw())"
+			+"|| execution(* com.yum.controller.BranchController.*(..)) "
+			+"|| execution(* com.yum.controller.CartController.*(..)) "
+			+"|| execution(* com.yum.controller.ImpContoroller.*(..)) "
+			+"|| execution(* com.yum.controller.MypageController.*(..)) "
+			+"|| execution(* com.yum.controller.OrderController.*(..)) "
+			+"|| execution(* com.yum.controller.PaymentController.*(..)) "
+			+"|| execution(* com.yum.controller.ProductController.*(..)) "
+			+"|| execution(* com.yum.controller.LoginController.logout())"
+    		+"|| execution(* com.yum.controller.LoginController.updatePw())"
 			)
-	
-//    @Around("execution(* com.yum.controller.*.*(..)) "
-//    		+ "and !(execution(* com.yum.controller.LoginController.*(..)) and "
-//    		+ "and !execution(* com.yum.controller.EmailController.*(..))"
-//    		+ "and execution(* com.yum.controller.LoginController.logout())"
-//    		+ "and execution(* com.yum.controller.LoginController.updatePw())")
     public Object loginCheck(ProceedingJoinPoint  joinPoint) throws Throwable {
 //	매개변수로 HttpSession이나 HttpServletRequest를 넣으면 null값이 전달되어 에러 발생
     	logger.debug("AOP 로그인 체크 진입");
