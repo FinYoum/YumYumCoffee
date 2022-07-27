@@ -127,7 +127,7 @@
     <script th:inline="javascript">
 		let branchNum=/*[[ ${branchNum} ]]*/null;
 		let userNum=/*[[ ${member.userNum} ]]*/null;
-		console.log(userNum);
+		console.log(userNum, branchNum);
 		
 		$(function(){
 			getMenuOne("all");
@@ -212,7 +212,7 @@
 					currentPage=item.currentPageNo;
 				}	
 				const price=priceToString(item.price);
-				console.log(item)
+				//console.log(item)
 				
 				
 				html +=`			
@@ -281,7 +281,7 @@
 		// 페이징 표시 함수 
 		function pagingNation(){
 		
-		    console.log("currentPage : " + currentPage);
+		    //console.log("currentPage : " + currentPage);
 		
 		    totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
 		
@@ -375,7 +375,7 @@
 			$.get("/product/detail/"+productNum, function(res){
 				res =JSON.parse(res);
 				
-				console.log(res);
+				//console.log(res);
 				
 				const price=res.product.price;
 				const info=res.product.info;
@@ -470,7 +470,7 @@
 					
 					html +=`	<li id="cartLi-${num}">		
 					 <div id="cartId-${num}" class="cartlistDiv">	             
-				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" >
+				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck('${item.cartNum}')">
 				         <span class="cart-text">${item.name}</span>     
 				         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
 				         <input type="number"  class="cart-input" id="cartNumber-${num}" value="${item.qty}"
@@ -509,10 +509,6 @@
 			   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;" id="total-sum">합계 0원</p>		
 			 
 			 
-			 	 <button class="btn btn-outline-dark " type="button" onclick="addCartList()">
-		                            <i class="bi-cart-fill me-1"></i>
-		                            Cart                          
-		       </button>
 			   <button class="btn btn-info text-white " style="margin-left: 150px; width: 81px;">구매</button>
 			   	
 			</li>
@@ -520,6 +516,11 @@
 				`;
 			
 				
+			 	/*  <button class="btn btn-outline-dark " type="button" onclick="addCartList()">
+		                            <i class="bi-cart-fill me-1"></i>
+		                            Cart                          
+		       </button> */
+		       
 				$("#cartList").html(html);	
 				
 			  });
