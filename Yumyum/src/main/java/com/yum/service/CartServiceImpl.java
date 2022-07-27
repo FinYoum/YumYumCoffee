@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService{
 		} else{
 		//	장바구니에 데이터가 있다면, update 	
 			params.setQty(checkCart.getQty()+Long.valueOf(1));
-			queryResult = cartMapper.updateCartQty(params);
+			queryResult = cartMapper.addCart(params);
 		}
 		return (queryResult == 1) ? true : false;
 	}

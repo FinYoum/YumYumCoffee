@@ -116,7 +116,7 @@
 	
 	</div>
 
-	<div th:replace="/fragments/modal::modal"></div>
+	<div th:replace="/fragments/productModal::modal"></div>
 
 
 
@@ -218,12 +218,12 @@ function getHtmlParsing(res){
 		html +=`			
 	        <div class="col-md-3 col-sm-3 col-lg-3">    
 	           <div class="card mb-3">		                             
-	               <div class="image" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum})"  href="#MyModal">
+	               <div class="image" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum}), openModal()"  >
 	                <img src="${item.imgPath}"  class="img-fluid img-thumbnail" >		                
 	               </div>
 	               <div class="card-body">
 	                 <div class="row">
-	                   <div class="col-8 text-left" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum})"  href="#MyModal" style="cursor:pointer">
+	                   <div class="col-8 text-left" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum}), openModal()"  style="cursor:pointer">
 	                   <p>${item.name}</p>
 	                   </div>
 	                   <div class="col-md-4">
@@ -420,7 +420,7 @@ function addCart(productNum){
         		"userNum":userNum,
                 "branchNum":branchNum,
                 "productNum":$("#modal-productNum").val(),
-                "shotCustom":$("#modal-shotCustom").val(),      // 커스텀 옵션 수정 추가할 것      
+                "shotCustom":$("input[class='form-check-input']:checked").val()
         }
     }else{
          params={
@@ -472,11 +472,11 @@ function cartList(){
 			 <div id="cartId-${num}" class="cartlistDiv">	             
 		         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" >
 		         <span class="cart-text">${item.name}</span>     
-		         <button class="cart-btn" onclick="cartMius('${item}')">-</button>
+		         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
 		         <input type="number"  class="cart-input" id="cartNumber-${num}" value="${item.qty}"
 		         	readonly
 		         oninput='handleOnInput(this)' max="2" size="2" > 
-		         <button class="cart-btn" onclick="cartPlus('${item}')" >+</button>
+		         <button class="cart-btn" onclick="cartPlus('${item.productNum}','${item.shotCustom}','${item.qty}')" >+</button>
 		      	 <button type="button" class="cart-delete"  onclick='deleteCart("${item.productNum}","${item.shotCustom}")' ><i class="fa fa-trash"
 		      	 style="font-size: 22px;"
 		      	 ></i></button>
@@ -531,19 +531,20 @@ function cartList(){
 				
 }
 
-function cartPlus(item){
-	let qty=$("#cartNumber-"+id).val();
+function cartPlus(productNum, shotCustom, currentQty){
+	let qty=currentQty
 	if(qty>=99){
 		alert("99 이상은 주문이 안됩니다.");
 		return ;
 	}
 	qty++;
 	
-	cartUpdatePirce(item, qty);
+	cartUpdatePirce(productNum, shotCustom, qty);
 }
 
-function cartMius(item){
-	let qty=$("#cartNumber-"+id).val();
+function cartMinus(productNum, shotCustom, currentQty){
+	let qty=currentQty
+/* 	let qty=$("#cartNumber-"+id).val(); */
 	if(qty<=1){
 		alert("1개 이하는 주문이 안됩니다.");
 		return ;
@@ -551,19 +552,20 @@ function cartMius(item){
 	qty--;
 	
 	
-	cartUpdatePirce(item, qty);
+	cartUpdatePirce(productNum, shotCustom, qty);
 	
 }
 
-function cartUpdatePirce(item, qty){
-	
+function cartUpdatePirce(productNum, shotCustom, qty){
+	   console.log(productNum, shotCustom, qty)
 	   let params={
                 "userNum":userNum,
                 "branchNum":branchNum,
-                "productNum":$("#modal-productNum").val(),
-                "shotCustom":$("#modal-shotCustom").val(),    
+                "productNum":productNum,
+                "shotCustom":shotCustom,
+                "qty":qty
 	        }
-	    
+	    console.log(params);
 	    $.ajax({
 	        url: "/product/updatecart",
 	        type: "post",
@@ -574,13 +576,13 @@ function cartUpdatePirce(item, qty){
 	    .then((response)=>response.json())
 	    .then((res)=>{
 	    	if(res==true){
-	    		cartList();
+	    		
 	        }                   
 	    })
 	    .catch((error) => {
 	        console.log('에러 발생');  
 	    });
-	   
+	    cartList();
 }
 
 
@@ -637,6 +639,11 @@ function cartCheck(cartNum){
 	 */
 
      /*]]>*/
+     function openModal() {
+         $("#MyModal").modal("toggle");
+     }
+     
+     
      </script>
  </th:block>
 

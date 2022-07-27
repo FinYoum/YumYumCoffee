@@ -167,12 +167,6 @@ public class BranchController {
 	@RequestMapping(value={"/product/updatecart"}, method = { RequestMethod.POST, RequestMethod.PATCH })
 	public ResponseEntity<?> updateCart2(@RequestBody CartDTO cartDTO , HttpSession session, Model model) {		
 		try {
-			MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);			
-			if(member==null) {			
-				return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString("login error"));	
-			}
-
-			cartDTO.setUserNum(Long.valueOf(member.getUserNum()));
 			boolean result= cartService.updateCartQty(cartDTO);
 			return ResponseEntity.status(HttpStatus.OK).body(new ObjectMapper().writeValueAsString(result));			
 		} catch (Exception e) {			

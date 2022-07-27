@@ -50,7 +50,6 @@
 					p.PRODUCT_NUM = #{productNum}
  				AND
 					s.SHOT_CUSTOM = #{shotCustom})
-			, INSERT_TIME=CURRENT_DATE
 		WHERE 
 			USER_NUM = #{userNum} 
 		AND 
@@ -60,6 +59,33 @@
 		AND 
 			SHOT_CUSTOM = #{shotCustom}
 	</update>
+	
+	   <!--장바구니에 제품이 있는 상태에서 제품 추가 -->
+    <update id="addCart" parameterType="com.yum.domain.CartDTO">
+        UPDATE 
+            CART
+        SET 
+            QTY = #{qty}
+            , TOTAL_PRICE=  
+                (SELECT 
+                    (p.PRICE+s.PRICE)*#{qty}
+                FROM
+                    PRODUCT p
+                    , SHOTCUSTOM s
+                WHERE
+                    p.PRODUCT_NUM = #{productNum}
+                AND
+                    s.SHOT_CUSTOM = #{shotCustom})
+            , INSERT_TIME=CURRENT_DATE
+        WHERE 
+            USER_NUM = #{userNum} 
+        AND 
+            PRODUCT_NUM = #{productNum}
+        AND 
+            BRANCH_NUM = #{branchNum}
+        AND 
+            SHOT_CUSTOM = #{shotCustom}
+    </update>
 			
 	<!-- 제품이 장바구니에 있는지 확인 -->
 	<select id="selectCart" parameterType="com.yum.domain.CartDTO" resultType="com.yum.domain.CartDTO">
