@@ -470,7 +470,7 @@
 					
 					html +=`	<li id="cartLi-${num}">		
 					 <div id="cartId-${num}" class="cartlistDiv">	             
-				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck('${item.cartNum}')">
+				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()">
 				         <span class="cart-text">${item.name}</span>     
 				         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
 				         <input type="number"  class="cart-input" id="cartNumber-${num}" value="${item.qty}"
@@ -620,7 +620,7 @@
 		
 		
 		 
-		function cartCheck(cartNum){
+		function cartCheck(){
 		
 		//	console.log(cartNum);
 			let totalSum =0;
