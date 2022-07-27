@@ -16,10 +16,10 @@
 
 
 <th:block layout:fragment="header">
-<!-- <input type="text" id="paramCategoy" th:value="${param.category1}"> -->
+<input type="hidden" id="paramCategoy" th:value="${param.category1}"> 
 	
 	
-	<h4 class="display-3 fw-bolder">yumyum
+	<h4 class="display-3 fw-bolder">order
 	
 	
     <input type="hidden" th:value="${session.loginMember}"  id="loginMemberInput" >    	   
@@ -123,526 +123,528 @@
 
 
 <!-- 자바스크립트 -->
-    <th:block layout:fragment="script">
-        <script th:inline="javascript">
-let branchNum=/*[[ ${branchNum} ]]*/null;
-let userNum=/*[[ ${member.userNum} ]]*/null;
-console.log(userNum);
-
-$(function(){
-	getMenuOne("all");
-});
-
-
-//카테고리 표시 함수
-function categoryChange(e) {
-    var good_b = ["전체", "커피", "주스","스무디", "에이드", "티"];
-    var good_d = ["전체","빵", "케이크"];
-
-    var good_b_v = ["all", "b1", "b2", "b3", "b4","b5"];
-    var good_d_v = ["all", "d1", "d2"];
-
-    var target = document.getElementById("good");
-
-    if(e.value == "b") {
-        var d = good_b; 
-        var b = good_b_v;
-        
-        $("#good").attr("disabled", false);
-       
-    } else if(e.value == "d") {
-        var d = good_d;
-        var b = good_d_v;
-        
-        $("#good").attr("disabled", false);
-    }else{
-    	$("#good").attr("disabled", true);
-    }
-    
-    getMenuOne(e.value);    
-    target.options.length = 0;
-
-    for (x in d) {
-        var opt = document.createElement("option");
-            for (i in b){
-                opt.value = b[x];
-            }
-        opt.innerHTML = d[x];
-        target.appendChild(opt);
-    }
-
-}
-
-//첫번째 카테고리 변경시 데이터 가져오기
-function getMenuOne(codeId){	
-	$.get("/product/catgoryProductList/"+codeId, function(res){
-		getHtmlParsing(res);
-	});
-}
-
-//두번 카테고리 변경시 데이터 가져오기
-function categorySubChange(e){	
-	let codeId=e.value;
-	
-	if(codeId=="all"){
-		codeId=$("#category1").val();
-	}
-	
-	//console.log(codeId);
-	$.get("/product/catgoryProductList/"+codeId, function(res){		
-		getHtmlParsing(res);
-	}); 
-}
-
-//html 로 파싱하기
-function getHtmlParsing(res){		
-	let html="";
-	let cnt=0;
-	
-	console.log(res.length);
-	if(res.length==0){
-		totalData=0;
-	}
-	
-	res.forEach(function(item){
-		if(cnt==0){
-			totalData=item.totalRecordCount;
-			dataPerPage=item.recordsPerPage; 
-			pageCount=item.totalPageCount; 
-			currentPage=item.currentPageNo;
-		}	
-		const price=priceToString(item.price);
-		console.log(item)
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+		let branchNum=/*[[ ${branchNum} ]]*/null;
+		let userNum=/*[[ ${member.userNum} ]]*/null;
+		console.log(userNum);
 		
-		
-		html +=`			
-	        <div class="col-md-3 col-sm-3 col-lg-3">    
-	           <div class="card mb-3">		                             
-	               <div class="image" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum}), openModal()"  >
-	                <img src="${item.imgPath}"  class="img-fluid img-thumbnail" >		                
-	               </div>
-	               <div class="card-body">
-	                 <div class="row">
-	                   <div class="col-8 text-left" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum}), openModal()"  style="cursor:pointer">
-	                   <p>${item.name}</p>
-	                   </div>
-	                   <div class="col-md-4">
-	                    <button type="button" data-id="105" class="fa far-card-icon cart-icon" onclick="addCart(${item.productNum})"> 
-	                    <i class="fa fa-shopping-cart fa-2x"></i></button>
-	                   </div>
-	                  <div class="col-md-12 text-right">
-	                   <strong>${price}원 </strong>                    
-	                  </div>		                  
-	                 </div>
-	               </div>
-	           </div>
-	         </div>			
-		`;
-		
-		cnt++;
-	});
-	
-	if(totalData>0){
-		$("#productList").html(html);			
-	}else{
-		$("#productList").html(`<h1 style="font-size: 2.0rem;margin-top: 50px; text-algin:center" >등록된 데이터가 없습니다.</h1>`);
-	}
-	
-	const loginMemberInput=$("#loginMemberInput").val();
-	//console.log(loginMemberInput);
-	
-	if(loginMemberInput	!=""){
-		//사이드바 존재 확인
-		if(!$("#sidebar").hasClass("d-flex")){			
-			$("main").css("display", "flex");
-			$("main").css("flex-wrap", "nowrap");
-			$("main").css("height", "110vh");
-			$("main").css("height", "webkit-fill-available");
-			$("main").css("max-height", "200vh");
-			$("main").css("overflow-x", "auto");
-			$("main").css("overflow-y", "scroll !important"); 		
-			$("#sidebar").addClass("d-flex");			
-			//장바구니 목록 가져오기
-			cartList();
-		}
-	}
-
-	
-	pagingNation();
-}
-
-
-let totalData; //총 데이터 수
-let dataPerPage; //한 페이지에 나타낼 글 수
-let pageCount; //페이징에 나타낼 페이지 수
-let currentPage; //현재 페이지
-
-
-// 페이징 표시 함수 
-function pagingNation(){
-
-    console.log("currentPage : " + currentPage);
-
-    totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
-
-    if (totalPage < pageCount) {
-        pageCount = totalPage;
-    }
-
-    let pageGroup = Math.ceil(currentPage / pageCount); // 페이지 그룹
-    let last = pageGroup * pageCount; //화면에 보여질 마지막 페이지 번호
-
-    if (last > totalPage) {
-        last = totalPage;
-    }
-
-    let first = last - (pageCount - 1); //화면에 보여질 첫번째 페이지 번호
-    let next = last + 1;
-    let prev = first - 1;
-
-    let pageHtml = "";
-
-    if (prev > 0) {
-        pageHtml += "<li><a href='#' id='prev'> « </a></li>";
-    }
-
-    //페이징 번호 표시 
-    for (var i = first; i <= last; i++) {
-
-        if (currentPage == i) {
-            pageHtml +=
-                "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
-        } else {
-            pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
-        }
-    }
-
-
-    if (last < totalPage) {
-        pageHtml += "<li><a href='#' id='next'> » </a></li>";
-    }
-
-
-    if(totalData>0){
-    	document.querySelector("#pagingul").innerHTML = pageHtml;    		
-    }else{
-    	document.querySelector("#pagingul").innerHTML = "";
-    }
-    
-
-   // let displayCount = "";
-   // displayCount = "현재 1 - " + totalPage + " (" + currentPage + "페이지) / " + totalData + "건";
-   // document.querySelector("#displayCount").innerText = displayCount;
-
-    //페이징 번호 클릭 이벤트 
-    const paginationClass = document.querySelectorAll("#pagingul li a");
-    for (let i = 0; i < paginationClass.length; i++) {
-        paginationClass[i].addEventListener("click", function(e) {
-            e.preventDefault();
-
-            let $id = this.getAttribute("id")
-            selectedPage = this.innerText;
-
-            //console.log("선택한 페이지 ", selectedPage);
-            if ($id == "next") selectedPage = next;
-            if ($id == "prev") selectedPage = prev;
-            
-            
-            let codeId=$("#good").val();
-
-            if(codeId=="" || codeId=="all"){
-            	codeId=$("#category1").val();
-            }
-            if(codeId==null){
-            	codeId="all";
-            }
-                        
-            $.get("/product/catgoryProductList/"+codeId+"?currentPageNo="+selectedPage, function(res){		
-        		getHtmlParsing(res);
-        	}); 	
-            
-        });
-    }
-
-}
-
-//3자리수마다 콤마
-function priceToString(price) {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-function detailProduct(productNum){
-	$.get("/product/detail/"+productNum, function(res){
-		res =JSON.parse(res);
-		
-		console.log(res);
-		
-		const price=res.product.price;
-		const info=res.product.info;
-		const productNum=res.product.productNum;
-		const name=res.product.name;		
-		const saveName=res.fileList[0].saveName;
-		const imgNum=res.fileList[0].imgPath;
-		
-		
-	//	console.log(price, info, productNum, name,saveName);
-		
-		$("#modal-productNum").val(productNum);		
-		$("#modal-price").html(priceToString(price)+"원");
-		$("#modal-info").html(info);
-		$("#modal-name").html(name);
-		$("#modal-imgNum").attr("src",  imgNum);
-		
-		$("input:checkbox[id='option1']").prop("checked", true);    
-		$("input:checkbox[id='option2']").prop("checked", false);    
-		$("input:checkbox[id='option3']").prop("checked", false);    
-		$("input:checkbox[id='option4']").prop("checked", false);   
-		  
-	});
-	
-	
-	
-}
-
-function handleOnInput(el) {
-  var maxlength=el.getAttribute('max');	  
-  if(el.value.length > maxlength)  {
-    el.value = el.value.substr(0, maxlength);
-  }
-}
-
-
-function addCart(productNum){	
-	
-	let params;
-    if(productNum==undefined){
-         params={
-        		"userNum":userNum,
-                "branchNum":branchNum,
-                "productNum":$("#modal-productNum").val(),
-                "shotCustom":$("input[class='form-check-input']:checked").val()
-        }
-    }else{
-         params={
-        		"userNum":userNum,
-                "branchNum":branchNum,
-                "productNum":productNum,
-                "shotCustom":1                  
-        }
-    }
-	
-	$.ajax({
-		url: "/product/addcart",
-        type: "post",
-        data: JSON.stringify(params),
-        dataType: "json",
-        contentType: "application/json",
-        success: function(res) {
-            if (res==true) {
-            	alert("장바구니에 담았습니다.");
-            }
-            cartList();
-        },
-        error: function(res) {
-        	console.log("에러가 발생하였습니다.");
-        }
-    });
-	 
-}
-
-
-function cartList(){
-	console.log("장바구니 목록 가져오기");
-    let uri = '/product/cartlist/'+userNum+'/'+branchNum;
-    
-    $.ajax({
-        url: uri,
-        type: "GET",
-        contentType: "application/json",
-    })
-	.then((response)=>{
-		let html="";
-	    response.forEach(function(item,num){
-	    	    	
-	    	
-			let price= priceToString(item.price);
-			let totalPrice=priceToString(item.totalPrice);
-			
-			html +=`	<li id="cartLi-${num}">		
-			 <div id="cartId-${num}" class="cartlistDiv">	             
-		         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" >
-		         <span class="cart-text">${item.name}</span>     
-		         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
-		         <input type="number"  class="cart-input" id="cartNumber-${num}" value="${item.qty}"
-		         	readonly
-		         oninput='handleOnInput(this)' max="2" size="2" > 
-		         <button class="cart-btn" onclick="cartPlus('${item.productNum}','${item.shotCustom}','${item.qty}')" >+</button>
-		      	 <button type="button" class="cart-delete"  onclick='deleteCart("${item.productNum}","${item.shotCustom}")' ><i class="fa fa-trash"
-		      	 style="font-size: 22px;"
-		      	 ></i></button>
-				 <input type="hidden"  id="cart-price-${num}"  value="${price}">	         
-	         <div>
-	          금액 ${price}원 /  합계 <span id='sum-${num}'>${totalPrice}</span>원<br>
-			`;				
-			
-			if(item.shotCustom==1){
-				html +='<small>선택안함</small> &nbsp;';
-			}
-			if(item.shotCustom==2){
-				html +='<small>연하게</small> &nbsp;';
-			}
-			if(item.shotCustom==3){
-				html +='<small>샷 추가(+500)</small> &nbsp;';
-			}
-			if(item.shotCustom==4){
-				html +='<small>2샷 추가(+1,000)</small>';
-			}
-			
-			html +="<div></div></li> ";
-			
+		$(function(){
+			getMenuOne("all");
 		});
 		
-		html +=`
-			<li style="margin-top: 100px; margin-bottom:100px">
-		    <hr style="border: 1px">
-	   <p class="mt-2 mb-2" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 70px;" id="total-number">총 0개</p>		
-	   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;" id="total-sum">합계 0원</p>		
-	 
-	 
-	 	 <button class="btn btn-outline-dark " type="button" onclick="addCartList()">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart                          
-       </button>
-	   <button class="btn btn-info text-white " style="margin-left: 150px; width: 81px;">구매</button>
-	   	
-	</li>
 		
-		`;
-	
+		//카테고리 표시 함수
+		function categoryChange(e) {
+		    var good_b = ["전체", "커피", "주스","스무디", "에이드", "티"];
+		    var good_d = ["전체","빵", "케이크"];
 		
-		$("#cartList").html(html);	
+		    var good_b_v = ["all", "b1", "b2", "b3", "b4","b5"];
+		    var good_d_v = ["all", "d1", "d2"];
 		
-	  });
-/* 		var height=$("#cartList").css("height");
-		console.log(res.length);
-		console.log(355*res.length);
-		$("#cartList").css("height" , 155*res.length+"px");
-		 */
+		    var target = document.getElementById("good");
+		
+		    if(e.value == "b") {
+		        var d = good_b; 
+		        var b = good_b_v;
+		        
+		        $("#good").attr("disabled", false);
+		       
+		    } else if(e.value == "d") {
+		        var d = good_d;
+		        var b = good_d_v;
+		        
+		        $("#good").attr("disabled", false);
+		    }else{
+		    	$("#good").attr("disabled", true);
+		    }
+		    
+		    getMenuOne(e.value);    
+		    target.options.length = 0;
+		
+		    for (x in d) {
+		        var opt = document.createElement("option");
+		            for (i in b){
+		                opt.value = b[x];
+		            }
+		        opt.innerHTML = d[x];
+		        target.appendChild(opt);
+		    }
+		
+		}
+		
+		//첫번째 카테고리 변경시 데이터 가져오기
+		function getMenuOne(codeId){	
+			$.get("/product/catgoryProductList/"+codeId, function(res){
+				getHtmlParsing(res);
+			});
+		}
+		
+		//두번 카테고리 변경시 데이터 가져오기
+		function categorySubChange(e){	
+			let codeId=e.value;
+			
+			if(codeId=="all"){
+				codeId=$("#category1").val();
+			}
+			
+			//console.log(codeId);
+			$.get("/product/catgoryProductList/"+codeId, function(res){		
+				getHtmlParsing(res);
+			}); 
+		}
+		
+		//html 로 파싱하기
+		function getHtmlParsing(res){		
+			let html="";
+			let cnt=0;
+			
+			console.log(res.length);
+			if(res.length==0){
+				totalData=0;
+			}
+			
+			res.forEach(function(item){
+				if(cnt==0){
+					totalData=item.totalRecordCount;
+					dataPerPage=item.recordsPerPage; 
+					pageCount=item.totalPageCount; 
+					currentPage=item.currentPageNo;
+				}	
+				const price=priceToString(item.price);
+				console.log(item)
 				
-}
-
-function cartPlus(productNum, shotCustom, currentQty){
-	let qty=currentQty
-	if(qty>=99){
-		alert("99 이상은 주문이 안됩니다.");
-		return ;
-	}
-	qty++;
-	
-	cartUpdatePirce(productNum, shotCustom, qty);
-}
-
-function cartMinus(productNum, shotCustom, currentQty){
-	let qty=currentQty
-/* 	let qty=$("#cartNumber-"+id).val(); */
-	if(qty<=1){
-		alert("1개 이하는 주문이 안됩니다.");
-		return ;
-	}
-	qty--;
-	
-	
-	cartUpdatePirce(productNum, shotCustom, qty);
-	
-}
-
-function cartUpdatePirce(productNum, shotCustom, qty){
-	   console.log(productNum, shotCustom, qty)
-	   let params={
-                "userNum":userNum,
-                "branchNum":branchNum,
-                "productNum":productNum,
-                "shotCustom":shotCustom,
-                "qty":qty
-	        }
-	    console.log(params);
-	    $.ajax({
-	        url: "/product/updatecart",
-	        type: "post",
-	        data: JSON.stringify(params),
-	        dataType: "json",
-	        contentType: "application/json",
-	    })
-	    .then((response)=>response.json())
-	    .then((res)=>{
-	    	if(res==true){
-	    		
-	        }                   
-	    })
-	    .catch((error) => {
-	        console.log('에러 발생');  
-	    });
-	    cartList();
-}
-
-
-function deleteCart(productNum, shotCustom){
-	if(confirm("정말 삭제 하시겠습니까?")){
-	    let params={
-	             "userNum":userNum,
-	             "branchNum":branchNum,
-	             "productNum":productNum,
-	             "shotCustom": shotCustom  
-	         }
-	     
-	     $.ajax({
-	         url: "/product/deletecart",
-	         type: "DELETE",
-	         data: JSON.stringify(params),
-	         dataType: "json",
-	         contentType: "application/json",
-	     })
-	     .then((response)=>response.json())
-	     .then((res)=>{
-	         if(res==true){
-	        	 
-	         }                   
-	     })
-	     .catch((error) => {
-	         console.log('에러 발생');    
-	     });
-	    cartList();
-	}
-}
-
-
-/* 
-function cartCheck(cartNum){
-
-//	console.log(cartNum);
-	let totalSum =0;
-
-	let cnt=0;
-	$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
-		cnt++;
-		const cartNum=$(this).attr("data-id");
-
-		let sum=$("#sum-"+cartNum).text();
-		sum =parseInt(sum.replace(",", ""));
-
-		totalSum +=sum;
+				
+				html +=`			
+			        <div class="col-md-3 col-sm-3 col-lg-3">    
+			           <div class="card mb-3">		                             
+			               <div class="image" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum}), openModal()"  >
+			                <img src="${item.imgPath}"  class="img-fluid img-thumbnail" >		                
+			               </div>
+			               <div class="card-body">
+			                 <div class="row">
+			                   <div class="col-8 text-left" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum}), openModal()"  style="cursor:pointer">
+			                   <p>${item.name}</p>
+			                   </div>
+			                   <div class="col-md-4">
+			                    <button type="button" data-id="105" class="fa far-card-icon cart-icon" onclick="addCart(${item.productNum})"> 
+			                    <i class="fa fa-shopping-cart fa-2x"></i></button>
+			                   </div>
+			                  <div class="col-md-12 text-right">
+			                   <strong>${price}원 </strong>                    
+			                  </div>		                  
+			                 </div>
+			               </div>
+			           </div>
+			         </div>			
+				`;
+				
+				cnt++;
+			});
+			
+			if(totalData>0){
+				$("#productList").html(html);			
+			}else{
+				$("#productList").html(`<h1 style="font-size: 2.0rem;margin-top: 50px; text-algin:center" >등록된 데이터가 없습니다.</h1>`);
+			}
+			
+			const loginMemberInput=$("#loginMemberInput").val();
+			//console.log(loginMemberInput);
+			
+			if(loginMemberInput	!=""){
+				//사이드바 존재 확인
+				if(!$("#sidebar").hasClass("d-flex")){			
+					$("main").css("display", "flex");
+					$("main").css("flex-wrap", "nowrap");
+					$("main").css("height", "110vh");
+					$("main").css("height", "webkit-fill-available");
+					$("main").css("max-height", "200vh");
+					$("main").css("overflow-x", "auto");
+					$("main").css("overflow-y", "scroll !important"); 		
+					$("#sidebar").addClass("d-flex");			
+					//장바구니 목록 가져오기
+					cartList();
+				}
+			}
 		
-	});
-
-	$("#total-number").html("총 "+cnt +"개");
-	$("#total-sum").html("합계 " +priceToString(totalSum) + "원");
-	 */
-
-     /*]]>*/
-     function openModal() {
-         $("#MyModal").modal("toggle");
-     }
-     
+			
+			pagingNation();
+		}
+		
+		
+		let totalData; //총 데이터 수
+		let dataPerPage; //한 페이지에 나타낼 글 수
+		let pageCount; //페이징에 나타낼 페이지 수
+		let currentPage; //현재 페이지
+		
+		
+		// 페이징 표시 함수 
+		function pagingNation(){
+		
+		    console.log("currentPage : " + currentPage);
+		
+		    totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
+		
+		    if (totalPage < pageCount) {
+		        pageCount = totalPage;
+		    }
+		
+		    let pageGroup = Math.ceil(currentPage / pageCount); // 페이지 그룹
+		    let last = pageGroup * pageCount; //화면에 보여질 마지막 페이지 번호
+		
+		    if (last > totalPage) {
+		        last = totalPage;
+		    }
+		
+		    let first = last - (pageCount - 1); //화면에 보여질 첫번째 페이지 번호
+		    let next = last + 1;
+		    let prev = first - 1;
+		
+		    let pageHtml = "";
+		
+		    if (prev > 0) {
+		        pageHtml += "<li><a href='#' id='prev'> « </a></li>";
+		    }
+		
+		    //페이징 번호 표시 
+		    for (var i = first; i <= last; i++) {
+		
+		        if (currentPage == i) {
+		            pageHtml +=
+		                "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
+		        } else {
+		            pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
+		        }
+		    }
+		
+		
+		    if (last < totalPage) {
+		        pageHtml += "<li><a href='#' id='next'> » </a></li>";
+		    }
+		
+		
+		    if(totalData>0){
+		    	document.querySelector("#pagingul").innerHTML = pageHtml;    		
+		    }else{
+		    	document.querySelector("#pagingul").innerHTML = "";
+		    }
+		    
+		
+		   // let displayCount = "";
+		   // displayCount = "현재 1 - " + totalPage + " (" + currentPage + "페이지) / " + totalData + "건";
+		   // document.querySelector("#displayCount").innerText = displayCount;
+		
+		    //페이징 번호 클릭 이벤트 
+		    const paginationClass = document.querySelectorAll("#pagingul li a");
+		    for (let i = 0; i < paginationClass.length; i++) {
+		        paginationClass[i].addEventListener("click", function(e) {
+		            e.preventDefault();
+		
+		            let $id = this.getAttribute("id")
+		            selectedPage = this.innerText;
+		
+		            //console.log("선택한 페이지 ", selectedPage);
+		            if ($id == "next") selectedPage = next;
+		            if ($id == "prev") selectedPage = prev;
+		            
+		            
+		            let codeId=$("#good").val();
+		
+		            if(codeId=="" || codeId=="all"){
+		            	codeId=$("#category1").val();
+		            }
+		            if(codeId==null){
+		            	codeId="all";
+		            }
+		                        
+		            $.get("/product/catgoryProductList/"+codeId+"?currentPageNo="+selectedPage, function(res){		
+		        		getHtmlParsing(res);
+		        	}); 	
+		            
+		        });
+		    }
+		
+		}
+		
+		//3자리수마다 콤마
+		function priceToString(price) {
+		    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		}
+		
+		function detailProduct(productNum){
+			$.get("/product/detail/"+productNum, function(res){
+				res =JSON.parse(res);
+				
+				console.log(res);
+				
+				const price=res.product.price;
+				const info=res.product.info;
+				const productNum=res.product.productNum;
+				const name=res.product.name;		
+				const saveName=res.fileList[0].saveName;
+				const imgNum=res.fileList[0].imgPath;
+				
+				
+			//	console.log(price, info, productNum, name,saveName);
+				
+				$("#modal-productNum").val(productNum);		
+				$("#modal-price").html(priceToString(price)+"원");
+				$("#modal-info").html(info);
+				$("#modal-name").html(name);
+				$("#modal-imgNum").attr("src",  imgNum);
+				
+				$("input:checkbox[id='option1']").prop("checked", true);    
+				$("input:checkbox[id='option2']").prop("checked", false);    
+				$("input:checkbox[id='option3']").prop("checked", false);    
+				$("input:checkbox[id='option4']").prop("checked", false);   
+				  
+			});
+			
+			
+			
+		}
+		
+		function handleOnInput(el) {
+		  var maxlength=el.getAttribute('max');	  
+		  if(el.value.length > maxlength)  {
+		    el.value = el.value.substr(0, maxlength);
+		  }
+		}
+		
+		
+		function addCart(productNum){	
+			
+			let params;
+		    if(productNum==undefined){
+		         params={
+		        		"userNum":userNum,
+		                "branchNum":branchNum,
+		                "productNum":$("#modal-productNum").val(),
+		                "shotCustom":$("input[class='form-check-input']:checked").val()
+		        }
+		    }else{
+		         params={
+		        		"userNum":userNum,
+		                "branchNum":branchNum,
+		                "productNum":productNum,
+		                "shotCustom":1                  
+		        }
+		    }
+			
+			$.ajax({
+				url: "/product/addcart",
+		        type: "post",
+		        data: JSON.stringify(params),
+		        dataType: "json",
+		        contentType: "application/json",
+		        success: function(res) {
+		            if (res==true) {
+		            	alert("장바구니에 담았습니다.");
+		            }
+		            cartList();
+		        },
+		        error: function(res) {
+		        	console.log("에러가 발생하였습니다.");
+		        }
+		    });
+			 
+		}
+		
+		
+		function cartList(){
+			console.log("장바구니 목록 가져오기");
+		    let uri = '/product/cartlist/'+userNum+'/'+branchNum;
+		    
+		    $.ajax({
+		        url: uri,
+		        type: "GET",
+		        contentType: "application/json",
+		    })
+			.then((response)=>{
+				let html="";
+			    response.forEach(function(item,num){
+			    	    	
+			    	
+					let price= priceToString(item.price);
+					let totalPrice=priceToString(item.totalPrice);
+					
+					html +=`	<li id="cartLi-${num}">		
+					 <div id="cartId-${num}" class="cartlistDiv">	             
+				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" >
+				         <span class="cart-text">${item.name}</span>     
+				         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
+				         <input type="number"  class="cart-input" id="cartNumber-${num}" value="${item.qty}"
+				         	readonly
+				         oninput='handleOnInput(this)' max="2" size="2" > 
+				         <button class="cart-btn" onclick="cartPlus('${item.productNum}','${item.shotCustom}','${item.qty}')" >+</button>
+				      	 <button type="button" class="cart-delete"  onclick='deleteCart("${item.productNum}","${item.shotCustom}")' ><i class="fa fa-trash"
+				      	 style="font-size: 22px;"
+				      	 ></i></button>
+						 <input type="hidden"  id="cart-price-${num}"  value="${price}">	         
+			         <div>
+			          금액 ${price}원 /  합계 <span id='sum-${num}'>${totalPrice}</span>원<br>
+					`;				
+					
+					if(item.shotCustom==1){
+						html +='<small>선택안함</small> &nbsp;';
+					}
+					if(item.shotCustom==2){
+						html +='<small>연하게</small> &nbsp;';
+					}
+					if(item.shotCustom==3){
+						html +='<small>샷 추가(+500)</small> &nbsp;';
+					}
+					if(item.shotCustom==4){
+						html +='<small>2샷 추가(+1,000)</small>';
+					}
+					
+					html +="<div></div></li> ";
+					
+				});
+				
+				html +=`
+					<li style="margin-top: 100px; margin-bottom:100px">
+				    <hr style="border: 1px">
+			   <p class="mt-2 mb-2" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 70px;" id="total-number">총 0개</p>		
+			   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;" id="total-sum">합계 0원</p>		
+			 
+			 
+			 	 <button class="btn btn-outline-dark " type="button" onclick="addCartList()">
+		                            <i class="bi-cart-fill me-1"></i>
+		                            Cart                          
+		       </button>
+			   <button class="btn btn-info text-white " style="margin-left: 150px; width: 81px;">구매</button>
+			   	
+			</li>
+				
+				`;
+			
+				
+				$("#cartList").html(html);	
+				
+			  });
+		    
+		    	/* 
+				var height=$("#cartList").css("height");
+				console.log(res.length);
+				console.log(355*res.length);
+				$("#cartList").css("height" , 155*res.length+"px");
+				 */
+						
+		}
+		
+		function cartPlus(productNum, shotCustom, currentQty){
+			let qty=currentQty
+			if(qty>=99){
+				alert("99 이상은 주문이 안됩니다.");
+				return ;
+			}
+			qty++;
+			
+			cartUpdatePirce(productNum, shotCustom, qty);
+		}
+		
+		function cartMinus(productNum, shotCustom, currentQty){
+			let qty=currentQty
+		/* 	let qty=$("#cartNumber-"+id).val(); */
+			if(qty<=1){
+				alert("1개 이하는 주문이 안됩니다.");
+				return ;
+			}
+			qty--;
+			
+			
+			cartUpdatePirce(productNum, shotCustom, qty);
+			
+		}
+		
+		function cartUpdatePirce(productNum, shotCustom, qty){
+			   console.log(productNum, shotCustom, qty)
+			   let params={
+		                "userNum":userNum,
+		                "branchNum":branchNum,
+		                "productNum":productNum,
+		                "shotCustom":shotCustom,
+		                "qty":qty
+			        }
+			    console.log(params);
+			    $.ajax({
+			        url: "/product/updatecart",
+			        type: "post",
+			        data: JSON.stringify(params),
+			        dataType: "json",
+			        contentType: "application/json",
+			    })
+			    .then((response)=>response.json())
+			    .then((res)=>{
+			    	if(res==true){
+			    		
+			        }                   
+			    })
+			    .catch((error) => {
+			        console.log('에러 발생');  
+			    });
+			    cartList();
+		}
+		
+		
+		function deleteCart(productNum, shotCustom){
+			if(confirm("정말 삭제 하시겠습니까?")){
+			    let params={
+			             "userNum":userNum,
+			             "branchNum":branchNum,
+			             "productNum":productNum,
+			             "shotCustom": shotCustom  
+			         }
+			     
+			     $.ajax({
+			         url: "/product/deletecart",
+			         type: "DELETE",
+			         data: JSON.stringify(params),
+			         dataType: "json",
+			         contentType: "application/json",
+			     })
+			     .then((response)=>response.json())
+			     .then((res)=>{
+			         if(res==true){
+			        	 
+			         }                   
+			     })
+			     .catch((error) => {
+			         console.log('에러 발생');    
+			     });
+			    cartList();
+			}
+		}
+		
+		
+		 
+		function cartCheck(cartNum){
+		
+		//	console.log(cartNum);
+			let totalSum =0;
+		
+			let cnt=0;
+			$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
+				cnt++;
+				const cartNum=$(this).attr("data-id");
+		
+				let sum=$("#sum-"+cartNum).text();
+				sum =parseInt(sum.replace(",", ""));
+		
+				totalSum +=sum;
+				
+			});
+		
+			$("#total-number").html("총 "+cnt +"개");
+			$("#total-sum").html("합계 " +priceToString(totalSum) + "원");
+		}	 
+		     
+			
+			function openModal() {
+		         $("#MyModal").modal("toggle");
+		     }
+		     
      
      </script>
  </th:block>
