@@ -192,8 +192,8 @@ public class BranchController {
 	
 //	제품 카테고리에 따른 제품 목록 변경
 	@ResponseBody
-	@GetMapping(value = "/product/catgoryProductList/{codeId}")
-	public ResponseEntity<?> catgoryProductList(@PathVariable("codeId") String codeId,
+	@GetMapping(value = "/product/categoryProductList/{codeId}")
+	public ResponseEntity<?> categoryProductList(@PathVariable("codeId") String codeId,
 			ProductDTO  productDTO, Model model, HttpSession session) {		
 		try {
 			productDTO.setCodeId(codeId);	
