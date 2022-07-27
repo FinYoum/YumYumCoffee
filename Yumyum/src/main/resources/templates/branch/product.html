@@ -19,7 +19,7 @@
 <input type="hidden" id="paramCategoy" th:value="${param.category1}"> 
 	
 	
-	<h4 class="display-3 fw-bolder">order
+	<h4 class="display-3 fw-bolder">Order
 	
 	
     <input type="hidden" th:value="${session.loginMember}"  id="loginMemberInput" >    	   
@@ -438,9 +438,6 @@
 		        dataType: "json",
 		        contentType: "application/json",
 		        success: function(res) {
-		            if (res==true) {
-		            	alert("장바구니에 담았습니다.");
-		            }
 		            cartList();
 		        },
 		        error: function(res) {
@@ -450,10 +447,11 @@
 			 
 		}
 		
-		
+		/* 장바구니 목록 가져오기 */
 		function cartList(){
 			console.log("장바구니 목록 가져오기");
 		    let uri = '/product/cartlist/'+userNum+'/'+branchNum;
+		    let allProductPrice = 0;
 		    
 		    $.ajax({
 		        url: uri,
@@ -467,12 +465,30 @@
 			    	
 					let price= priceToString(item.price);
 					let totalPrice=priceToString(item.totalPrice);
+					allProductPrice+=item.totalPrice;
+					console.log(allProductPrice)
 					
 					html +=`	<li id="cartLi-${num}">		
 					 <div id="cartId-${num}" class="cartlistDiv">	             
-				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()">
+				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()" checked>
 				         <span class="cart-text">${item.name}</span>     
-				         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
+				         `;
+					if(item.shotCustom==1){
+                        html +='<small>선택안함</small> &nbsp;';
+                    }
+                    if(item.shotCustom==2){
+                        html +='<small>연하게</small> &nbsp;';
+                    }
+                    if(item.shotCustom==3){
+                        html +='<small>샷 추가(+500)</small> &nbsp;';
+                    }
+                    if(item.shotCustom==4){
+                        html +='<small>2샷 추가(+1,000)</small>';
+                    }
+				         
+                    html +=`
+                    <div>
+                        <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
 				         <input type="number"  class="cart-input" id="cartNumber-${num}" value="${item.qty}"
 				         	readonly
 				         oninput='handleOnInput(this)' max="2" size="2" > 
@@ -480,23 +496,13 @@
 				      	 <button type="button" class="cart-delete"  onclick='deleteCart("${item.productNum}","${item.shotCustom}")' ><i class="fa fa-trash"
 				      	 style="font-size: 22px;"
 				      	 ></i></button>
-						 <input type="hidden"  id="cart-price-${num}"  value="${price}">	         
+				    </div>
 			         <div>
+						 <input type="hidden"  id="cart-price-${num}"  value="${price}">	         
 			          금액 ${price}원 /  합계 <span id='sum-${num}'>${totalPrice}</span>원<br>
 					`;				
 					
-					if(item.shotCustom==1){
-						html +='<small>선택안함</small> &nbsp;';
-					}
-					if(item.shotCustom==2){
-						html +='<small>연하게</small> &nbsp;';
-					}
-					if(item.shotCustom==3){
-						html +='<small>샷 추가(+500)</small> &nbsp;';
-					}
-					if(item.shotCustom==4){
-						html +='<small>2샷 추가(+1,000)</small>';
-					}
+					
 					
 					html +="<div></div></li> ";
 					
@@ -509,29 +515,16 @@
 			   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;" id="total-sum">합계 0원</p>		
 			 
 			 
-			   <button class="btn btn-info text-white " style="margin-left: 150px; width: 81px;">구매</button>
+			   <button class="btn btn-outline-dark waves-effect waves-light" style="margin-left: 150px; width: 81px;">구매</button>
 			   	
 			</li>
 				
 				`;
 			
 				
-			 	/*  <button class="btn btn-outline-dark " type="button" onclick="addCartList()">
-		                            <i class="bi-cart-fill me-1"></i>
-		                            Cart                          
-		       </button> */
-		       
 				$("#cartList").html(html);	
 				
-			  });
-		    
-		    	/* 
-				var height=$("#cartList").css("height");
-				console.log(res.length);
-				console.log(355*res.length);
-				$("#cartList").css("height" , 155*res.length+"px");
-				 */
-						
+			  }).then(()=>cartCheck());
 		}
 		
 		function cartPlus(productNum, shotCustom, currentQty){
@@ -618,11 +611,8 @@
 			}
 		}
 		
-		
 		 
 		function cartCheck(){
-		
-		//	console.log(cartNum);
 			let totalSum =0;
 		
 			let cnt=0;
@@ -642,10 +632,11 @@
 		}	 
 		     
 			
-			function openModal() {
-		         $("#MyModal").modal("toggle");
-		     }
+		function openModal() {
+	         $("#MyModal").modal("toggle");
+	     }
 		     
+	
      
      </script>
  </th:block>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<style>
+		.cart-btn{
+		    font-size: 35px;
+		    vertical-align: baseline;
+		}
+		.cart-input{
+			width: 60px; 
+			height: 45px;
+			text-align: center;
+			background: #9e9e9e3b
+		}
+		.cart-input:focus, .cart-input:active{
+			border: none !important;
+			box-shadow: 0px;
+		}
+		.cart-text{
+			margin-right: 10px;
+		}
+		.cart-delete{
+			margin-left: 20px;
+		}
+		.cartlistDiv{
+			margin-bottom: 50px;
+		}
+	</style>
+
+	<div class=" flex-column flex-shrink-0 p-3 bg-light" id="sidebar"  th:fragment="cartSidebar"
+	   style="width: 300px;right: -40px;position: relative; display: none ;">
+	       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none ">
+		       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+		       <span class="fs-4 mb-3 mt-3">장바구니</span>
+	       </a>
+	       <hr>
+	       <ul class="nav nav-pills flex-column mb-auto" id="cartList" ></ul>
+	  </div>
+</html>  

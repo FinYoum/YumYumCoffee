@@ -11446,8 +11446,8 @@ ul#pagingul li a {
 }
 
 ul#pagingul li.on {
-	background: #000 !important;
-	border-color: #000 !important;
+	background: #212529 !important;
+	border-color: #212529 !important;
 }
 
 ul#pagingul li.on a {
