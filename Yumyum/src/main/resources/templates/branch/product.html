@@ -382,7 +382,7 @@
 				const productNum=res.product.productNum;
 				const name=res.product.name;		
 				const saveName=res.fileList[0].saveName;
-				const imgNum=res.fileList[0].imgPath;
+				const imgPath=res.fileList[0].imgPath;
 				
 				
 			//	console.log(price, info, productNum, name,saveName);
@@ -391,7 +391,7 @@
 				$("#modal-price").html(priceToString(price)+"원");
 				$("#modal-info").html(info);
 				$("#modal-name").html(name);
-				$("#modal-imgNum").attr("src",  imgNum);
+				$("#modal-imgPath").attr("src",  imgPath);
 				
 				$("input:checkbox[id='option1']").prop("checked", true);    
 				$("input:checkbox[id='option2']").prop("checked", false);    
