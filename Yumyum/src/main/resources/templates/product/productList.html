@@ -4,12 +4,15 @@
         <title>제품 목록</title>
     </th:block>
 
+<th:block layout:fragment="header">
+	<h4 class="display-3 fw-bolder">제품 목록</h4>
+	<p class="lead fw-normal text-white-50 mb-0"></p>
+</th:block>
 
     <th:block layout:fragment="content">
 
         
         <div class="container">
-            <h2>제품 목록</h2>
             <div th:style="${'float:right'}">
             <select id="code">
                 <option value="all">전체</option>
@@ -60,19 +63,11 @@
                 </tbody>
             </table>
 
-            <div class="btn_wrap1">
-                <a class="btn btn-dark" onclick="explain1()" id="openModal1">다중수정</a>
-            </div>
+            
             <div class="btn_wrap2" style="text-align:right;">
                 <a th:href="@{/product/write}" class="btn btn-dark">제품등록</a>
             </div>
-            <div class="modal1">
-              <button class="close1">X</button>
-              <h4 title="mTitle">다중수정</h4><br>
-              <h6>다중 수정은 가격만 가능합니다.</h6><br>
-              가격:&nbsp;<input type="number"><br>
-              <button style="margin:auto; display:block;">수정하기</button>
-            </div>  
+            
         </div>
         <br>
         <nav th:replace="product/common :: pagination"></nav> 
@@ -104,22 +99,6 @@
          $("body").append(html);
          document.dataForm.submit();
         }
-    
-    // 모달1
-    const modal1 = document.querySelector(".modal1");
-    const closeBtn1 = document.querySelector(".close1");
-    
-    
-    closeBtn1.onclick = function(){
-      modal1.style.display = "none";
-      }
-    //모달창 오픈 func
-    function explain1(){
-      modal1.style.display = "block";
-    }
-    $(function() {
-          $(".modal1" ).draggable();
-    });
     
     /*[- end of function -]*/
 
