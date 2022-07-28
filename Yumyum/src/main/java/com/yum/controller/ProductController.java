@@ -81,7 +81,7 @@ public class ProductController extends UiUtils{
 		if(member == null || member.getAuthority()!=3) { 
 		   return showMessageWithRedirect("접근할수 없는 페이지입니다.", "/home", Method.GET, null, model);
 	    }
-		 
+		
 		
 		List<ProductDTO> productList = productService.getProductList(params);
 		model.addAttribute("productList", productList);

@@ -133,6 +133,7 @@
 
      	
         NUM BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
+       
     </select>
     
     <select id="selectProductTotalCount" parameterType="com.yum.domain.ProductDTO" resultType="int">
