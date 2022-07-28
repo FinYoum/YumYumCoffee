@@ -1,63 +1,80 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	
-<div th:fragment="sidebar" class=" flex flex-wrap content-between bg-slate-700 p-4 w-48 col-md-4 min-h-[60vh]">
-	<div>
-		<h4 class="text-white font-semibold mb-2 text-xl leading-6 dark:text-slate-100">
-			마이 페이지</h4>
-		<ul>
-			<li>
-				<p class="block py-1 text-white cursor-pointer"
-					id="aUpdateMyInfo" onclick="openModalId()"> 내 정보 수정 </p>
-			</li>
-			<li>
-				<a th:href="@{/orderhistory}"
-					class="block py-1 text-white cursor-pointer"> 과거 주문 내역 </a>
-			</li>
-			<li>
-				<a th:href="@{/quit}"
-					class="block py-1 text-white cursor-pointer"> 탈퇴하기 </a>
-			</li>
-		</ul>
-	</div>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-	<!--   user.authority
-        관리자=3
-        지점 매니저=2
-        일반 유저=1 -->
-	<th:block th:if="${member.authority}!=1">
+	<div th:fragment="sidebar"
+		class=" flex flex-wrap content-between bg-slate-700 p-4 w-48 col-md-4 min-h-[60vh]">
 		<div>
-			<h4 class="text-white font-semibold mb-2 mt-16 text-xl leading-6 dark:text-slate-100 ">
-				관리자 페이지</h4>
+			<h4
+				class="text-white font-semibold mb-2 text-xl leading-6 dark:text-slate-100">
+				마이 페이지</h4>
 			<ul>
-				<!--     지점장 메뉴 관리  -->
-                <th:block th:if="${member.authority}==2">
-	                <li>
-	                   <a th:href="@{/product/list2}" 
-	                   class="block py-1 text-white cursor-pointer"> 메뉴 관리 </a>
-	                </li>
-	                <li>
-	                   <a 
-                       class="block py-1 text-white cursor-pointer"> 매출 관리 </a>
-	                </li>
-                </th:block>
-				
-				<!--  관리자만 접근 가능 -->
-				<th:block th:if="${member.authority}==3">
-				    <li>
-				        <a th:href="@{/product/list}" 
-                        class="block py-1 text-white cursor-pointer"> 메뉴 관리 </a>
-                    </li>
-				    <li>
-				        <a 
-                        class="block py-1 text-white cursor-pointer"> 매출 관리 </a>
-                    </li>
-					<li><a class="block py-1 text-white cursor-pointer"> 게시판 관리 </a></li>
-					<!-- <li><a class="block py-1 text-white cursor-pointer"> 회원 관리 </a></li>  -->
-				</th:block>
+				<li>
+					<p class="block py-1 text-white cursor-pointer" id="aUpdateMyInfo"
+						onclick="openModalId()">내 정보 수정</p>
+				</li>
+				<li><a th:href="@{/orderhistory}"
+					class="block py-1 text-white cursor-pointer"> 과거 주문 내역 </a></li>
+				<li><a th:href="@{/quit}"
+					class="block py-1 text-white cursor-pointer"> 탈퇴하기 </a></li>
 			</ul>
 		</div>
-	</th:block>
 	
-</div>
+		<!--   user.authority
+	        관리자=3
+	        지점 매니저=2
+	        일반 유저=1 -->
+		<th:block th:if="${member.authority}!=1">
+			<div>
+				<h4
+					class="text-white font-semibold mb-2 mt-16 text-xl leading-6 dark:text-slate-100 ">
+					관리자 페이지</h4>
+				<ul>
+					<!--     지점장 메뉴 관리  -->
+					<th:block th:if="${member.authority}==2">
+						<li><a th:href="@{/product/list2}"
+							class="block py-1 text-white cursor-pointer"> 메뉴 관리 </a></li>
+						<li><a class="block py-1 text-white cursor-pointer"> 매출 관리
+						</a></li>
+					</th:block>
+	
+					<!--  관리자만 접근 가능 -->
+					<th:block th:if="${member.authority}==3">
+						<li><a th:href="@{/product/list}"
+							class="block py-1 text-white cursor-pointer"> 메뉴 관리 </a></li>
+						<li><a class="block py-1 text-white cursor-pointer"> 매출 관리
+						</a></li>
+						<li><a class="block py-1 text-white cursor-pointer"> 게시판
+								관리 </a></li>
+						<!-- <li><a class="block py-1 text-white cursor-pointer"> 회원 관리 </a></li>  -->
+					</th:block>
+				</ul>
+			</div>
+		</th:block>
+	</div>
+	<th:block layout:fragment="modal">
+	    
+	    <div id="modalIdentification" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+	        <div class="modal-body">
+	            <div class="modalId-content">
+	                <div class="mt-2">
+	                    <p class="mt-2">내정보수정 페이지로 이동하기 위해 비밀번호를 입력해 주세요.</p>
+	                </div>
+	                <div class="mt-3 form-group">
+	                    <label class="ml-2 col-sm-2 font-bold">비밀번호</label>
+	                    <div class="mt-2 text-center">
+	                        <input type="password" id="pw" name="pw" class="form-control" 
+	                                placeholder="비밀번호를 입력해 주세요." />
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="mt-2 text-right">
+	                <button class="btn btn-dark waves-effect waves-light" 
+	                        id="btnConfirm" name="btnConfirm">확인</button>
+	            </div>
+	        </div>
+	    </div>
+	</th:block>
+
+
 </html>
