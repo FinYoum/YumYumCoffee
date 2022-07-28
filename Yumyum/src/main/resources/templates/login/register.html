@@ -10,14 +10,14 @@
 
 <th:block layout:fragment="content">
 <div class="card-content">
-<form class="form-horizontal" th:action="@{/register}" method="post">
+<form class="form-horizontal" th:action="@{/register}" th:object="${member}" method="post">
 
-	<input type="hidden" th:if="*{userNum != null and userNum > 0}" />
+	<input type="hidden" th:if="*{userNum != null and userNum > 0}" th:field="*{userNum}" />
 	
 	<div class="form-group">
 		<div class="input-group mt-2" style="width:500px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">이름</span>
-			<input type="text" id="userName" name="userName" class="form-control" 
+			<input type="text" id="userName" name="userName" th:field="*{name}" class="form-control" 
 					placeholder="이름을 입력해 주세요." required oninput = "nameCheck()" />
 		</div>
 		<div class="input-group" style="width:500px; margin:auto;">
@@ -28,7 +28,7 @@
 	<div class="form-group">
 		<div class="input-group mt-2" style="width:500px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">아이디</span>
-			<input type="text" id="userId" name="userId" class="form-control" 
+			<input type="text" id="userId" name="userId" th:field="*{id}" class="form-control" 
 					placeholder="6~10자 영문 소문자, 숫자를 사용하세요." required oninput = "idCheck()" />
 		</div>
 		<div class="input-group" style="width:500px; margin:auto;">
@@ -39,7 +39,7 @@
 	<div class="form-group">
 		<div class="input-group mt-2" style="width:500px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">비밀번호</span>
-			<input type="password" id="passcode" name="passcode" class="form-control" 
+			<input type="password" id="passcode" name="passcode" th:field="*{pw}" class="form-control" 
 					placeholder="10~15자 영문, 숫자, 특수문자를 사용하세요." required oninput = "pwCheck()" />
 		</div>
 		<div class="input-group" style="width:500px; margin:auto;">
@@ -61,7 +61,7 @@
 	<div class="form-group">
 		<div class="input-group mt-2" style="width:500px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">전화번호</span>
-			<input type="text" id="tel" name="tel" class="form-control" 
+			<input type="text" id="tel" name="tel" th:field="*{tel}" class="form-control" 
 					placeholder="'-'와 함께 전화번호를 입력해 주세요." required oninput = "phoneCheck()" />
 		</div>
 		<div class="input-group" style="width:500px; margin:auto;">
@@ -73,7 +73,7 @@
 		<div class="input-group mt-2" style="width:500px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">이메일</span>
 		<!-- email -->	
-			<input type="text" class="form-control"
+			<input type="text" id="email" name="email" th:field="*{email}" class="form-control"
 					placeholder="이메일을 입력해 주세요." required oninput = "emailCheck()" />
 			<input type="button" class="btn btn-outline-secondary waves-effect waves-light" 
 					id="btnCertify" name="btnCertify" value="인증하기">
@@ -91,7 +91,7 @@
 	<div class="form-group">
 		<div class="input-group mt-2" style="width:500px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">생년월일</span>
-			<input type="text" id="birth" name="birth" class="form-control" 
+			<input type="text" id="birth" name="birth" th:field="*{birth}" class="form-control" 
 					placeholder="생년월일(yyyy-mm-dd)을 입력해 주세요." required oninput = "birthCheck()" />
 		</div>
 		<div class="input-group" style="width:500px; margin:auto;">
@@ -100,8 +100,8 @@
 	</div>
 
 	<div class="btn_wrap text-center mt-3">
-		<a th:href="@{/login}" class="btn btn-dark waves-effect waves-light">뒤로가기</a>
-		<button type="submit" class="btn btn-outline-dark">가입하기</button>
+		<a th:href="@{/login}" class="btn btn-dark waves-effect waves-light mx-2">뒤로가기</a>
+		<button type="submit" class="btn btn-outline-dark mx-2">가입하기</button>
 	</div>
 </form>
 </div>

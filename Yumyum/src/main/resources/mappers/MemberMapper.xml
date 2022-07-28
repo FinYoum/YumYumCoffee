@@ -35,8 +35,8 @@
 			, TO_DATE(#{birth},'YYYY-MM-DD'))
 	</insert>
 
-	<select id="selectMemberDetail" parameterType="long" resultType="com.yum.domain.MemberDTO">
-		SELECT name, id, pw, tel, email, birth, authority, stamp, delete_yn, branch_num
+	<select id="selectMemberDetail" parameterType="Long" resultType="com.yum.domain.MemberDTO">
+		SELECT name, id, pw, tel, email, TO_CHAR(BIRTH,'YYYY-MM-DD'), authority, stamp, delete_yn, branch_num
 		  FROM MEMBER
 		 WHERE user_num = #{userNum}
 	</select>
@@ -56,7 +56,7 @@
 	</update>
 
 	<select id="selectMemberList" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
-		SELECT name, id, pw, tel, email, birth, authority
+		SELECT name, id, pw, tel, email, TO_CHAR(BIRTH,'YYYY-MM-DD'), authority
 		  FROM MEMBER
 		 WHERE delete_yn = 'N'
 		 ORDER BY user_num
@@ -70,8 +70,8 @@
 
 	<select id="login" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
 		SELECT USER_NUM, ID, PW, NAME, TEL, EMAIL, TO_CHAR(BIRTH,'YYYY-MM-DD'), AUTHORITY, STAMP, DELETE_YN
-		  FROM MEMBER
-		 WHERE ID = #{id}
-		   AND delete_yn = 'N'
+		FROM MEMBER
+		WHERE ID = #{id}
+		AND delete_yn = 'N'
 	</select>
 </mapper>

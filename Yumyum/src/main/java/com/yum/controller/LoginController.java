@@ -110,7 +110,17 @@ public class LoginController {
 
 // member가 null 이 아니라서 헤더가 보이는 상태 
 	@GetMapping(value = "/register")
-	public String openRegister(Model model) {
+	public String openRegister(@RequestParam(value = "userNum", required = false) Long userNum, Model model) {
+		
+		if (userNum == null) {
+			model.addAttribute("member", new MemberDTO());
+		} else {
+			MemberDTO member = memberService.getMemberDetail(userNum);
+			if(member == null) {
+				return "redirect:/login";
+			}
+			model.addAttribute("member",member);
+		}
 		return "login/register";
 	}
 	
