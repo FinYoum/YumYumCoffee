@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.yum.constant.SessionConstants;
 import com.yum.domain.MemberDTO;
 import com.yum.service.EmailService;
-//import com.yum.service.EmailService;
 import com.yum.service.MemberService;
 
 
@@ -35,6 +35,8 @@ public class LoginController {
 	private MemberService memberService;
 	@Autowired
     private PasswordEncoder passwordEncoder;
+	@Autowired
+    private AuthenticationManager authenticationManager; // 얘를 통해 세션값 변경해야함
 	@Autowired
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
