@@ -89,7 +89,7 @@
                FROM 
                   BRANCH b 
                WHERE 
-                  MANAGER_NUM =#{userNum}
+                  MANAGER_NUM =#{branchNum}
             )
     </update>
     
