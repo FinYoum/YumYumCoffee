@@ -4,76 +4,75 @@
 		<title>Yum회원가입</title>
 	</th:block>
     <th:block layout:fragment="header">
-        <h6 class="display-6 fw-bolder">Register</h6>
+        <h6 class="display-5 fw-bolder">Register</h6>
         <p class="lead fw-normal text-white-50 mb-0"></p>
     </th:block>
 
 <th:block layout:fragment="content">
 <div class="card-content">
-<form class="form-horizontal" th:action="@{/register}" th:object="${member}" method="post">
-
-	<input type="hidden" th:if="*{userNum != null and userNum > 0}" th:field="*{userNum}" />
+<form class="form-horizontal" th:action="@{/register}" method="post">
 	
 	<div class="form-group">
-		<div class="input-group mt-2" style="width:500px; margin:auto;">
+		<div class="input-group mt-2" style="width:600px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">이름</span>
-			<input type="text" id="userName" name="userName" th:field="*{name}" class="form-control" 
-					placeholder="이름을 입력해 주세요." required oninput = "nameCheck()" />
+				<input type="text" id="name" name="name" class="form-control" 
+						placeholder="이름을 입력해 주세요." required oninput = "nameCheck()" />
+			</div>
 		</div>
-		<div class="input-group" style="width:500px; margin:auto;">
+		<div class="input-group" style="width:600px; margin:auto;">
 			<span class="span_name_check" style="display:none;"></span>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<div class="input-group mt-2" style="width:500px; margin:auto;">
+		<div class="input-group mt-2" style="width:600px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">아이디</span>
-			<input type="text" id="userId" name="userId" th:field="*{id}" class="form-control" 
+			<input type="text" id="id" name="id" class="form-control" 
 					placeholder="6~10자 영문 소문자, 숫자를 사용하세요." required oninput = "idCheck()" />
 		</div>
-		<div class="input-group" style="width:500px; margin:auto;">
+		<div class="input-group" style="width:600px; margin:auto;">
 			<span class="span_id_check" style="display:none;"></span>
 		</div>
 	</div>
     
 	<div class="form-group">
-		<div class="input-group mt-2" style="width:500px; margin:auto;">
+		<div class="input-group mt-2" style="width:600px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">비밀번호</span>
-			<input type="password" id="passcode" name="passcode" th:field="*{pw}" class="form-control" 
+			<input type="password" id="pw" name="pw" class="form-control" 
 					placeholder="10~15자 영문, 숫자, 특수문자를 사용하세요." required oninput = "pwCheck()" />
 		</div>
-		<div class="input-group" style="width:500px; margin:auto;">
+		<div class="input-group" style="width:600px; margin:auto;">
 			<span class="span_password_check" style="display:none;"></span>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<div class="input-group mt-2" style="width:500px; margin:auto;">
+		<div class="input-group mt-2" style="width:600px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">비밀번호 확인</span>
 			<input type="password" id="passcode1" name="passcode1" class="form-control" 
 					placeholder="10~15자 영문, 숫자, 특수문자를 사용하세요." required oninput = "pwCheck1()" />
 		</div>
-		<div class="input-group" style="width:500px; margin:auto;">
+		<div class="input-group" style="width:600px; margin:auto;">
 			<span class="span_password1_check" style="display:none;"></span>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<div class="input-group mt-2" style="width:500px; margin:auto;">
+		<div class="input-group mt-2" style="width:600px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">전화번호</span>
-			<input type="text" id="tel" name="tel" th:field="*{tel}" class="form-control" 
+			<input type="text" id="tel" name="tel" class="form-control" 
 					placeholder="'-'와 함께 전화번호를 입력해 주세요." required oninput = "phoneCheck()" />
 		</div>
-		<div class="input-group" style="width:500px; margin:auto;">
+		<div class="input-group" style="width:600px; margin:auto;">
 			<span class="span_tel_check" style="display:none;"></span>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<div class="input-group mt-2" style="width:500px; margin:auto;">
+		<div class="input-group mt-2" style="width:600px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">이메일</span>
 		<!-- email -->	
-			<input type="text" id="email" name="email" th:field="*{email}" class="form-control"
+			<input type="text" id="email" name="email" class="form-control"
 					placeholder="이메일을 입력해 주세요." required oninput = "emailCheck()" />
 			<input type="button" class="btn btn-outline-secondary waves-effect waves-light" 
 					id="btnCertify" name="btnCertify" value="인증하기">
@@ -83,18 +82,18 @@
 			<input type="button" class="btn btn-outline-secondary waves-effect waves-light" style="display:none;" 
 					id="btnCodeSubmit" name="btnCodeSubmit" value="전송">
 		</div>
-		<div class="input-group" style="width:500px; margin:auto;">
+		<div class="input-group" style="width:600px; margin:auto;">
 			<span class="span_email_check" style="display:none;"></span>
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<div class="input-group mt-2" style="width:500px; margin:auto;">
+		<div class="input-group mt-2" style="width:600px; margin:auto;">
 			<span class="input-group-text" style="width:130px;">생년월일</span>
-			<input type="text" id="birth" name="birth" th:field="*{birth}" class="form-control" 
+			<input type="text" id="birth" name="birth" class="form-control" 
 					placeholder="생년월일(yyyy-mm-dd)을 입력해 주세요." required oninput = "birthCheck()" />
 		</div>
-		<div class="input-group" style="width:500px; margin:auto;">
+		<div class="input-group" style="width:600px; margin:auto;">
 			<span class="span_birth_check" style="display:none;"></span>
 		</div>
 	</div>
@@ -176,22 +175,22 @@
 	})
 	
 	.on('submit', function() {
-	 	if (!nameCheck($('input[name=userName]').val())) {
+	 	if (!nameCheck($('input[name=name]').val())) {
 			alert('이름을 확인해주세요.');
 			return false;
 			
 		}
-		if (idCheck($('#userId').val()) == false) {
+		if (idCheck($('#id').val()) == false) {
 			alert('ID를 확인해주세요.');
 			return false;
 			
 		}
-		if (!pwCheck($('#passcode').val())) {
+		if (!pwCheck($('#pw').val())) {
 			alert('비밀번호를 확인해주세요.');
 			return false;
 			
 		} 
-		if ($('#passcode').val() != $('#passcode1').val()) {
+		if ($('#pw').val() != $('#passcode1').val()) {
 			alert('비밀번호와 비밀번호 확인이 같지 않습니다.');
 			return false;
 			
@@ -224,7 +223,7 @@
 		
 	    var nameRegExp = /^[가-힣]{2,6}$/;
 	    
-	    var name = $('#userName').val();
+	    var name = $('#name').val();
 	    if(!nameRegExp.test(name)) {
 	    	$('.span_name_check').html("이름을 제대로 입력해주세요.");
 	        $('.span_name_check').css("display","inline-block");
@@ -239,7 +238,7 @@
 	function idCheck() { /*아이디 정규식*/
 		var idRegExp = /^[a-z0-9]{6,10}$/;
 		
-	    var userid = $('#userId').val();
+	    var userid = $('#id').val();
 	    if(!idRegExp.test(userid)) {
 	    	$('.span_id_check').html("아이디를 제대로 입력해주세요.");
 	        $('.span_id_check').css("display","inline-block");
@@ -252,7 +251,7 @@
 		        type:'post',
 		        data:{id:userid},
 		        success:function(result){ //컨트롤러에서 넘어온 result값을 받는다 
-		        	if(result != 1){ //result가 1이 아니면(=0일 경우) -> 사용 가능한 아이디 
+		        	if(result == 0){ //result가 1이 아니면(=0일 경우) -> 사용 가능한 아이디 
 		        		$('.span_id_check').html("사용 가능한 아이디입니다.");
 		                $('.span_id_check').css("display","inline-block");
 						$('.span_id_check').css("color","black"); 
@@ -275,7 +274,7 @@
 	function pwCheck(){ /*비밀번호 정규식*/
 		var pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&^])[A-Za-z\d@$!%*#?&^]{10,20}$/;
 		
-		var pw = $('#passcode').val();
+		var pw = $('#pw').val();
 		if(!pwRegExp.test(pw)) {
 			$('.span_password_check').html("비밀번호를 제대로 입력해주세요.");
 	        $('.span_password_check').css("display","inline-block");
@@ -289,7 +288,7 @@
 	};
 	function pwCheck1(){ /* 비밀번호확인 */
 		
-		if($('#passcode1').val() != $('#passcode').val()) {
+		if($('#passcode1').val() != $('#pw').val()) {
 			$('.span_password1_check').html("비밀번호와 같지 않습니다.");
 	        $('.span_password1_check').css("display","inline-block");
 	        $('.span_password1_check').css("color","#6A82FB");

@@ -10,7 +10,7 @@
 
 	<th:block layout:fragment="content">
         <div class="card-content col mt-5">
-            <form class="form-horizontal" th:action="@{/register}" th:object="${member}" method="post" >
+            <form class="form-horizontal" th:action="@{/updateMemInfo}" th:object="${member}" method="post" >
             
                 <input type="hidden" th:if="*{userNum != null and userNum > 0}" th:field="*{userNum}" />
                 

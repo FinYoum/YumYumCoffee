@@ -8,7 +8,9 @@ import com.yum.domain.MemberDTO;
 
 public interface MemberService {
 	
-	public int registerMember(MemberDTO params);
+	public int registerMember(String name, String id, String pw, String tel, String email, String birth);
+	
+	public int updateMemInfo(MemberDTO params);
 	
 	public MemberDTO getMemberDetail(Long user_num);
 	

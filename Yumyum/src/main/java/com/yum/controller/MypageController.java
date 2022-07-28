@@ -12,12 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.yum.constant.SessionConstants;
 import com.yum.domain.CouponDTO;
 import com.yum.domain.MemberDTO;
+import com.yum.service.MemberService;
 import com.yum.service.MypageService;
 
 @Controller
@@ -25,6 +27,8 @@ public class MypageController {
 	
 	@Autowired
 	private MypageService mypageService;
+	@Autowired
+	private MemberService memberService;
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -35,6 +39,7 @@ public class MypageController {
 	public String quitMember(Model model, HttpSession session) {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+        logger.info("탈퇴화면 member 세션: "+member);
 		model.addAttribute("member", member);	
 		model.addAttribute("ID", member.getId());	
 		
@@ -105,6 +110,37 @@ public class MypageController {
 		model.addAttribute("member", member);		
 		
 		return "mypage/updateUser";
+	}
+	
+	@PostMapping(value = "/updateMemInfo")
+	public String updateMemInfo(HttpSession session, final MemberDTO params) {
+		
+		try {
+			int isUpdated = memberService.updateMemInfo(params);
+			if (isUpdated == 0) {
+				logger.info("isUpdated: "+isUpdated);
+				return "redirect:/updateuser";
+				// TODO => 회원 등록에 실패하였다는 메시지를 전달
+				
+			} else if (isUpdated == 1) {
+//			마이페이지 >> 내 정보 수정
+				MemberDTO member = memberService.getMemberDetail(Long.valueOf(params.getUserNum()));
+				session.setAttribute(SessionConstants.loginMember, member);
+				logger.info("isUpdated: "+isUpdated);
+				return "redirect:/mypage";
+				
+			} 
+			
+		} catch (DataAccessException e) {
+			System.out.println(e.getMessage());
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			// TODO => 시스템에 문제가 발생하였다는 메시지를 전달
+		}
+
+		return "redirect:/mypage";
 	}
 		
 //	마이페이지 >> 과거 주문 내역 페이지

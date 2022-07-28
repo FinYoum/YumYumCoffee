@@ -21,10 +21,9 @@ public interface MemberMapper {
 	public int idOverlapCheck(String id);
 	
 	public MemberDTO login(@Param("id") String id, @Param("pw") String pw);
-	//public MemberDTO login(MemberDTO params, HttpSession session);
-	//public MemberDTO login(String id);
 	
-	public int insertMember(MemberDTO params);
+	public int insertMember(@Param("name")String name, @Param("id") String id, @Param("pw") String pw, 
+			@Param("tel")String tel, @Param("email")String email, @Param("birth")String birth);
 	
 	public MemberDTO selectMemberDetail(Long userNum);
 	

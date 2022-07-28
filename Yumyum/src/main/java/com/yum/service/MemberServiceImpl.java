@@ -29,17 +29,23 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public int registerMember(MemberDTO params) {
+	public int registerMember(String name, String id, String pw, String tel, String email, String birth) {
 		int queryResult = 0;
 		
-		if (params.getUserNum() == 0) {
-	    	params.setPw(passwordEncoder.encode(params.getPw()));
-			queryResult = memberMapper.insertMember(params);
-			
-		} else {
-			queryResult = memberMapper.updateMember(params) + 1;
-		}
+	   	String encodePw = passwordEncoder.encode(pw);
+		queryResult = memberMapper.insertMember(name, id, encodePw, tel, email, birth);
+		
 		        
+		return queryResult;
+	}
+	@Override
+	public int updateMemInfo(MemberDTO params) {
+		int queryResult = 0;
+		
+		if (params.getUserNum() != 0) {
+			queryResult = memberMapper.updateMember(params);
+		}
+		
 		return queryResult;
 	}
 	
