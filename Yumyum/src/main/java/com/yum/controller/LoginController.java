@@ -108,6 +108,7 @@ public class LoginController {
 		return "redirect:/home"; 
 	}
 
+// member가 null 이 아니라서 헤더가 보이는 상태 
 	@GetMapping(value = "/register")
 	public String openRegister(@RequestParam(value = "userNum", required = false) Long userNum, Model model) {
 		
