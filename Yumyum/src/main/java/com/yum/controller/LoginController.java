@@ -115,8 +115,7 @@ public class LoginController {
 	}
 	
 	@PostMapping(value = "/register")
-	public String registerBoard(final MemberDTO params) {
-		
+	public String registerBoard(final MemberDTO params, HttpSession session ) {
 		try {
 			int isRegistered = memberService.registerMember(params);
 			if (isRegistered == 0) {
@@ -124,10 +123,15 @@ public class LoginController {
 				// TODO => 회원 등록에 실패하였다는 메시지를 전달
 				
 			} else if (isRegistered == 1) {
+//				회원가입
 				logger.info("isRegistered: "+isRegistered);
 				return "redirect:/login";
 				
 			} else if (isRegistered == 2) {
+//				마이페이지 >> 내 정보 수정
+				MemberDTO member = memberService.getMemberDetail(Long.valueOf(params.getUserNum()));
+				
+				session.setAttribute(SessionConstants.loginMember, member);
 				logger.info("isRegistered: "+isRegistered);
 				return "redirect:/mypage";
 			}
