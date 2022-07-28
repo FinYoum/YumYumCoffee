@@ -63,14 +63,14 @@ public class ProductController extends UiUtils{
 		try {
 			boolean isRegistered = productService.registerProduct(params,files);
 			if (isRegistered == false) {
-				return showMessageWithRedirect("게시글 등록에 실패하였습니다.", "/product/list", Method.GET, null, model);
+				return showMessageWithRedirect("제품 등록에 실패하였습니다.", "/product/list", Method.GET, null, model);
 			}
 		} catch (DataAccessException e) {
 			return showMessageWithRedirect("데이터베이스 처리 과정에 문제가 발생하였습니다.", "/product/list", Method.GET, null, model);
 		} catch (Exception e) {
 			return showMessageWithRedirect("시스템에 문제가 발생하였습니다.", "/product/list", Method.GET, null, model);
 		}
-		return showMessageWithRedirect("게시글 등록이 완료되었습니다.", "/product/list", Method.GET, null, model);
+		return showMessageWithRedirect("제품 등록이 완료되었습니다.", "/product/list", Method.GET, null, model);
 	}
 	
 	@GetMapping(value = "/product/list")
@@ -99,15 +99,15 @@ public class ProductController extends UiUtils{
 	    }
 		
 		if (productNum == null) {
-			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
+			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 제품 리스트로 리다이렉트
 			return showMessageWithRedirect("올바르지 않은 접근입니다.", "/product/list", Method.GET, null, model);
 			//return "redirect:/product/list";
 		}
 
 		ProductDTO product = productService.getProductDetail(productNum);
 		if (product == null) {
-			// TODO => 없는 게시글이거나, 이미 삭제된 게시글이라는 메시지를 전달하고, 게시글 리스트로 리다이렉트
-			return showMessageWithRedirect("없는 게시글이거나, 이미 삭제된 게시글입니다.", "/product/list", Method.GET, null, model);
+			// TODO => 없는 게시글이거나, 이미 삭제된 제품이라는 메시지를 전달하고, 제품 리스트로 리다이렉트
+			return showMessageWithRedirect("없는 제품이거나, 이미 삭제된 제품입니다.", "/product/list", Method.GET, null, model);
 			//return "redirect:/product/list";
 		}
 		model.addAttribute("product", product);
@@ -133,7 +133,7 @@ public class ProductController extends UiUtils{
 		}
 		productService.deleteProduct(productNum);
 		
-		return showMessageWithRedirect("게시글 삭제가 완료되었습니다.", "/product/list", Method.GET, null, model);
+		return showMessageWithRedirect("제품 삭제가 완료되었습니다.", "/product/list", Method.GET, null, model);
 	}
 	
 	//지점장페이지 

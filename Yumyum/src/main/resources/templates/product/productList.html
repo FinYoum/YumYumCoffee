@@ -4,12 +4,15 @@
         <title>제품 목록</title>
     </th:block>
 
+<th:block layout:fragment="header">
+	<h4 class="display-3 fw-bolder">제품 목록</h4>
+	<p class="lead fw-normal text-white-50 mb-0"></p>
+</th:block>
 
     <th:block layout:fragment="content">
 
         
         <div class="container">
-            <h2>제품 목록</h2>
             <div th:style="${'float:right'}">
             <select id="code">
                 <option value="all">전체</option>
