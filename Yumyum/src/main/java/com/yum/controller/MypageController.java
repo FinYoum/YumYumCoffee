@@ -44,8 +44,8 @@ public class MypageController {
 //정보수정페이지 이동시 뜨는 모달
 	@ResponseBody
 	@PostMapping(value="/identification")
-	public int identification(@ModelAttribute MemberDTO params,
-			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember, HttpSession session) {
+	public int identification(@ModelAttribute MemberDTO params, HttpSession session,
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
 		
 		MemberDTO member = mypageService.identification(params.getPw(),loginMember.getId());
 		int result=0;
