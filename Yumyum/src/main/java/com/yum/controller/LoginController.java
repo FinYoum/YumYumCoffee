@@ -140,7 +140,6 @@ public class LoginController {
 			} else if (isRegistered == 2) {
 //				마이페이지 >> 내 정보 수정
 				MemberDTO member = memberService.getMemberDetail(Long.valueOf(params.getUserNum()));
-				
 				session.setAttribute(SessionConstants.loginMember, member);
 				logger.info("isRegistered: "+isRegistered);
 				return "redirect:/mypage";
