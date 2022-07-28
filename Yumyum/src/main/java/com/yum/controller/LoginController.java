@@ -149,8 +149,8 @@ public class LoginController {
 	}
 	
 	@PostMapping(value = "/quitMember")
-	public String doQuitMember(HttpServletRequest request,
-			@RequestParam(value = "userNum", required = false) Long userNum, HttpSession session) {
+	public String doQuitMember(HttpServletRequest request, HttpSession session,
+						@RequestParam(value = "userNum", required = false) Long userNum) {
 
         logger.info("doQuitMember 진입");
         if (userNum == null) {
