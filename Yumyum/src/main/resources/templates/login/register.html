@@ -9,103 +9,104 @@
     </th:block>
 
 <th:block layout:fragment="content">
-<div class="card-content">
-<form class="form-horizontal" th:action="@{/register}" method="post">
-	
-	<div class="form-group">
-		<div class="input-group mt-2" style="width:600px; margin:auto;">
-			<span class="input-group-text" style="width:130px;">이름</span>
-				<input type="text" id="name" name="name" class="form-control" 
-						placeholder="이름을 입력해 주세요." required oninput = "nameCheck()" />
+	<div class="card-content">
+		<form class="form-horizontal" th:action="@{/register}" method="post">
+			
+			<div class="form-group">
+				<div class="input-group mt-2" style="width:600px; margin:auto;">
+					<span class="input-group-text" style="width:130px;">이름</span>
+						<input type="text" id="name" name="name" class="form-control" 
+								placeholder="이름을 입력해 주세요." required oninput = "nameCheck()" />
+					</div>
+				</div>
+				<div class="input-group" style="width:600px; margin:auto;">
+					<span class="span_name_check" style="display:none;"></span>
+				</div>
 			</div>
-		</div>
-		<div class="input-group" style="width:600px; margin:auto;">
-			<span class="span_name_check" style="display:none;"></span>
-		</div>
+			
+			<div class="form-group">
+				<div class="input-group mt-2" style="width:600px; margin:auto;">
+					<span class="input-group-text" style="width:130px;">아이디</span>
+					<input type="text" id="id" name="id" class="form-control" 
+							placeholder="6~10자 영문 소문자, 숫자를 사용하세요." required oninput = "idCheck()" />
+				</div>
+				<div class="input-group" style="width:600px; margin:auto;">
+					<span class="span_id_check" style="display:none;"></span>
+				</div>
+			</div>
+		    
+			<div class="form-group">
+				<div class="input-group mt-2" style="width:600px; margin:auto;">
+					<span class="input-group-text" style="width:130px;">비밀번호</span>
+					<input type="password" id="pw" name="pw" class="form-control" 
+							placeholder="10~15자 영문, 숫자, 특수문자를 사용하세요." required oninput = "pwCheck()" />
+				</div>
+				<div class="input-group" style="width:600px; margin:auto;">
+					<span class="span_password_check" style="display:none;"></span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="input-group mt-2" style="width:600px; margin:auto;">
+					<span class="input-group-text" style="width:130px;">비밀번호 확인</span>
+					<input type="password" id="passcode1" name="passcode1" class="form-control" 
+							placeholder="10~15자 영문, 숫자, 특수문자를 사용하세요." required oninput = "pwCheck1()" />
+				</div>
+				<div class="input-group" style="width:600px; margin:auto;">
+					<span class="span_password1_check" style="display:none;"></span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="input-group mt-2" style="width:600px; margin:auto;">
+					<span class="input-group-text" style="width:130px;">전화번호</span>
+					<input type="text" id="tel" name="tel" class="form-control" 
+							placeholder="'-'와 함께 전화번호를 입력해 주세요." required oninput = "phoneCheck()" />
+				</div>
+				<div class="input-group" style="width:600px; margin:auto;">
+					<span class="span_tel_check" style="display:none;"></span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="input-group mt-2" style="width:600px; margin:auto;">
+					<span class="input-group-text" style="width:130px;">이메일</span>
+				<!-- email -->	
+					<input type="text" id="email" name="email" class="form-control"
+							placeholder="이메일을 입력해 주세요." required oninput = "emailCheck()" />
+					<input type="button" class="btn btn-outline-secondary waves-effect waves-light" 
+							id="btnCertify" name="btnCertify" value="인증하기">
+				<!-- 인증코드 -->		
+					<input type="text" id="certifyCode" name="certifyCode" style="display:none;"
+							class="form-control" placeholder="인증코드">
+					<input type="button" class="btn btn-outline-secondary waves-effect waves-light" style="display:none;" 
+							id="btnCodeSubmit" name="btnCodeSubmit" value="전송">
+				</div>
+				<div class="input-group" style="width:600px; margin:auto;">
+					<span class="span_email_check" style="display:none;"></span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="input-group mt-2" style="width:600px; margin:auto;">
+					<span class="input-group-text" style="width:130px;">생년월일</span>
+					<input type="text" id="birth" name="birth" class="form-control" 
+							placeholder="생년월일(yyyy-mm-dd)을 입력해 주세요." required oninput = "birthCheck()" />
+				</div>
+				<div class="input-group" style="width:600px; margin:auto;">
+					<span class="span_birth_check" style="display:none;"></span>
+				</div>
+			</div>
+		
+			<div class="btn_wrap text-center mt-3">
+				<a th:href="@{/login}" class="btn btn-dark waves-effect waves-light mx-2">뒤로가기</a>
+				<button type="submit" class="btn btn-outline-dark mx-2">가입하기</button>
+			</div>
+		</form>
 	</div>
-	
-	<div class="form-group">
-		<div class="input-group mt-2" style="width:600px; margin:auto;">
-			<span class="input-group-text" style="width:130px;">아이디</span>
-			<input type="text" id="id" name="id" class="form-control" 
-					placeholder="6~10자 영문 소문자, 숫자를 사용하세요." required oninput = "idCheck()" />
-		</div>
-		<div class="input-group" style="width:600px; margin:auto;">
-			<span class="span_id_check" style="display:none;"></span>
-		</div>
-	</div>
-    
-	<div class="form-group">
-		<div class="input-group mt-2" style="width:600px; margin:auto;">
-			<span class="input-group-text" style="width:130px;">비밀번호</span>
-			<input type="password" id="pw" name="pw" class="form-control" 
-					placeholder="10~15자 영문, 숫자, 특수문자를 사용하세요." required oninput = "pwCheck()" />
-		</div>
-		<div class="input-group" style="width:600px; margin:auto;">
-			<span class="span_password_check" style="display:none;"></span>
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<div class="input-group mt-2" style="width:600px; margin:auto;">
-			<span class="input-group-text" style="width:130px;">비밀번호 확인</span>
-			<input type="password" id="passcode1" name="passcode1" class="form-control" 
-					placeholder="10~15자 영문, 숫자, 특수문자를 사용하세요." required oninput = "pwCheck1()" />
-		</div>
-		<div class="input-group" style="width:600px; margin:auto;">
-			<span class="span_password1_check" style="display:none;"></span>
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<div class="input-group mt-2" style="width:600px; margin:auto;">
-			<span class="input-group-text" style="width:130px;">전화번호</span>
-			<input type="text" id="tel" name="tel" class="form-control" 
-					placeholder="'-'와 함께 전화번호를 입력해 주세요." required oninput = "phoneCheck()" />
-		</div>
-		<div class="input-group" style="width:600px; margin:auto;">
-			<span class="span_tel_check" style="display:none;"></span>
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<div class="input-group mt-2" style="width:600px; margin:auto;">
-			<span class="input-group-text" style="width:130px;">이메일</span>
-		<!-- email -->	
-			<input type="text" id="email" name="email" class="form-control"
-					placeholder="이메일을 입력해 주세요." required oninput = "emailCheck()" />
-			<input type="button" class="btn btn-outline-secondary waves-effect waves-light" 
-					id="btnCertify" name="btnCertify" value="인증하기">
-		<!-- 인증코드 -->		
-			<input type="text" id="certifyCode" name="certifyCode" style="display:none;"
-					class="form-control" placeholder="인증코드">
-			<input type="button" class="btn btn-outline-secondary waves-effect waves-light" style="display:none;" 
-					id="btnCodeSubmit" name="btnCodeSubmit" value="전송">
-		</div>
-		<div class="input-group" style="width:600px; margin:auto;">
-			<span class="span_email_check" style="display:none;"></span>
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<div class="input-group mt-2" style="width:600px; margin:auto;">
-			<span class="input-group-text" style="width:130px;">생년월일</span>
-			<input type="text" id="birth" name="birth" class="form-control" 
-					placeholder="생년월일(yyyy-mm-dd)을 입력해 주세요." required oninput = "birthCheck()" />
-		</div>
-		<div class="input-group" style="width:600px; margin:auto;">
-			<span class="span_birth_check" style="display:none;"></span>
-		</div>
-	</div>
-
-	<div class="btn_wrap text-center mt-3">
-		<a th:href="@{/login}" class="btn btn-dark waves-effect waves-light mx-2">뒤로가기</a>
-		<button type="submit" class="btn btn-outline-dark mx-2">가입하기</button>
-	</div>
-</form>
-</div>
 		<!-- /.card-content -->
 </th:block>
+
 <th:block layout:fragment="script">
 	<script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 	<script th:inline="javascript">
