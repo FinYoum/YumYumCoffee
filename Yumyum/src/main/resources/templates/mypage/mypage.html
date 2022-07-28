@@ -117,7 +117,11 @@
 	<script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 	<script th:inline="javascript">
 		/*<![CDATA[ */
-			
+			$("#pw").keydown(function(e) {
+	   			if (e.keyCode == 13) {
+	   				$('#btnConfirm').trigger('click');
+	   			}
+			});
 			$(document)
 			.on('click','#btnConfirm',function(){
 				$.ajax({
