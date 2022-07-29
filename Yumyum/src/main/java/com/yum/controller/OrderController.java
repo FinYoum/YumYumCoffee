@@ -38,11 +38,13 @@ public class OrderController {
 		
 		//로그인한 세션에서 UserNum을 받아와 해당하는 유저가 보유한 쿠폰 저장
 		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member",member);
 		CouponDTO params = new CouponDTO();
 		params.setUserNum(member.getUserNum());
 		System.out.println("userNum : "+params);
 		List<CouponDTO> couponList = mypageService.getCouponList(params);
 		model.addAttribute("couponList", couponList);
+		
 
 		
 		//		List<ImgDTO> productImg = Collections.emptyList();

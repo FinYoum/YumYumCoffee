@@ -24,6 +24,8 @@
                         
                     </ul>
                     <form class="d-flex">
+                        <span class="mt-2 text-slate-700 font-semibold" th:if="${member != null}" th:text="${member.id}"></span>
+                        <span class="mt-2 mr-3 text-slate-700 " th:if="${member != null}">님, 안녕하세요!</span>
                         <a class="btn btn-outline-dark" th:if="${member != null}" th:href="@{/logout}">
                             Logout
                         </a>

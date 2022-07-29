@@ -113,13 +113,13 @@ public class MypageController {
 	}
 	
 	@PostMapping(value = "/updateMemInfo")
-	public String updateMemInfo(HttpSession session, final MemberDTO params) {
+	public String updateMemInfo(Model model, HttpSession session, final MemberDTO params) {
 		
 		try {
 			int isUpdated = memberService.updateMemInfo(params);
 			if (isUpdated == 0) {
 				logger.info("isUpdated: "+isUpdated);
-				return "redirect:/updateuser";
+				return "redirect:/mypage";
 				// TODO => 회원 등록에 실패하였다는 메시지를 전달
 				
 			} else if (isUpdated == 1) {
