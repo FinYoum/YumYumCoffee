@@ -1,42 +1,44 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layout/basic">
 <th:block layout:fragment="title">
 	<title>YumYum Coffee</title>
-	
-<style>
-.py-5{
+
+	<style>
+.py-5 {
 	position: relative !important;
 	left: 100px !important;
 }
-
-</style>	
+</style>
 </th:block>
 
 
 
 
 <th:block layout:fragment="header">
-<input type="hidden" id="paramCategoy" th:value="${param.category1}"> 
-	
-	
-	<h4 class="display-3 fw-bolder">Order
-	
-	
-    <input type="hidden" th:value="${session.loginMember}"  id="loginMemberInput" >    	   
+	<input type="hidden" id="paramCategoy" th:value="${param.category1}">
 
-	
+
+	<h4 class="display-3 fw-bolder">
+		O R D E R <input type="hidden" th:value="${session.loginMember}"
+			id="loginMemberInput">
+
+
 	</h4>
 	<p class="lead fw-normal text-white-50 mb-0"></p>
 </th:block>
 
-		
-	
 
-	
+
+
+
 <th:block layout:fragment="content">
-		
+
 	<div class="container px-4 px-lg-5">
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+			data-bs-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
 			aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -44,40 +46,40 @@
 
 		<div class="row">
 
-		
+
 
 			<th:block th:if="${param.branchNum.toString().equals('999')}">
-	
-						
+
+
 				<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
-				  <select th:if="${not #lists.isEmpty( branchList )}" 
-				  id="branchNum"
-				   class="form-select" required="required"  >		   		  
-		               <option th:value="${row.branchNum}" th:text="${row.branchName}"  th:each="row : ${branchList}"                   	
-		                  	></option>
-		         </select>
+					<select th:if="${not #lists.isEmpty( branchList )}" id="branchNum"
+						class="form-select" required="required">
+						<option th:value="${row.branchNum}" th:text="${row.branchName}"
+							th:each="row : ${branchList}"></option>
+					</select>
 				</div>
-			
+
 			</th:block>
 			<th:block th:unless="${param.branchNum.toString().equals('999')}">
-						
+
 				<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
-				  <select th:if="${not #lists.isEmpty( branchList )}" 
-				   id="branchNum"
-				   class="form-select" required="required" disabled >		   		  
-		                  <option th:value="${row.branchNum}" th:text="${row.branchName}"  th:each="row : ${branchList}"                   	
-		                  	th:if="${#strings.equals(param.branchNum,row.branchNum)}"></option>
-		         </select>
+					<select th:if="${not #lists.isEmpty( branchList )}" id="branchNum"
+						class="form-select" required="required" disabled>
+						<option th:value="${row.branchNum}" th:text="${row.branchName}"
+							th:each="row : ${branchList}"
+							th:if="${#strings.equals(param.branchNum,row.branchNum)}"></option>
+					</select>
 				</div>
 			</th:block>
-	
-	
 
 
-		
-		
+
+
+
+
 			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
-				<select onchange="categoryChange(this)" class="form-select" id="category1">
+				<select onchange="categoryChange(this)" class="form-select"
+					id="category1">
 					<option value="all">전체</option>
 					<option value="b">음료</option>
 					<option value="d">베이커리</option>
@@ -85,7 +87,8 @@
 			</div>
 
 			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
-				<select id="good" name="codeId" class="form-select" onchange="categorySubChange(this)" disabled>
+				<select id="good" name="codeId" class="form-select"
+					onchange="categorySubChange(this)" disabled>
 					<option></option>
 				</select>
 			</div>
@@ -93,12 +96,10 @@
 
 
 		<!-- 상품로드 영역 -->
-		<div class="row text-center" id="productList"  >
-			
-		</div>
-			
-		
-		
+		<div class="row text-center" id="productList"></div>
+
+
+
 
 
 		<!-- 페이지네이션로드 영역 -->
@@ -112,9 +113,7 @@
 	</div>
 
 
-	<div style="margin-bottom: 150px">
-	
-	</div>
+	<div style="margin-bottom: 150px"></div>
 
 	<div th:replace="/fragments/productModal::modal"></div>
 
@@ -122,9 +121,9 @@
 
 
 
-<!-- 자바스크립트 -->
-<th:block layout:fragment="script">
-    <script th:inline="javascript">
+	<!-- 자바스크립트 -->
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
 		let branchNum=/*[[ ${branchNum} ]]*/null;
 		let userNum=/*[[ ${member.userNum} ]]*/null;
 		console.log(userNum, branchNum);
@@ -654,7 +653,7 @@
 	
      
      </script>
- </th:block>
+	</th:block>
 
 
 </th:block>

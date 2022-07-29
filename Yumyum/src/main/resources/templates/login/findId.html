@@ -13,7 +13,7 @@
     </th:block>
 	
 	<th:block layout:fragment="content">
-		<div class="card-content">
+		<div class="card-content mt-5">
 		
 			<div class="form-group">
 				<div class="input-group mt-2" style="width:500px; margin:auto;">
@@ -31,8 +31,10 @@
 				</div>
 			</div>
 		
-			<div class="btn_wrap text-center mt-3">
-				<button class="btn btn-outline-dark waves-effect waves-light" id="btnFind" name="btnFind">찾기</button>
+			<div class="btn_wrap text-center mt-5">
+				<a th:href="@{/login}"><button class="btn btn-outline-dark waves-effect waves-light mx-3 w-32">로그인</button></a>
+				<button class="btn btn-outline-dark waves-effect waves-light mx-3 w-32" id="btnFind" name="btnFind">아이디 찾기</button>
+				<a th:href="@{/findPw}"><button class="btn btn-outline-dark waves-effect waves-light mx-3 w-32" >비밀번호 찾기</button></a>
 			</div>
 			
 		</div>

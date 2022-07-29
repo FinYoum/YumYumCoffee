@@ -29,9 +29,52 @@
 		               >더보기</div>
 		        </div>
 		     </div>
-		     <div th:replace="/fragments/mypageSidebar :: sidebar"> </div>
+		     <th:block th:replace="/fragments/mypageSidebar :: sidebar"> </th:block>
 		 </div>
     </th:block>
+    <th:block layout:fragment="modal">
+
+    <div id="modalIdentification" class="modal fade" tabindex="-1"
+        role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header"
+                    style="display: flex; justify-content: space-between;">
+                    <div class="font-semibold mt-2 mb-2 ml-2 text-2xl text-center dark">
+                        본인 확인</div>
+
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close" onclick="openModalId()">
+                        <img aria-hidden="true"
+                            th:src="@{https://cdn3.iconfinder.com/data/icons/status/100/close_1-512.png}"
+                            style="width: 15px; height: 15px; margin: 20px;"></img>
+                        <!-- <span aria-hidden="true"></span> -->
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="modalId-content">
+                        <div class="mt-2">
+                            <p class="mt-2">내정보수정 페이지로 이동하기 위해 비밀번호를 입력해 주세요.</p>
+                        </div>
+                        <div class="mt-3 form-group">
+                            <label class="ml-2 col-sm-2 font-bold">비밀번호</label>
+                            <div class="mt-2 text-center">
+                                <input type="password" id="pw" name="pw" class="form-control"
+                                    placeholder="비밀번호를 입력해 주세요." />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 text-right">
+                        <button class="btn btn-dark waves-effect waves-light"
+                            id="btnConfirm" name="btnConfirm">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
     
 <!-- 자바스크립트 -->
     <th:block layout:fragment="script">
@@ -150,7 +193,41 @@
                 printOrderList(null,null); 
             }
             /*[- end of function -]*/
-                    /*[- end of function -]*/
+            
+            /* 내정보 수정 비밀번호 인증 */
+            $("#pw").keydown(function(e) {
+                if (e.keyCode == 13) {
+                    $('#btnConfirm').trigger('click');
+                }
+            });
+            $(document)
+            .on('click','#btnConfirm',function(){
+                $.ajax({
+                    url:'/identification',
+                    type:'post',
+                    data:{pw:$('#pw').val()},
+                    success:function(result){ //컨트롤러에서 넘어온 result값을 받는다 
+                        if(result != 1){ //result가 1이 아니면(=0일 경우) -> 본인확인 실패 
+                            alert("본인임을 확인할 수 없습니다.");
+                            return false;
+                            
+                        } else { // result가 1일 경우 -> 본인확인 완료
+                            document.location="/updateuser";
+                            return true;
+                        }
+                    },
+                    error:function(){
+                        alert("본인임을 확인할 수 없습니다.");
+                        console.log("본인임을 확인할 수 없습니다.");
+                        return false;
+                    }
+                });
+            })
+            
+            function openModalId() {
+                
+                 $("#modalIdentification").modal("toggle");
+             }
                     /*]]>*/
         </script>
     </th:block>
