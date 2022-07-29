@@ -65,8 +65,8 @@
                 <div class="form-group">
                     <div class="input-group mt-2" style="width:500px; margin:auto;">
                         <span class="input-group-text" style="width:130px;">생년월일</span>
-                        <input type="text" id="birth" name="birth" th:field="*{birth}" class="form-control" 
-                                placeholder="생년월일(yyyy-mm-dd)을 입력해 주세요." required oninput = "birthCheck()" readonly/>
+                        <input type="text" id="birth" name="birth" class="form-control" 
+                                required oninput = "birthCheck()" readonly/>
                     </div>
                     <div class="input-group" style="width:500px; margin:auto;">
                         <span class="span_birth_check" style="display:none;"></span>
@@ -202,7 +202,10 @@
     <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
     <script th:inline="javascript">
         /*<![CDATA[ */
-    
+        	let birth = /*[[${member.birth}]]*/
+         	birth= birth.substring(0,10);
+        	$("#birth").val(birth);
+ 
     $(document)
     
     .on('click', '#btnPwConfirm', function(){
