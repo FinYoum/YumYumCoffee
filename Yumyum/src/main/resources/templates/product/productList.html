@@ -15,7 +15,7 @@
         <div class="container">
             <div th:style="${'float:right'}">
             <select id="code">
-                <option value="all">전체</option>
+                <option value="all" >전체</option>
                 <option value="b1">커피</option>
                 <option value="b2">라떼</option>
                 <option value="b3">스무디</option>
@@ -79,9 +79,9 @@
     /*<![CDATA[*/
     
     //페이징
-    function movePage(uri, queryString) {
-        location.href = uri + queryString;
-    }
+    function movePage(uri, queryString ,codeId) {
+        location.href = uri + queryString+ "&codeId="+codeId;
+    } 
     
     //검색
     function search() {
@@ -90,7 +90,7 @@
          
          var code=document.getElementById('code');
          var codeId=code.options[code.selectedIndex].value;
-         //alert(codeId);
+         
         
          html += '<form name="dataForm" action="'+uri+'" method="get">';
              html += '<input type="hidden" name="codeId" value="'+codeId+'" />';
@@ -100,10 +100,10 @@
          document.dataForm.submit();
         }
     
+    
     /*[- end of function -]*/
 
     /*]]>*/
     </script>
     </th:block>
-
 </html>
