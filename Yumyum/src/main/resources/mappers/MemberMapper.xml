@@ -69,7 +69,7 @@
 	</select>
 
 	<select id="login" parameterType="com.yum.domain.MemberDTO" resultType="com.yum.domain.MemberDTO">
-		SELECT USER_NUM, ID, PW, NAME, TEL, EMAIL, TO_CHAR(BIRTH,'YYYY-MM-DD'), AUTHORITY, STAMP, DELETE_YN
+		SELECT USER_NUM, ID, PW, NAME, TEL, EMAIL, SUBSTR(TO_CHAR(BIRTH),0,10), AUTHORITY, STAMP, DELETE_YN
 		FROM MEMBER
 		WHERE ID = #{id}
 		AND delete_yn = 'N'

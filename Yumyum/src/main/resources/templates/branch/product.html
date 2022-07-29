@@ -375,7 +375,6 @@
 			$.get("/product/detail/"+productNum, function(res){
 				res =JSON.parse(res);
 				
-				//console.log(res);
 				
 				const price=res.product.price;
 				const info=res.product.info;
@@ -385,7 +384,6 @@
 				const imgPath=res.fileList[0].imgPath;
 				
 				
-			//	console.log(price, info, productNum, name,saveName);
 				
 				$("#modal-productNum").val(productNum);		
 				$("#modal-price").html(priceToString(price)+"원");
@@ -393,11 +391,28 @@
 				$("#modal-name").html(name);
 				$("#modal-imgPath").attr("src",  imgPath);
 				
-				$("input:checkbox[id='option1']").prop("checked", true);    
+				// codeId contain b(average) 샷 추가 div보이기
+				 if(res.product.codeId.includes('b')){
+                	$("#customDiv").show();
+                //	$("input:radio[id='option5']").hide();
+                $("input:checkbox[id='option1']").prop("checked", true);    
 				$("input:checkbox[id='option2']").prop("checked", false);    
 				$("input:checkbox[id='option3']").prop("checked", false);    
 				$("input:checkbox[id='option4']").prop("checked", false);   
-				  
+				$("input:checkbox[id='option5']").prop("checked", false);   
+                	
+                } else{
+                  //   $("#customDiv").hide();
+                    console.log($("input:radio[id='option5']").val());
+                    
+                     $("input:radio[id='option1']").prop("checked", false);
+                     $("input:radio[id='option5']").prop("checked", true);
+                     $("input:checkbox[id='option1']").prop("checked", true);    
+				$("input:checkbox[id='option2']").prop("checked", false);    
+				$("input:checkbox[id='option3']").prop("checked", false);    
+				$("input:checkbox[id='option4']").prop("checked", false);   
+                     
+                }
 			});
 			
 			
@@ -465,8 +480,6 @@
 			    	
 					let price= priceToString(item.price);
 					let totalPrice=priceToString(item.totalPrice);
-					allProductPrice+=item.totalPrice;
-					console.log(allProductPrice)
 					
 					html +=`	<li id="cartLi-${num}">		
 					 <div id="cartId-${num}" class="cartlistDiv">	             

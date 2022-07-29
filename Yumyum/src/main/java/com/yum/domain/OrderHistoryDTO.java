@@ -24,7 +24,7 @@ public class OrderHistoryDTO {
 //	가격
 	int price;
 //	커스텀
-	String shotCustom;
+	String info;
 //	제품이름
 	String name;
 }

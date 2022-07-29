@@ -88,13 +88,14 @@
 	            , o."total_price" 
 	            , d."ea" 
 	            , d."price" 
-	            , d."shot_custom"
+	            , s.INFO
 	            , p.NAME 
 	       FROM 
 	            "order_detail" d,
 	            "order" o 
 	            , BRANCH b
-	            , PRODUCT p 
+	            , PRODUCT p
+	            , SHOTCUSTOM S 
 	       WHERE 
 	            d."order_num" IN (
 	            SELECT 
@@ -119,6 +120,8 @@
 	             o."branch_num" = b.BRANCH_NUM
             AND  
                  d."product_num"=p.PRODUCT_NUM 
+            AND
+                d."shot_custom"=s.SHOT_CUSTOM
             ORDER BY 
                 o."order_num" DESC
                 , p.NAME ASC
