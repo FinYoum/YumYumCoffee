@@ -49,33 +49,33 @@ public class MapperTests {
 	 }
 
 	
-	@Test
-	public void testRegisterMapper() {
-		MemberDTO params = new MemberDTO();
-		params.setName("김종주");
-		params.setId("jongju");
-		params.setPw("jong123");
-		params.setTel("010-8012-7716");
-		params.setEmail("jongjoo15@gmail.com");
-		params.setBirth("1999-11-16");
-		
-		int result = registerMapper.insertMember(params);
-		System.out.println("결과는 " + result + "입니다.");
-	}
-	@Test
-	public void testMultipleInsert() {
-		for (int i = 2; i <= 50; i++) {
-			MemberDTO params = new MemberDTO();
-			params.setName(i+" 이름");
-			params.setId(i+" id");
-			params.setPw(i+" pw");
-			params.setTel(i+" 8210");
-			params.setEmail(i+" email");
-			params.setBirth(i+" 996");
-
-			registerMapper.insertMember(params);
-		}
-	}
+//	@Test
+//	public void testRegisterMapper() {
+//		MemberDTO params = new MemberDTO();
+//		params.setName("김종주");
+//		params.setId("jongju");
+//		params.setPw("jong123");
+//		params.setTel("010-8012-7716");
+//		params.setEmail("jongjoo15@gmail.com");
+//		params.setBirth("1999-11-16");
+//		
+//		int result = registerMapper.insertMember(params);
+//		System.out.println("결과는 " + result + "입니다.");
+//	}
+//	@Test
+//	public void testMultipleInsert() {
+//		for (int i = 2; i <= 50; i++) {
+//			MemberDTO params = new MemberDTO();
+//			params.setName(i+" 이름");
+//			params.setId(i+" id");
+//			params.setPw(i+" pw");
+//			params.setTel(i+" 8210");
+//			params.setEmail(i+" email");
+//			params.setBirth(i+" 996");
+//
+//			registerMapper.insertMember(params);
+//		}
+//	}
 	
 	@Test
 	public void testOfSelectDetail() {

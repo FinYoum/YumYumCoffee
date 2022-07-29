@@ -39,9 +39,8 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	@GetMapping(value = "/home")
-	public String home(
-			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember,
-			HttpServletRequest request, Model model) {
+	public String home(HttpServletRequest request, Model model,
+			@SessionAttribute(name = SessionConstants.loginMember, required = false) MemberDTO loginMember) {
 		
 		model.addAttribute("member", loginMember);
 		System.out.println(request);
@@ -108,28 +107,23 @@ public class LoginController {
 		return "redirect:/home"; 
 	}
 
-// member가 null 이 아니라서 헤더가 보이는 상태 
 	@GetMapping(value = "/register")
-	public String openRegister(@RequestParam(value = "userNum", required = false) Long userNum, Model model) {
-		
-		if (userNum == null) {
-			model.addAttribute("member", new MemberDTO());
-		} else {
-			MemberDTO member = memberService.getMemberDetail(userNum);
-			if(member == null) {
-				return "redirect:/login";
-			}
-			model.addAttribute("member",member);
-		}
+	public String openRegister() {
+
 		return "login/register";
 	}
 	
 	@PostMapping(value = "/register")
-	public String registerBoard(final MemberDTO params, HttpSession session ) {
+	public String registerBoard(HttpSession session,
+			@RequestParam("name") String name, @RequestParam("id") String id, 
+			@RequestParam("pw") String pw, @RequestParam("tel") String tel,
+			@RequestParam("email") String email, @RequestParam("birth") String birth) {
+		
 		try {
-			int isRegistered = memberService.registerMember(params);
+			int isRegistered = memberService.registerMember(name, id, pw, tel, email, birth);
 			if (isRegistered == 0) {
 				logger.info("isRegistered: "+isRegistered);
+				return "redirect:/register";
 				// TODO => 회원 등록에 실패하였다는 메시지를 전달
 				
 			} else if (isRegistered == 1) {
@@ -137,13 +131,14 @@ public class LoginController {
 				logger.info("isRegistered: "+isRegistered);
 				return "redirect:/login";
 				
-			} else if (isRegistered == 2) {
-//				마이페이지 >> 내 정보 수정
-				MemberDTO member = memberService.getMemberDetail(Long.valueOf(params.getUserNum()));
-				session.setAttribute(SessionConstants.loginMember, member);
-				logger.info("isRegistered: "+isRegistered);
-				return "redirect:/mypage";
-			}
+			} 
+//			else if (isRegistered == 2) {
+////				마이페이지 >> 내 정보 수정
+//				MemberDTO member = memberService.getMemberDetail(Long.valueOf(params.getUserNum()));
+//				session.setAttribute(SessionConstants.loginMember, member);
+//				logger.info("isRegistered: "+isRegistered);
+//				return "redirect:/mypage";
+//			}
 			
 		} catch (DataAccessException e) {
 			System.out.println(e.getMessage());
