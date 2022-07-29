@@ -128,27 +128,23 @@
                 
                 let uri = /*[[ @{/yumyum/orderhistory/}+${member.userNum}+'/']]*/null;
                 uri+=(period+'/'+firstIndex);
+                console.log(uri);
+                
                 
                 $.get(uri, function(response) {
                     if (isEmpty(response) == false) {
-                        
+                        console.log()
                         function groupArrayOfObjects(list, key) {
                               return list.reduce(function(rv, x) {
                                 (rv[x[key]] = rv[x[key]] || []).push(x);
                                 return rv;
                               }, {});
                             };
-                            
-                        let groupOrderList=groupArrayOfObjects(response.orderHistoryList,"orderNum");
-                        let sortList=[]
-                        
-                        for(i in groupOrderList){
-                        	sortList.unshift(groupOrderList[i]);
-                        }
-                        
+                        // orderTime을 기준으로 그룹 정렬(이미 시간 내림차순으로 정렬되어있는 상태)
+                        let groupOrderList=groupArrayOfObjects(response.orderHistoryList,"orderTime");
 
-                        for(i in sortList){
-                            let order = sortList[i][0];
+                        for(i in groupOrderList){
+                            let order = groupOrderList[i][0];
                             let orderDate = ""+(order.orderTime).substring(0,10);
                             
                             orderHistoryHtml += `
@@ -159,8 +155,8 @@
 	                                </tr>
                                   `;
                                   
-                            for(j in sortList[i]){
-                                let orderDetail = sortList[i][j];
+                            for(j in groupOrderList[i]){
+                                let orderDetail = groupOrderList[i][j];
                                 orderHistoryHtml += `
                                     <tr>
                                         <td class="font-semibold">${orderDetail.name}</td>
