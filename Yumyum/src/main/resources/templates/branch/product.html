@@ -35,7 +35,7 @@
 
 <th:block layout:fragment="content">
 
-	<div class="container px-4 px-lg-5">
+	<div class="container px-lg-5">
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 			data-bs-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -215,7 +215,7 @@
 				
 				
 				html +=`			
-			        <div class="col-md-3 col-sm-3 col-lg-3">    
+			        <div class="col-sm-3" style="min-width:163px">    
 			           <div class="card mb-3">		                             
 			               <div class="image" data-bs-toggle="modal"  onclick="detailProduct(${item.productNum}), openModal()"  >
 			                <img src="${item.imgPath}"  class="img-fluid img-thumbnail" >		                
@@ -254,9 +254,9 @@
 				if(!$("#sidebar").hasClass("d-flex")){			
 					$("main").css("display", "flex");
 					$("main").css("flex-wrap", "nowrap");
-					$("main").css("height", "110vh");
+					/* $("main").css("height", "110vh"); */
 					$("main").css("height", "webkit-fill-available");
-					$("main").css("max-height", "200vh");
+					/* $("main").css("max-height", "200vh"); */
 					$("main").css("overflow-x", "auto");
 					$("main").css("overflow-y", "scroll !important"); 		
 					$("#sidebar").addClass("d-flex");			
@@ -483,7 +483,7 @@
 					let totalPrice=priceToString(item.totalPrice);
 					
 					html +=`	<li id="cartLi-${num}">		
-					 <div id="cartId-${num}" class="cartlistDiv">	             
+					 <div id="cartId-${num}" class="cartlistDiv" style="margin-left:35px">	             
 				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()" checked>
 				         <span class="cart-text">${item.name}</span>     
 				         `;
@@ -523,10 +523,10 @@
 				});
 				
 				html +=`
-					<li style="margin-top: 100px; margin-bottom:100px">
+					<li style="margin-top: 100px; margin-bottom:50px">
 				    <hr style="border: 1px">
-			   <p class="mt-2 mb-2" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 70px;" id="total-number">총 0개</p>		
-			   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;" id="total-sum">합계 0원</p>		
+			   <p class="mt-2 mb-2" style="font-size: 2.5 rem; font-weight: bold; margin-left: 216px;" id="total-number">총 0개</p>		
+			   <p class="mt-2 mb-5" style="font-size: 2.5 rem; text-align:right; font-weight: bold; margin-right: 70px;" id="total-sum">합계 0원</p>		
 			 
 			 
 			   <button class="btn btn-outline-dark waves-effect waves-light" style="margin-left: 150px; width: 81px;">구매</button>
