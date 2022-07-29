@@ -198,7 +198,7 @@
 		function getHtmlParsing(res){		
 			let html="";
 			let cnt=0;
-			
+		
 			console.log(res.length);
 			if(res.length==0){
 				totalData=0;
@@ -212,7 +212,7 @@
 					currentPage=item.currentPageNo;
 				}	
 				const price=priceToString(item.price);
-				//console.log(item)
+				
 				
 				
 				html +=`			
@@ -227,10 +227,9 @@
 			                   <p>${item.name}</p>
 			                   </div>
 			                   <div class="col-md-4">
-			                    <button type="button" data-id="105" class="fa far-card-icon cart-icon" onclick="addCart(${item.productNum})"> 
+			                    <button type="button" data-id="105" class="fa far-card-icon cart-icon" onclick="addCart('${item.productNum}','${item.codeId}')"> 
 			                    <i class="fa fa-shopping-cart fa-2x"></i></button>
 			                   </div>
-			                  <div class="col-md-12 text-right">
 			                   <strong>${price}원 </strong>                    
 			                  </div>		                  
 			                 </div>
@@ -394,24 +393,11 @@
 				// codeId contain b(average) 샷 추가 div보이기
 				 if(res.product.codeId.includes('b')){
                 	$("#customDiv").show();
-                //	$("input:radio[id='option5']").hide();
-                $("input:checkbox[id='option1']").prop("checked", true);    
-				$("input:checkbox[id='option2']").prop("checked", false);    
-				$("input:checkbox[id='option3']").prop("checked", false);    
-				$("input:checkbox[id='option4']").prop("checked", false);   
-				$("input:checkbox[id='option5']").prop("checked", false);   
-                	
+                	$("input:radio[id='option5']").hide();
+                	$("input:radio[id='option1']").prop("checked", true);
                 } else{
-                  //   $("#customDiv").hide();
-                    console.log($("input:radio[id='option5']").val());
-                    
-                     $("input:radio[id='option1']").prop("checked", false);
-                     $("input:radio[id='option5']").prop("checked", true);
-                     $("input:checkbox[id='option1']").prop("checked", true);    
-				$("input:checkbox[id='option2']").prop("checked", false);    
-				$("input:checkbox[id='option3']").prop("checked", false);    
-				$("input:checkbox[id='option4']").prop("checked", false);   
-                     
+                    $("#customDiv").hide();
+                    $("input:radio[id='option5']").prop("checked", true);
                 }
 			});
 			
@@ -427,8 +413,12 @@
 		}
 		
 		
-		function addCart(productNum){	
+		function addCart(productNum, codeId){	
 			
+			console.log(productNum);
+			console.log("ok");
+			console.log(codeId);
+			console.log("ok2");
 			let params;
 		    if(productNum==undefined){
 		         params={
@@ -438,12 +428,24 @@
 		                "shotCustom":$("input[class='form-check-input']:checked").val()
 		        }
 		    }else{
-		         params={
-		        		"userNum":userNum,
-		                "branchNum":branchNum,
-		                "productNum":productNum,
-		                "shotCustom":1                  
-		        }
+		    	if(codeId.includes('b')){
+		    		console.log("음료입니다.")
+		    	    params={
+	                        "userNum":userNum,
+	                        "branchNum":branchNum,
+	                        "productNum":productNum,
+	                        "shotCustom":1                  
+	                }
+                } else{
+                    		console.log("음료 아닙니다.")
+                    params={
+                            "userNum":userNum,
+                            "branchNum":branchNum,
+                            "productNum":productNum,
+                            "shotCustom":5                  
+                    }
+                }
+		     
 		    }
 			
 			$.ajax({
