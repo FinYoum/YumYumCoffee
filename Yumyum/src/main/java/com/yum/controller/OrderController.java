@@ -9,8 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yum.constant.SessionConstants;
+import com.yum.domain.CartDTO;
 import com.yum.domain.CouponDTO;
 import com.yum.domain.MemberDTO;
 import com.yum.domain.OrderDTO;
@@ -67,5 +72,27 @@ public class OrderController {
 
 		return "order/orderPage2";
 	}
+	
+	
+	
+	@ResponseBody
+	   @RequestMapping(value = {"/order"}, method = { RequestMethod.POST, RequestMethod.PATCH })
+	   public String openOrderList(@RequestBody List <CartDTO> cartList,  @RequestBody int cnt, @RequestBody int totalPrice,  HttpSession session, Model model) {      
+	      //주문리스트와 이미지 테이블을 조인해서 모델에 저장
+	            model.addAttribute("cartList", cartList);
+
+	            //주문하는 지점명 저장
+	            model.addAttribute("branchName", "테스트 중");
+	            
+	            //로그인한 세션에서 UserNum을 받아와 해당하는 유저가 보유한 쿠폰 저장
+	            MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
+	            model.addAttribute("member",member);
+	            CouponDTO params = new CouponDTO();
+	            params.setUserNum(member.getUserNum());
+	            System.out.println("userNum : "+params);
+	            List<CouponDTO> couponList = mypageService.getCouponList(params);
+	            model.addAttribute("couponList", couponList);
+	            return "order/orderPage2";
+	   }
 	
 }

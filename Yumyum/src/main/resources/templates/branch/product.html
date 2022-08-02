@@ -415,9 +415,9 @@
 		function addCart(productNum, codeId){	
 			
 			console.log(productNum);
-			console.log("ok");
+			/* console.log("ok"); 
 			console.log(codeId);
-			console.log("ok2");
+			console.log("ok2"); */
 			let params;
 		    if(productNum==undefined){
 		         params={
@@ -478,26 +478,28 @@
 				let html="";
 			    response.forEach(function(item,num){
 			    	    	
-			    	
 					let price= priceToString(item.price);
 					let totalPrice=priceToString(item.totalPrice);
 					
 					html +=`	<li id="cartLi-${num}">		
 					 <div id="cartId-${num}" class="cartlistDiv">	             
 				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()" checked>
-				         <span class="cart-text">${item.name}</span>     
+				         <span class="cart-text" id="productNum-${num}" th:value="${item.productNum}">${item.name}</span>     
 				         `;
 					if(item.shotCustom==1){
-                        html +='<small>선택안함</small> &nbsp;';
+                        html +=`<small id="shotCustom-${num}" th:value="1">선택안함</small> &nbsp;`;
                     }
                     if(item.shotCustom==2){
-                        html +='<small>연하게</small> &nbsp;';
+                        html +=`<small id="shotCustom-${num}" th:value="2">연하게</small> &nbsp;`;
                     }
                     if(item.shotCustom==3){
-                        html +='<small>샷 추가(+500)</small> &nbsp;';
+                        html +=`<small id="shotCustom-${num}" th:value="3">샷 추가(+500)</small> &nbsp;`;
                     }
                     if(item.shotCustom==4){
-                        html +='<small>2샷 추가(+1,000)</small>';
+                        html +=`<small id="shotCustom-${num}" th:value="4">2샷 추가(+1,000)</small>`;
+                    }
+                    if(item.shotCustom==5){
+                        html +=`<small id="shotCustom-${num}" th:value="5"> </small>`;
                     }
 				         
                     html +=`
@@ -529,7 +531,7 @@
 			   <p class="mt-2 mb-5" style="font-size: 2.5 rem ; font-weight: bold;margin-left: 100px;" id="total-sum">합계 0원</p>		
 			 
 			 
-			   <button class="btn btn-outline-dark waves-effect waves-light" style="margin-left: 150px; width: 81px;">구매</button>
+			   <button type="button" class="btn btn-outline-dark waves-effect waves-light" onClick="purchase()" style="margin-left: 150px; width: 81px;">구매</button>
 			   	
 			</li>
 				
@@ -650,8 +652,76 @@
 	         $("#MyModal").modal("toggle");
 	     }
 		     
-	
+		/* function getCheckboxValue()  {
+			  // 선택된 목록 가져오기
+			  const query = 'input[name="animal"]:checked';
+			  const selectedEls = 
+			      document.querySelectorAll(query);
+			  
+			  // 선택된 목록에서 value 찾기
+			  let result = '';
+			  selectedEls.forEach((el) => {
+			    result += el.value + ' ';
+			  });
+			  
+			  // 출력
+			  document.getElementById('result').innerText
+			    = result;
+		} */
      
+		
+	function purchase(){	
+		let totalArr=[];
+		let cartList=[];
+		totalArr.push(cartList);
+		let totalSum =0;
+		let cnt=0;
+	  
+		/* 체크되어있는 제품에 대한 값을 반복적으로 가져옴 */
+		$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
+			const cartNum=$(this).attr("data-id");
+	
+			let productNum = $("#productNum-"+cartNum)[0].attributes["th:value"].value;
+			let shotCustom = $("#shotCustom-"+cartNum)[0].attributes["th:value"].textContent;
+			let qty = $("#cartNumber-"+cartNum).val();	
+			
+			let params={
+			            "userNum": userNum,
+			            "branchNum":branchNum,
+			            "productNum":productNum,
+			            "shotCustom": shotCustom,
+			            "qty":qty
+			        }
+			cartList.push(params);
+			
+	
+			let sum=$("#sum-"+cartNum).text();
+			sum =parseInt(sum.replace(",", ""));
+	
+			totalSum +=sum;
+			cnt++;
+		});
+		
+		totalArr.push(totalSum);
+		totalArr.push(cnt);
+		
+		/* end of foreach*/
+
+  			$.ajax({
+				url: "/order",
+		        type: "post",
+		        data: JSON.stringify(totalArr),
+		        dataType: "json",
+		        contentType: "application/json",
+		        success: function(res) {
+		            cartList();
+		        },
+		        error: function(res) {
+		        	console.log("에러가 발생하였습니다.");
+		        }
+		    });  
+			 
+		}
      </script>
 	</th:block>
 
