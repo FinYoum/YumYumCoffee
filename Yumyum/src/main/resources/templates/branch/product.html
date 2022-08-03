@@ -135,10 +135,10 @@
 		
 		//카테고리 표시 함수
 		function categoryChange(e) {
-		    var good_b = ["전체", "커피", "주스","스무디", "에이드", "티"];
+		    var good_b = ["전체", "커피", "라떼","주스","스무디", "에이드", "티"];
 		    var good_d = ["전체","빵", "케이크"];
 		
-		    var good_b_v = ["all", "b1", "b2", "b3", "b4","b5"];
+		    var good_b_v = ["all", "b1", "b2", "b3", "b4","b5","b6"];
 		    var good_d_v = ["all", "d1", "d2"];
 		
 		    var target = document.getElementById("good");
@@ -477,7 +477,7 @@
 			.then((response)=>{
 				let html="";
 			    response.forEach(function(item,num){
-			    	    	
+			    	 console.log(item);
 					let price= priceToString(item.price);
 					let totalPrice=priceToString(item.totalPrice);
 					
@@ -669,11 +669,12 @@
 			    = result;
 		} */
      
+	
 		
 	function purchase(){	
 		let totalArr=[];
 		let cartList=[];
-		totalArr.push(cartList);
+		//totalArr.push(cartList);
 		let totalSum =0;
 		let cnt=0;
 	  
@@ -702,19 +703,24 @@
 			cnt++;
 		});
 		
-		totalArr.push(totalSum);
-		totalArr.push(cnt);
-		
+		//totalArr.push(totalSum);
+		//totalArr.push(cnt);
+		console.log(JSON.stringify(cartList));
 		/* end of foreach*/
 
   			$.ajax({
 				url: "/order",
 		        type: "post",
-		        data: JSON.stringify(totalArr),
-		        dataType: "json",
-		        contentType: "application/json",
+		        data: {
+		        	"cnt" :cnt,
+		        	"totalSum":totalSum,
+		        	"cartList" :JSON.stringify(cartList)
+		        },
+		       // dataType: "json",
+		      // contentType: "application/json",
 		        success: function(res) {
-		            cartList();
+		        	console.log(res);
+		            //cartList();
 		        },
 		        error: function(res) {
 		        	console.log("에러가 발생하였습니다.");

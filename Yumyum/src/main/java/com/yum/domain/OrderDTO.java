@@ -1,10 +1,14 @@
 package com.yum.domain;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class OrderDTO {
 
 	//주문 번호
@@ -21,6 +25,13 @@ public class OrderDTO {
 	private String shotCustom;
 	//이미지 경로
 	private String imgPath;
+	
+	private String cnt;
+	
+	private String totlaSum;
+	
+	List<CartDTO> cartList[];
+	
 //	//픽업여부
 //	private String pickupYn;
 	
