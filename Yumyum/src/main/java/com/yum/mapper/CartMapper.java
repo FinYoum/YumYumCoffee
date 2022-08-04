@@ -38,5 +38,7 @@ public interface CartMapper {
 	
 	// 제품이 장바구니에 있는지 확인 
 	public CartDTO checkCart(CartDTO params);
+	// 선택한 지점명 가져오기
+	public String selectBranchName(Long branchNum);
 	
 }

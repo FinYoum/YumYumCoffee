@@ -27,6 +27,7 @@ import com.yum.domain.OrderDTO;
 import com.yum.service.MypageService;
 import com.yum.service.PaymentService;
 
+import groovy.transform.Undefined.EXCEPTION;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -126,23 +127,20 @@ public class OrderController {
 				model.addAttribute("totalPrice",totalSum);
 				model.addAttribute("totalQty",cntProduct);
 				model.addAttribute("cartList", cartList);
+				log.debug(cartList.toString());
 				
-				
-				
-	      //주문리스트와 이미지 테이블을 조인해서 모델에 저장
-//	            model.addAttribute("cartList", cartList);
-//
+
 //	            //주문하는 지점명 저장
-//	            model.addAttribute("branchName", "테스트 중");
+				String branchName = session.getAttribute("branchName").toString();
+				model.addAttribute("branchName", branchName);
 //	            
 //	            //로그인한 세션에서 UserNum을 받아와 해당하는 유저가 보유한 쿠폰 저장
-//	            MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
-//	            model.addAttribute("member",member);
-//	            CouponDTO params = new CouponDTO();
-//	            params.setUserNum(member.getUserNum());
-//	            System.out.println("userNum : "+params);
-//	            List<CouponDTO> couponList = mypageService.getCouponList(params);
-//	            model.addAttribute("couponList", couponList);
+	            model.addAttribute("member",member);
+	            CouponDTO params = new CouponDTO();
+	            params.setUserNum(member.getUserNum());
+	            System.out.println("userNum : "+params);
+	            List<CouponDTO> couponList = mypageService.getCouponList(params);
+	            model.addAttribute("couponList", couponList);
 	            return "order/orderPage2";
 	   }
 	

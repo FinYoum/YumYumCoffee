@@ -47,36 +47,6 @@
 		<div class="row">
 
 
-
-			<th:block th:if="${param.branchNum.toString().equals('999')}">
-
-
-				<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
-					<select th:if="${not #lists.isEmpty( branchList )}" id="branchNum"
-						class="form-select" required="required">
-						<option th:value="${row.branchNum}" th:text="${row.branchName}"
-							th:each="row : ${branchList}"></option>
-					</select>
-				</div>
-
-			</th:block>
-			<th:block th:unless="${param.branchNum.toString().equals('999')}">
-
-				<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
-					<select th:if="${not #lists.isEmpty( branchList )}" id="branchNum"
-						class="form-select" required="required" disabled>
-						<option th:value="${row.branchNum}" th:text="${row.branchName}"
-							th:each="row : ${branchList}"
-							th:if="${#strings.equals(param.branchNum,row.branchNum)}"></option>
-					</select>
-				</div>
-			</th:block>
-
-
-
-
-
-
 			<div class="col-lg-2 col-md-3 col-sm-12 mb-3">
 				<select onchange="categoryChange(this)" class="form-select"
 					id="category1">
@@ -126,7 +96,7 @@
 		<script th:inline="javascript">
 		let branchNum=/*[[ ${branchNum} ]]*/null;
 		let userNum=/*[[ ${member.userNum} ]]*/null;
-		console.log(userNum, branchNum);
+		//console.log(userNum, branchNum);
 		
 		$(function(){
 			getMenuOne("all");
@@ -135,7 +105,7 @@
 		
 		//카테고리 표시 함수
 		function categoryChange(e) {
-		    var good_b = ["전체", "커피", "라떼","주스","스무디", "에이드", "티"];
+		    var good_b = ["전체", "커피", "라떼","스무디", "에이드", "주스", "티"];
 		    var good_d = ["전체","빵", "케이크"];
 		
 		    var good_b_v = ["all", "b1", "b2", "b3", "b4","b5","b6"];
@@ -198,7 +168,7 @@
 			let html="";
 			let cnt=0;
 		
-			console.log(res.length);
+			//console.log(res.length);
 			if(res.length==0){
 				totalData=0;
 			}
@@ -414,7 +384,7 @@
 		
 		function addCart(productNum, codeId){	
 			
-			console.log(productNum);
+			//console.log(productNum);
 			/* console.log("ok"); 
 			console.log(codeId);
 			console.log("ok2"); */
@@ -516,7 +486,7 @@
 				    </div>
 			         <div>
 						 <input type="hidden"  id="cart-price-${num}"  value="${price}">	         
-			          금액 ${price}원 /  합계 <span id="sum-${num}" value="${totalPrice}">${totalPrice}</span>원<br>
+			          금액 ${price}원 /  총 합계 <span id="sum-${num}" value="${totalPrice}">${totalPrice}</span>원<br>
 					`;				
 					
 					
@@ -570,7 +540,7 @@
 		}
 		
 		function cartUpdatePirce(productNum, shotCustom, qty){
-			   console.log(productNum, shotCustom, qty)
+			   //console.log(productNum, shotCustom, qty)
 			   let params={
 		                "userNum":userNum,
 		                "branchNum":branchNum,
@@ -578,7 +548,7 @@
 		                "shotCustom":shotCustom,
 		                "qty":qty
 			        }
-			    console.log(params);
+			    //console.log(params);
 			    $.ajax({
 			        url: "/product/updatecart",
 			        type: "post",
@@ -683,8 +653,8 @@
 		$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
 			const cartNum=$(this).attr("data-id");
 	
-			let productNum = $("#productNum-"+cartNum)[0].attributes["th:value"].value;
-			let shotCustom = $("#shotCustom-"+cartNum)[0].attributes["th:value"].textContent;
+			let productNum = parseInt($("#productNum-"+cartNum)[0].attributes["th:value"].value);
+			let shotCustom = parseInt($("#shotCustom-"+cartNum)[0].attributes["th:value"].textContent);
 			let qty = parseInt($("#cartNumber-"+cartNum).val());	
 			let productName = $("#productNum-"+cartNum).text();	
 			let totalPrice = parseInt($("#sum-"+cartNum).text().replace(",", ""));	
@@ -717,30 +687,36 @@
 			cnt+=qty;
 		});
 		
-		//totalArr.push(totalSum);
-		//totalArr.push(cnt);
-		console.log(JSON.stringify(cartList));
 		/* end of foreach*/
-
-  			$.ajax({
-				url: "/order",
-		        type: "post",
-		        data: {
-		        	"cnt" :cnt,
-		        	"totalSum":totalSum,
-		        	"cartList" :JSON.stringify(cartList)
-		        },
-		       // dataType: "json",
-		      // contentType: "application/json",
-		        success: function(res) {
-		        	console.log(res);
-		            //cartList();
-		        },
-		        error: function(res) {
-		        	console.log("에러가 발생하였습니다.");
-		        }
-		    });  
+		
+			pageGoPost({
+				url: "/order",	//이동할 페이지
+			    target: "_self",
+			    vals: [				//전달할 인수들
+			    	["cnt",cnt],
+			        ["totalSum",totalSum],
+			        ["cartList",JSON.stringify(cartList)]
+				]
+			});
 			 
+		}
+		
+		// 데이터를 담아 postMapping
+		function pageGoPost(data){
+			var insdoc = "";
+		    
+			for (var i = 0; i < data.vals.length; i++) {
+			  insdoc+= "<input type='hidden' name='"+ data.vals[i][0] +"' value='"+ data.vals[i][1] +"'>";
+			}
+		    
+			var goform = $("<form>", {
+			  method: "post",
+			  action: data.url,
+			  target: data.target,
+			  html: insdoc
+			}).appendTo("body");
+		    
+			goform.submit();
 		}
      </script>
 	</th:block>

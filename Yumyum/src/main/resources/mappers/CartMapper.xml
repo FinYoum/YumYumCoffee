@@ -168,5 +168,13 @@
             SHOT_CUSTOM = #{shotCustom}
 	</select> 
 	
+		<!-- 지점명 가져오기 -->
+ 	<select id="selectBranchName" parameterType="Long" resultType="String">
+	   	SELECT BRANCH_NAME
+        FROM
+            BRANCH
+        WHERE 
+            BRANCH_NUM = #{branchNum} 
+	</select> 
 	
 </mapper>

@@ -31,18 +31,21 @@
 					th:each="cart : ${ cartList }">
 					<div class="row g-0">
 						<div class="col-md-4">
-							<img th:src="${ cart }" class="img-fluid rounded-start"
+							<img th:src="${ cart.imgPath }" class="img-fluid rounded-start"
 								alt="...">
 						</div>
 						<div class="col-md-8">
 							<div class="card-body">
 								<h5 class="card-title">주문 내역</h5>
-								<p class="card-text" th:text="|품목 ${ cart.name }|"></p>
-								<p class="card-text" th:text="|가격 ${ cart.price }|"></p>
-								<p class="card-text" th:text="|수량 ${ cart.qty }|"></p>
-								<small class="text-muted"
-									th:utext="|변경사항 ${ cart.shotCustom }|"></small>
-									<!-- shot 커스텀 내용 가져오기 -->
+								<span class="card-text" th:text="|${ cart.name }|"></span> 
+								<span class="card-text" th:text="|${ cart.price } 원|"></span><br>
+								<small class="text-muted" th:if="${ cart.shotCustom }==1">샷 추가 :  선택안함</small>
+								<small class="text-muted" th:if="${ cart.shotCustom }==2">샷 추가 :  연하게</small>
+								<small class="text-muted" th:if="${ cart.shotCustom }==3">샷 추가 :  샷 추가(+500)</small>
+								<small class="text-muted" th:if="${ cart.shotCustom }==4">샷 추가 :  2샷 추가(+1,000)</small>
+								<small class="text-muted" th:if="${ cart.shotCustom }==5">Bakery</small>
+								<span class="card-text" th:text="|x ${ cart.qty }|"></span><br>
+								<span class="card-text" th:text="|합계 ${cart.totalPrice }원|"></span>
 								<!-- <hr Style="margin-top:10px"> -->
 							</div>
 						</div>
@@ -55,8 +58,9 @@
 				<!-- 결제 시 데이터 테이블에 커밋! -->
 				<div>
 					<h2>픽업 옵션</h2>
-					<br style="margin: 10px"> <input type="radio">매장 <input
-						type="radio">포장
+					<br style="margin: 10px"> 
+					<input name="pickup" type="radio" checked>매장 
+					<input name="pickup" type="radio">포장
 				</div>
 				<hr style="margin: 20px">
 
@@ -147,8 +151,8 @@
 		}
 			  console.log(totalPrice); */
 			  var html = "";
-			  html = "<div>총수량 " + totalQty + "</div>";
-			  html += "<div>총액 " + totalPrice + "</div>";
+			  html = "<div>총 수량 " + totalQty + "</div>";
+			  html += "<div>총 합계 " + totalPrice + "</div>";
 			  $('#calc').append(html);
 		})
 			  

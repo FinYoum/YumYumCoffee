@@ -29,6 +29,7 @@ import com.yum.domain.CartDTO;
 import com.yum.domain.ImgDTO;
 import com.yum.domain.MemberDTO;
 import com.yum.domain.ProductDTO;
+import com.yum.mapper.CartMapper;
 import com.yum.service.BranchService;
 import com.yum.service.CartService;
 import com.yum.service.ProductService;
@@ -49,6 +50,9 @@ public class BranchController {
 	
 	@Autowired
 	private CartService cartService;
+	
+	@Autowired
+	private CartMapper cartMapper;
 	
 	
 	
@@ -105,17 +109,24 @@ public class BranchController {
 		return "branch/map";
 	}
 
-
+// 선택한 지점의 제품 페이지 및 장바구니 
 	@GetMapping(value = "/product")
 	public String openproductList( 
 			@RequestParam(value = "branchNum", required = false) Long branchNum
 			, Model model, HttpSession session) {
 		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
-		model.addAttribute("member", member);		
+		model.addAttribute("member", member);	
+
+		
 		if (branchNum == null) {
 			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 지점 리스트로 리다이렉트
 			return "redirect:/yumyum/branch";
 		} else {
+			//선택한 지점명 
+			String branchName = cartMapper.selectBranchName(branchNum);
+			session.setAttribute("branchName", branchName);
+			model.addAttribute("branchName", branchName);
+			
 			model.addAttribute("member", member);  
 			List<BranchDTO> branchList = branchService.getBranchList();
 			model.addAttribute("branchList", branchList);
