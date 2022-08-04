@@ -66,7 +66,7 @@
                 , p.NAME
                 , p.PRICE
                 , p.INFO
-                , od."ea"
+                , od."qty"
                 , od."shot_custom"
                 , i.img_path
              FROM 
@@ -89,6 +89,7 @@
         AND
             "order_num" = #{ orderNum }
     </select>
+    
     
 
 </mapper>

@@ -467,7 +467,6 @@
 		function cartList(){
 			console.log("장바구니 목록 가져오기");
 		    let uri = '/product/cartlist/'+userNum+'/'+branchNum;
-		    let allProductPrice = 0;
 		    
 		    $.ajax({
 		        url: uri,
@@ -477,15 +476,18 @@
 			.then((response)=>{
 				let html="";
 			    response.forEach(function(item,num){
-			    	 console.log(item);
+			    	
 					let price= priceToString(item.price);
 					let totalPrice=priceToString(item.totalPrice);
 					
-					html +=`	<li id="cartLi-${num}">		
-					 <div id="cartId-${num}" class="cartlistDiv" style="margin-left:35px">	             
-				         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()" checked>
-				         <span class="cart-text" id="productNum-${num}" th:value="${item.productNum}">${item.name}</span>     
+					html +=`	
+						<li id="cartLi-${num}">		
+						 	 <div id="cartId-${num}" class="cartlistDiv" style="margin-left:35px">	             
+					         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()" checked>
+					         <img id="cartImg-${num}" src="${item.imgPath}" width="60px" height="60px" style="display: inline;">
+					         <span class="cart-text" id="productNum-${num}" th:value="${item.productNum}">${item.name}</span><br>     
 				         `;
+				         
 					if(item.shotCustom==1){
                         html +=`<small id="shotCustom-${num}" th:value="1">선택안함</small> &nbsp;`;
                     }
@@ -503,7 +505,6 @@
                     }
 				         
                     html +=`
-                    <div>
                         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
 				         <input type="number"  class="cart-input" id="cartNumber-${num}" value="${item.qty}"
 				         	readonly
@@ -515,7 +516,7 @@
 				    </div>
 			         <div>
 						 <input type="hidden"  id="cart-price-${num}"  value="${price}">	         
-			          금액 ${price}원 /  합계 <span id='sum-${num}'>${totalPrice}</span>원<br>
+			          금액 ${price}원 /  합계 <span id="sum-${num}" value="${totalPrice}">${totalPrice}</span>원<br>
 					`;				
 					
 					
@@ -633,9 +634,9 @@
 		
 			let cnt=0;
 			$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
-				cnt++;
 				const cartNum=$(this).attr("data-id");
-		
+				cnt+=parseInt($("#cartNumber-"+cartNum).val());
+				
 				let sum=$("#sum-"+cartNum).text();
 				sum =parseInt(sum.replace(",", ""));
 		
@@ -684,14 +685,24 @@
 	
 			let productNum = $("#productNum-"+cartNum)[0].attributes["th:value"].value;
 			let shotCustom = $("#shotCustom-"+cartNum)[0].attributes["th:value"].textContent;
-			let qty = $("#cartNumber-"+cartNum).val();	
+			let qty = parseInt($("#cartNumber-"+cartNum).val());	
+			let productName = $("#productNum-"+cartNum).text();	
+			let totalPrice = $("#sum-"+cartNum).text();	
+			let price = $("#cart-price-"+cartNum).val();	
+			let imgPath = $("#cartImg-"+cartNum).attr("src");	
+			
 			
 			let params={
 			            "userNum": userNum,
 			            "branchNum":branchNum,
 			            "productNum":productNum,
 			            "shotCustom": shotCustom,
-			            "qty":qty
+			            "qty":qty,
+			            "name":productName,
+			            "totalPrice":totalPrice,
+			            "price":price,
+			            "imgPath":imgPath
+			            
 			        }
 			cartList.push(params);
 			
@@ -700,7 +711,7 @@
 			sum =parseInt(sum.replace(",", ""));
 	
 			totalSum +=sum;
-			cnt++;
+			cnt+=qty;
 		});
 		
 		//totalArr.push(totalSum);

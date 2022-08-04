@@ -86,7 +86,7 @@
 	            , o."order_time" 
 	            , b.BRANCH_NAME
 	            , o."total_price" 
-	            , d."ea" 
+	            , d."qty" 
 	            , d."price" 
 	            , s.INFO
 	            , p.NAME 

@@ -21,12 +21,12 @@ public class CartDTO {
 	private Long qty;
 	// 총 금액
 	private Long totalPrice;
-	// 장바구니 추가 시간
-	LocalDateTime insertTime;
 	
 	// 제품명
 	private String name;
 	// 제품금액
 	private Long price;
+	// 제품 이미지 경로
+	private String imgPath;
 
 }

@@ -20,7 +20,7 @@ public class OrderHistoryDTO {
 //	총금액	
 	int totalPrice;
 //	개수
-	int ea;
+	int qty;
 //	가격
 	int price;
 //	커스텀

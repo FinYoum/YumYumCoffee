@@ -20,17 +20,11 @@ public class OrderDTO {
 	//가격
 	private int price;
 	//갯수
-	private int ea;
+	private int qty;
 	//메뉴 커스텀
 	private String shotCustom;
 	//이미지 경로
 	private String imgPath;
-	
-	private String cnt;
-	
-	private String totlaSum;
-	
-	List<CartDTO> cartList[];
 	
 //	//픽업여부
 //	private String pickupYn;
