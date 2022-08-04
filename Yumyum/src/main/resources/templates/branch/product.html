@@ -126,7 +126,7 @@
 		<script th:inline="javascript">
 		let branchNum=/*[[ ${branchNum} ]]*/null;
 		let userNum=/*[[ ${member.userNum} ]]*/null;
-		console.log(userNum, branchNum);
+		//console.log(userNum, branchNum);
 		
 		$(function(){
 			getMenuOne("all");
@@ -135,7 +135,7 @@
 		
 		//카테고리 표시 함수
 		function categoryChange(e) {
-		    var good_b = ["전체", "커피", "라떼","주스","스무디", "에이드", "티"];
+		    var good_b = ["전체", "커피", "라떼","스무디", "에이드", "주스", "티"];
 		    var good_d = ["전체","빵", "케이크"];
 		
 		    var good_b_v = ["all", "b1", "b2", "b3", "b4","b5","b6"];
@@ -198,7 +198,7 @@
 			let html="";
 			let cnt=0;
 		
-			console.log(res.length);
+			//console.log(res.length);
 			if(res.length==0){
 				totalData=0;
 			}
@@ -414,7 +414,7 @@
 		
 		function addCart(productNum, codeId){	
 			
-			console.log(productNum);
+			//console.log(productNum);
 			/* console.log("ok"); 
 			console.log(codeId);
 			console.log("ok2"); */
@@ -570,7 +570,7 @@
 		}
 		
 		function cartUpdatePirce(productNum, shotCustom, qty){
-			   console.log(productNum, shotCustom, qty)
+			   //console.log(productNum, shotCustom, qty)
 			   let params={
 		                "userNum":userNum,
 		                "branchNum":branchNum,
@@ -578,7 +578,7 @@
 		                "shotCustom":shotCustom,
 		                "qty":qty
 			        }
-			    console.log(params);
+			    //console.log(params);
 			    $.ajax({
 			        url: "/product/updatecart",
 			        type: "post",

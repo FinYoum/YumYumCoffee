@@ -106,7 +106,7 @@ public class OrderController {
 	//"cartList" :JSON.stringify(totalArr)
 //	@RequestParam(value="cartList[]") List <CartDTO> cartList, 
 //	   @RequestParam int cnt, @RequestParam int totalPrice,
-		@ResponseBody
+		//@ResponseBody
 	   @RequestMapping(value = {"/order"}, method = { RequestMethod.POST, RequestMethod.PATCH }    )
 		public String openOrderList( @RequestParam  Map<String, Object> param,
 			   HttpSession session, Model model) throws JsonMappingException, JsonProcessingException {      
