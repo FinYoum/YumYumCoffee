@@ -27,21 +27,22 @@
 				<!-- 추가 할 내용으로 사이드바에서 구매 버튼을 클릭했을 때, post method로 데이터를 넘겨와야 하고 이 값을 각 영역에 매핑해야 한다. -->
 				<!-- 데이터를 이용, IMG테이블과 조인하여 이미지를 가져오게 한다. -->
 				<div class="card mb-3" style="max-width: 540px;"
-					th:if="${not #lists.isEmpty( orderList )}"
-					th:each="order : ${ orderList }">
+					th:if="${not #lists.isEmpty( cartList )}"
+					th:each="cart : ${ cartList }">
 					<div class="row g-0">
 						<div class="col-md-4">
-							<img th:src="${ order.imgPath }" class="img-fluid rounded-start"
+							<img th:src="${ cart }" class="img-fluid rounded-start"
 								alt="...">
 						</div>
 						<div class="col-md-8">
 							<div class="card-body">
 								<h5 class="card-title">주문 내역</h5>
-								<p class="card-text" th:text="|품목 ${ order.name }|"></p>
-								<p class="card-text" th:text="|가격 ${ order.price }|"></p>
-								<p class="card-text" th:text="|수량 ${ order.ea }|"></p>
+								<p class="card-text" th:text="|품목 ${ cart.name }|"></p>
+								<p class="card-text" th:text="|가격 ${ cart.price }|"></p>
+								<p class="card-text" th:text="|수량 ${ cart.qty }|"></p>
 								<small class="text-muted"
-									th:utext="|변경사항 ${ order.shotCustom }|"></small>
+									th:utext="|변경사항 ${ cart.shotCustom }|"></small>
+									<!-- shot 커스텀 내용 가져오기 -->
 								<!-- <hr Style="margin-top:10px"> -->
 							</div>
 						</div>
@@ -117,7 +118,8 @@
 					<!-- 결제의 파라미터로 주문번호, 총액, 결제수단을 넣어주면 될 것 같다. -->
 					<button type="button" class="btn btn-outline-primary"
 						style="font-size: 1.2em"
-						th:onclick="|javascript:iamport(${ orderNum }, ${ totalPrice }, ${ payMethod })|">구매</button>
+						th:onclick="|javascript:iamport(111, ${ totalPrice }, ${ payMethod })|">구매</button>
+<!-- 						th:onclick="|javascript:iamport(${ orderNum }, ${ totalPrice }, ${ payMethod })|">구매</button> -->
 				</div>
 			</div>
 		</div>
@@ -133,17 +135,17 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 
-	    const orderList = /*[[${ orderList }]]*/null; 
+	    const orderList = /*[[${ cartList }]]*/null; 
 		
 		//총 금액 펑션
 		$(function(){
-		var totalPrice = 0;
-		var totalQty = 0;
-		for(var i=0; i<orderList.length; i++){
+		var totalPrice = /*[[${ totalPrice }]]*/null;
+		var totalQty = /*[[${ totalQty }]]*/null;
+	/* 	for(var i=0; i<orderList.length; i++){
 			  totalPrice += orderList[i].price * orderList[i].ea;
 			  totalQty += orderList[i].ea;
 		}
-			  console.log(totalPrice);
+			  console.log(totalPrice); */
 			  var html = "";
 			  html = "<div>총수량 " + totalQty + "</div>";
 			  html += "<div>총액 " + totalPrice + "</div>";

@@ -687,9 +687,12 @@
 			let shotCustom = $("#shotCustom-"+cartNum)[0].attributes["th:value"].textContent;
 			let qty = parseInt($("#cartNumber-"+cartNum).val());	
 			let productName = $("#productNum-"+cartNum).text();	
-			let totalPrice = $("#sum-"+cartNum).text();	
-			let price = $("#cart-price-"+cartNum).val();	
+			let totalPrice = parseInt($("#sum-"+cartNum).text().replace(",", ""));	
+			let price = parseInt($("#cart-price-"+cartNum).val().replace(",", ""));	
 			let imgPath = $("#cartImg-"+cartNum).attr("src");	
+			
+			console.log(totalPrice);
+			console.log(price);
 			
 			
 			let params={
