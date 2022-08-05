@@ -17,10 +17,8 @@
 		<div class="flex justify-evenly mt-5 col">
 			<!-- 스탬프 영역 -->
 			<div class="text-center">
-				<p
-					style="font-size: x-large; margin-bottom: 10px; font-weight: 500;">STAMP</p>
-				<div
-					class="flex flex-row flex-wrap flex-content-start w-64 border-3 border-slate-600"
+				<p style="font-size: x-large; margin-bottom: 10px; font-weight: 500;">STAMP</p>
+				<div class="flex flex-row flex-wrap flex-content-start w-64 border-3 border-slate-600"
 					id="StampContainer">
 					<th:block th:if="${member.stamp}==0">
 						<th:block th:each="n: ${#numbers.sequence(1,15)}">

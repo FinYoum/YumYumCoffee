@@ -5,13 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,11 +19,9 @@ import com.yum.constant.SessionConstants;
 import com.yum.domain.CartDTO;
 import com.yum.domain.CouponDTO;
 import com.yum.domain.MemberDTO;
-import com.yum.domain.OrderDTO;
 import com.yum.service.MypageService;
 import com.yum.service.PaymentService;
 
-import groovy.transform.Undefined.EXCEPTION;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -74,5 +68,4 @@ public class OrderController {
 		model.addAttribute("couponList", couponList);
 		return "order/orderPage2";
 	}
-
 }
