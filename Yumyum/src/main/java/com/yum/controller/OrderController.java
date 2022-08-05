@@ -33,115 +33,46 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class OrderController {
-	
+
 	@Autowired
 	private PaymentService paymentService;
 	@Autowired
 	private MypageService mypageService;
 
-	@GetMapping(value = "/order/{orderNum}")
-	public String openOrderList(HttpSession session, @PathVariable("orderNum") int orderNum, Model model) {
-		
-		//주문리스트와 이미지 테이블을 조인해서 모델에 저장
-		List<OrderDTO> orderList = paymentService.selectOrder(orderNum);
-		model.addAttribute("orderList", orderList);
+//	장바구니에서 선택한 제품/총 금액/총 개수(=param), 회원의 쿠폰 정보를 가져와 화면에 띄우기	
+	@PostMapping(value = { "/order" })
+	public String openOrderList(
+			@RequestParam Map<String, Object> param, HttpSession session, Model model)
+			throws JsonMappingException, JsonProcessingException {
 
-		//주문하는 지점명 저장
-		String branchName= paymentService.getBranchName(orderNum);
+		MemberDTO member = (MemberDTO) session.getAttribute(SessionConstants.loginMember);
+		model.addAttribute("member", member);
+		
+		// 장바구니에서 체크한 제품 정보, 총 금액, 총 개수
+		log.info("cartList : {}", param.toString());
+		
+		int totalQty = Integer.parseInt(param.get("cnt").toString());
+		int totalPrice = Integer.parseInt(param.get("totalSum").toString());
+
+		// Object to List<CartDTO>
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<CartDTO> cartList = objectMapper.readValue(param.get("cartList").toString(),
+				new TypeReference<List<CartDTO>>() { });
+
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalQty", totalQty);
+		model.addAttribute("cartList", cartList);
+
+		// 회원이 선택한 지점의 지점명 
+		String branchName = session.getAttribute("branchName").toString();
 		model.addAttribute("branchName", branchName);
 		
-		//로그인한 세션에서 UserNum을 받아와 해당하는 유저가 보유한 쿠폰 저장
-		MemberDTO member = (MemberDTO)session.getAttribute(SessionConstants.loginMember);
-		model.addAttribute("member",member);
+		// 로그인한 세션에서 UserNum을 받아와 해당하는 유저가 보유한 쿠폰 저장
 		CouponDTO params = new CouponDTO();
 		params.setUserNum(member.getUserNum());
-		System.out.println("userNum : "+params);
 		List<CouponDTO> couponList = mypageService.getCouponList(params);
 		model.addAttribute("couponList", couponList);
-		
-
-		
-		//		List<ImgDTO> productImg = Collections.emptyList();
-//		List<Integer> pnum = new ArrayList<>();
-//		for (int i = 0; i < orderList.size(); i++) {
-//			System.out.println("orderList의 길이 : "+ orderList.size());
-//			System.out.println("회차 : " + i);
-//			int num = orderList.get(i).getProductNum();
-//			System.out.println("num : " + num);
-//			pnum.add(i, num);
-//			System.out.println("pnum : " + pnum);
-//		}
-//		for(int j = 0; j < pnum.size(); j++) {
-//			System.out.println("pnum이 받아오는 값 : " + pnum.get(j));
-//			productImg = productService.getAttachFileList((long)pnum.get(j));
-//		}
-//
-//		model.addAttribute("productImg", productImg);
-		
-
 		return "order/orderPage2";
 	}
-	
-	
-//	
-//	 @RequestMapping(value = {"/order2"}, method = { RequestMethod.POST, RequestMethod.PATCH }    )
-//	 @ResponseBody
-//	public String openOrderList2( OrderDTO orderDTO,
-//			   HttpSession session, Model model) throws EXCEPTION {      
-//					
-//				log.info("cartList : {}", orderDTO.toString());
-//				String cartList=Arrays.toString(orderDTO.getCartList());;
-//			
-//				log.info("carts " +cartList.toString());	
-//					
-//				return "order/orderPage2";
-//	 }
-	
-	
-//	"cnt" :cnt,
-	//"totalSum":totalSum,
-	//"cartList" :JSON.stringify(totalArr)
-//	@RequestParam(value="cartList[]") List <CartDTO> cartList, 
-//	   @RequestParam int cnt, @RequestParam int totalPrice,
-//		@ResponseBody
-	   @PostMapping(value = {"/order"})
-//	   @RequestMapping(value = {"/order"}, method = { RequestMethod.POST, RequestMethod.PATCH }    )
-		public String openOrderList( @RequestParam  Map<String, Object> param,
-			   HttpSession session, Model model) throws JsonMappingException, JsonProcessingException {
-		   
-		   		MemberDTO  member=(MemberDTO)session.getAttribute(SessionConstants.loginMember);
-		   
-				log.info("cartList");
-				log.info("cartList : {}", param.toString());
-				String test= param.get("cartList").toString();
-				log.info(test);
-				int cntProduct=Integer.parseInt(param.get("cnt").toString());
-				int totalSum=Integer.parseInt(param.get("totalSum").toString());
-				
-				
-				ObjectMapper objectMapper=new ObjectMapper();
-				List<CartDTO>  cartList=objectMapper.readValue(param.get("cartList").toString(), 
-						new TypeReference<List<CartDTO>>(){});
-				
-				
-				model.addAttribute("totalPrice",totalSum);
-				model.addAttribute("totalQty",cntProduct);
-				model.addAttribute("cartList", cartList);
-				log.debug(cartList.toString());
-				
 
-//	            //주문하는 지점명 저장
-				String branchName = session.getAttribute("branchName").toString();
-				model.addAttribute("branchName", branchName);
-//	            
-//	            //로그인한 세션에서 UserNum을 받아와 해당하는 유저가 보유한 쿠폰 저장
-	            model.addAttribute("member",member);
-	            CouponDTO params = new CouponDTO();
-	            params.setUserNum(member.getUserNum());
-	            System.out.println("userNum : "+params);
-	            List<CouponDTO> couponList = mypageService.getCouponList(params);
-	            model.addAttribute("couponList", couponList);
-	            return "order/orderPage2";
-	   }
-	
 }

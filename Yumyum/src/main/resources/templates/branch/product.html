@@ -5,7 +5,7 @@
 <th:block layout:fragment="title">
 	<title>YumYum Coffee</title>
 
-	<style>
+<style>
 .py-5 {
 	position: relative !important;
 	left: 100px !important;
@@ -354,6 +354,7 @@
 				
 				
 				$("#modal-productNum").val(productNum);		
+				$("#modal-price").val(price);
 				$("#modal-price").html(priceToString(price)+"원");
 				$("#modal-info").html(info);
 				$("#modal-name").html(name);
@@ -384,11 +385,8 @@
 		
 		function addCart(productNum, codeId){	
 			
-			//console.log(productNum);
-			/* console.log("ok"); 
-			console.log(codeId);
-			console.log("ok2"); */
 			let params;
+			
 		    if(productNum==undefined){
 		         params={
 		        		"userNum":userNum,
@@ -396,9 +394,10 @@
 		                "productNum":$("#modal-productNum").val(),
 		                "shotCustom":$("input[class='form-check-input']:checked").val()
 		        }
-		    }else{
+		    } else{
+		    	// 모달창이 아닌 카트 아이콘 클릭 시, 바로 장바구니 추가 
+		    	// 음료인 경우, shotCustom 선택안함
 		    	if(codeId.includes('b')){
-		    		console.log("음료입니다.")
 		    	    params={
 	                        "userNum":userNum,
 	                        "branchNum":branchNum,
@@ -406,7 +405,7 @@
 	                        "shotCustom":1                  
 	                }
                 } else{
-                    		console.log("음료 아닙니다.")
+                	//음료가 아닌 경우 shotCustom 없음
                     params={
                             "userNum":userNum,
                             "branchNum":branchNum,
@@ -456,23 +455,27 @@
 					         <input type="checkbox" name="cartSelect"	class="cart-checkbox" data-id="${num}" onchange="cartCheck()" checked>
 					         <img id="cartImg-${num}" src="${item.imgPath}" width="60px" height="60px" style="display: inline;">
 					         <span class="cart-text" id="productNum-${num}" th:value="${item.productNum}">${item.name}</span><br>     
+					         
 				         `;
 				         
-					if(item.shotCustom==1){
-                        html +=`<small id="shotCustom-${num}" th:value="1">선택안함</small> &nbsp;`;
-                    }
-                    if(item.shotCustom==2){
-                        html +=`<small id="shotCustom-${num}" th:value="2">연하게</small> &nbsp;`;
-                    }
-                    if(item.shotCustom==3){
-                        html +=`<small id="shotCustom-${num}" th:value="3">샷 추가(+500)</small> &nbsp;`;
-                    }
-                    if(item.shotCustom==4){
-                        html +=`<small id="shotCustom-${num}" th:value="4">2샷 추가(+1,000)</small>`;
-                    }
-                    if(item.shotCustom==5){
-                        html +=`<small id="shotCustom-${num}" th:value="5"> </small>`;
-                    }
+				         switch(item.shotCustom){
+				         case 1:
+				        	 html +=`<small id="shotCustom-${num}" th:value="1">선택안함</small> &nbsp;`;
+				        	 break;
+				         case 2:
+				        	 html +=`<small id="shotCustom-${num}" th:value="2">연하게</small> &nbsp;`;
+				        	 break;
+				         case 3:
+				        	 html +=`<small id="shotCustom-${num}" th:value="3">샷 추가(+500)</small> &nbsp;`;
+				        	 break;
+				         case 4:
+				        	 html +=`<small id="shotCustom-${num}" th:value="4">2샷 추가(+1,000)</small> &nbsp;`;
+				        	 break;
+				         case 5:
+				        	 html +=`<small id="shotCustom-${num}" th:value="5"> </small> &nbsp;`;
+				        	 break;
+				         }
+				         
 				         
                     html +=`
                         <button class="cart-btn" onclick="cartMinus('${item.productNum}','${item.shotCustom}','${item.qty}')">-</button>
@@ -502,7 +505,7 @@
 			   <p class="mt-2 mb-5" style="font-size: 2.5 rem; text-align:right; font-weight: bold; margin-right: 70px;" id="total-sum">합계 0원</p>		
 			 
 			 
-			   <button type="button" class="btn btn-outline-dark waves-effect waves-light" onClick="purchase()" style="margin-left: 150px; width: 81px;">구매</button>
+			   <button type="button" class="btn btn-outline-dark waves-effect waves-light" onClick="purchase(0)" style="margin-left: 150px; width: 81px;">구매</button>
 			   	
 			</li>
 				
@@ -641,31 +644,67 @@
 		} */
      
 	
-		
-	function purchase(){	
-		let totalArr=[];
+//	구매 > 선택한 제품의 세부 정보, 제품의 총 수량, 합계 금액	
+//  매개변수 0:장바구니 구매
+//		  1:바로구매
+	function purchase(cartOrDirect){	
 		let cartList=[];
-		//totalArr.push(cartList);
 		let totalSum =0;
 		let cnt=0;
-	  
-		/* 체크되어있는 제품에 대한 값을 반복적으로 가져옴 */
-		$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
-			const cartNum=$(this).attr("data-id");
-	
-			let productNum = parseInt($("#productNum-"+cartNum)[0].attributes["th:value"].value);
-			let shotCustom = parseInt($("#shotCustom-"+cartNum)[0].attributes["th:value"].textContent);
-			let qty = parseInt($("#cartNumber-"+cartNum).val());	
-			let productName = $("#productNum-"+cartNum).text();	
-			let totalPrice = parseInt($("#sum-"+cartNum).text().replace(",", ""));	
-			let price = parseInt($("#cart-price-"+cartNum).val().replace(",", ""));	
-			let imgPath = $("#cartImg-"+cartNum).attr("src");	
+		let params;
+		
+		// 모달창에서 바로구매
+	    if(cartOrDirect==1){
+			let productNum = parseInt($("#modal-productNum").val());
+			let shotCustom = parseInt($("input[class='form-check-input']:checked").val());
+			let productName = $("#modal-name").text();	
+			let totalPrice;	
+			let price = parseInt($("#modal-price").val());	
+			let imgPath = $("#modal-imgPath").attr("src");
 			
-			console.log(totalPrice);
-			console.log(price);
+			// 커스텀에 따라 totalPrice계산
+	        switch(shotCustom){
+		         case 1,2,5:
+		        	 totalPrice = price;  
+		        	 break;
+		         case 3:
+		        	 totalPrice = price+500;  
+		        	 break;
+		         case 4:
+		        	 totalPrice = price+1000;  
+		        	 break;
+	        }
+	        
+			params={
+		            "userNum": userNum,
+		            "branchNum":branchNum,
+		            "productNum":productNum,
+		            "shotCustom": shotCustom,
+		            "qty":1,
+		            "name":productName,
+		            "totalPrice":totalPrice,
+		            "price":price,
+		            "imgPath":imgPath
+			}
 			
-			
-			let params={
+			cartList.push(params);
+			totalSum+=totalPrice;
+			cnt=1;
+	    } else if(cartOrDirect==0){
+	    /*  장바구니 체크한 제품 구매 
+			체크되어있는 제품에 대한 값을 반복적으로 가져옴 */
+			$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
+				const cartNum=$(this).attr("data-id");
+		
+				let productNum = parseInt($("#productNum-"+cartNum)[0].attributes["th:value"].value);
+				let shotCustom = parseInt($("#shotCustom-"+cartNum)[0].attributes["th:value"].textContent);
+				let qty = parseInt($("#cartNumber-"+cartNum).val());	
+				let productName = $("#productNum-"+cartNum).text();	
+				let totalPrice = parseInt($("#sum-"+cartNum).text().replace(",", ""));	
+				let price = parseInt($("#cart-price-"+cartNum).val().replace(",", ""));	
+				let imgPath = $("#cartImg-"+cartNum).attr("src");	
+				
+				params={
 			            "userNum": userNum,
 			            "branchNum":branchNum,
 			            "productNum":productNum,
@@ -675,33 +714,26 @@
 			            "totalPrice":totalPrice,
 			            "price":price,
 			            "imgPath":imgPath
-			            
-			        }
-			cartList.push(params);
-			
-	
-			let sum=$("#sum-"+cartNum).text();
-			sum =parseInt(sum.replace(",", ""));
-	
-			totalSum +=sum;
-			cnt+=qty;
-		});
+				}
+				cartList.push(params);
+				totalSum +=totalPrice;
+				cnt+=qty;
+			}); /* end of forEach*/
+         }/* end of if*/
 		
-		/* end of foreach*/
-		
-			pageGoPost({
-				url: "/order",	//이동할 페이지
+ 			pageGoPost({
+				url: "/order",	//이동할 페이지 주소
 			    target: "_self",
-			    vals: [				//전달할 인수들
-			    	["cnt",cnt],
-			        ["totalSum",totalSum],
-			        ["cartList",JSON.stringify(cartList)]
-				]
-			});
-			 
+			    vals: 
+			    	[				//전달할 인수
+				    	["cnt",cnt],
+				        ["totalSum",totalSum],
+				        ["cartList",JSON.stringify(cartList)]
+					]
+			}); 
 		}
 		
-		// 데이터를 담아 postMapping
+		// form, submit을 이용하여 data를 post방식으로 전송 / 페이지 이동
 		function pageGoPost(data){
 			var insdoc = "";
 		    

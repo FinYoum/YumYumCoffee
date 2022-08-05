@@ -25,7 +25,6 @@
 				<hr style="margin: 20px">
 				<!-- 주문내역 카드 -->
 				<!-- 추가 할 내용으로 사이드바에서 구매 버튼을 클릭했을 때, post method로 데이터를 넘겨와야 하고 이 값을 각 영역에 매핑해야 한다. -->
-				<!-- 데이터를 이용, IMG테이블과 조인하여 이미지를 가져오게 한다. -->
 				<div class="card mb-3" style="max-width: 540px;"
 					th:if="${not #lists.isEmpty( cartList )}"
 					th:each="cart : ${ cartList }">
@@ -110,11 +109,7 @@
 				<hr style="margin: 20px">
 
 				<!-- 결제 금액 -->
-				<!-- 사이드바에서 데이터가 넘어온 것을 입력해 주거나, calculator을 새로 만들어야 한다. -->
-				<!-- <th:text ="총 수량:qty + 개">총수량</th:text>
-				<th:text ="할인금액:coupon + 원">할인금액</th:text>
-				<th:text ="총액:qty*price-coupon + 원">총액</th:text> -->
-					<div id="calc" class=""></div>
+				<div id="calc" class=""></div>
 
 				<br>
 
@@ -145,14 +140,9 @@
 		$(function(){
 		var totalPrice = /*[[${ totalPrice }]]*/null;
 		var totalQty = /*[[${ totalQty }]]*/null;
-	/* 	for(var i=0; i<orderList.length; i++){
-			  totalPrice += orderList[i].price * orderList[i].ea;
-			  totalQty += orderList[i].ea;
-		}
-			  console.log(totalPrice); */
 			  var html = "";
-			  html = "<div>총 수량 " + totalQty + "</div>";
-			  html += "<div>총 합계 " + totalPrice + "</div>";
+			  html = "<div>총 수량 " + totalQty + "</div>"
+			  html += "<div>결제 금액 " + totalPrice + "</div>";
 			  $('#calc').append(html);
 		})
 			  
