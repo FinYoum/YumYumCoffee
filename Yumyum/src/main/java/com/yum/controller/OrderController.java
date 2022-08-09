@@ -77,7 +77,8 @@ public class OrderController {
 		return "order/orderPage2";
 	}
 
-	// 결제 완료, 트랜젝션 처리
+	// 결제 완료, 
+	// TODO 트랜젝션 처리, 쿠폰 삭제 처리
 	@PostMapping(value = { "/orderconfirm" })
 	public String orderDone(
 			@RequestParam Map<String, Object> param
