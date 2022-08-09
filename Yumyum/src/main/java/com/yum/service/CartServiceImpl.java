@@ -15,7 +15,7 @@ public class CartServiceImpl implements CartService{
 	@Autowired
 	private CartMapper cartMapper;
 	
-	// 추가 기능
+	// 장바구니 제품 추가 기능
 	@Override		
 	public boolean insertCart(CartDTO params) {
 //		

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yum.domain.CartDTO;
 import com.yum.domain.OrderDTO;
 import com.yum.domain.PaymentDTO;
 import com.yum.mapper.PaymentMapper;
@@ -15,6 +16,30 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	private PaymentMapper paymentMapper;
+	
+	// 주문 내역 추가
+	@Override		
+	public boolean insertOrder(PaymentDTO params) {
+		int queryResult = 0;
+			queryResult = paymentMapper.insertOrder(params);
+		return (queryResult == 1) ? true : false;
+	}
+	
+	// 주문 세부 내역 추가
+	@Override		
+	public boolean insertOrderDetail(CartDTO params) {
+		int queryResult = 0;
+			queryResult = paymentMapper.insertOrderDetail(params);
+		return (queryResult == 1) ? true : false;
+	}
+	
+	// 쿠폰 추가
+	public boolean insertCoupon(Long userNum, Long totalQty) {
+		int queryResult = 0;
+		queryResult = paymentMapper.insertCoupon(userNum, totalQty);
+		return (queryResult == 1) ? true : false;
+	}
+	
 	
 	@Override
 	public int countPaymentList(PaymentDTO params) {

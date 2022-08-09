@@ -142,14 +142,14 @@
 			//선택한 카테고리 조건에 따른 제품 리스트 생성
 			function getHtmlParsing(res){		
 				let html="";
-				let cnt=0;
+				let totalQty=0;
 				
 				if(res.length==0){
 					totalData=0;
 				}
 				
 				res.forEach(function(item){
-					if(cnt==0){
+					if(totalQty==0){
 						totalData=item.totalRecordCount;
 						dataPerPage=item.recordsPerPage; 
 						pageCount=item.totalPageCount; 
@@ -183,7 +183,7 @@
 				        </div>			
 					`;
 					
-					cnt++;
+					totalQty++;
 				});
 				
 				if(totalData>0){
@@ -545,10 +545,10 @@
 			function cartCheck(){
 				let totalSum =0;
 			
-				let cnt=0;
+				let totalQty=0;
 				$(".cartlistDiv input:checkbox[name^=cartSelect]:checked").each(function(e){
 					const cartNum=$(this).attr("data-id");
-					cnt+=parseInt($("#cartNumber-"+cartNum).val());
+					totalQty+=parseInt($("#cartNumber-"+cartNum).val());
 					
 					let sum=$("#sum-"+cartNum).text();
 					sum =parseInt(sum.replace(",", ""));
@@ -557,7 +557,7 @@
 					
 				});
 			
-				$("#total-number").html("총 "+cnt +"개");
+				$("#total-number").html("총 "+totalQty +"개");
 				$("#total-sum").html("합계 " +priceToString(totalSum) + "원");
 			}	 
 			     
@@ -571,8 +571,9 @@
 	//		  1:바로구매
 		function purchase(cartOrDirect){	
 			let cartList=[];
+			// 결제 총 금액 
 			let totalSum =0;
-			let cnt=0;
+			let totalQty=0;
 			let params;
 			
 			// 모달창에서 바로구매
@@ -611,7 +612,7 @@
 				
 				cartList.push(params);
 				totalSum+=totalPrice;
-				cnt=1;
+				totalQty=1;
 		    } else if(cartOrDirect==0){
 		    /*  장바구니 체크한 제품 구매 
 				체크되어있는 제품에 대한 값을 반복적으로 가져옴 */
@@ -639,7 +640,7 @@
 					}
 					cartList.push(params);
 					totalSum +=totalPrice;
-					cnt+=qty;
+					totalQty+=qty;
 				}); /* end of forEach*/
 	         }/* end of if*/
 			
@@ -648,7 +649,7 @@
 				    target: "_self",
 				    vals: 
 				    	[				//전달할 인수
-					    	["cnt",cnt],
+					    	["totalQty",totalQty],
 					        ["totalSum",totalSum],
 					        ["cartList",JSON.stringify(cartList)]
 						]

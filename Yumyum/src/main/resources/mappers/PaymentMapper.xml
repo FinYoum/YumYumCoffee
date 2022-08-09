@@ -1,21 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yum.mapper.PaymentMapper">
-<!--  
-    <insert id="insertMember" parameterType="com.yum.domain.MemberDTO">
-        insert into sign_in (id, name, tel, email, birth, authority)
-        values(#{id},#{name},#{tel},#{email},#{birth},#{authority});
-    </insert>
-    -->
-    <sql id="couponColumns">
-        order_num,
-        user_num,
-        branch_num,
-        pickup_yn,
-        order_time,
-        total_price
+    <sql id="orderColumns">
+       	"order_num"	
+		, "user_num"	
+		, "branch_num"	
+		, "pickup_yn"	
+		, "order_time"	
+		, "total_price"	
     </sql>
     
+    <!-- 주문 내역 추가-->
+    <insert id="insertOrder" parameterType="com.yum.domain.PaymentDTO">
+		INSERT INTO "order" (
+			<include refid="orderColumns"></include>
+		) VALUES (
+			ORDER_SEQ.NEXTVAL
+			, #{userNum}
+			, #{branchNum}
+			, #{pickupYn}
+			, CURRENT_DATE
+			, #{totalPrice}
+		)
+    </insert>
+    
+    <!-- 주문 세부 내역 추가-->
+    <insert id="insertOrderDetail" parameterType="com.yum.domain.CartDTO">
+		INSERT INTO "order_detail" (
+		  	"order_num"	
+			, "product_num"	
+			, "qty"	
+			, "price"	
+			, "shot_custom"	
+		) VALUES (
+			(SELECT "order_num" 
+			FROM
+				(SELECT 
+					o."order_num"
+					, RANK() OVER (ORDER BY o."order_time" DESC) AS RANK
+				FROM 
+					"order" o 
+				WHERE 
+					TRUNC(o."order_time",'DD')=TRUNC(CURRENT_DATE,'DD')  
+				) 
+			WHERE 
+				RANK=1)
+			, #{productNum}
+			, #{qty}
+			, #{totalPrice}
+			, #{shotCustom}
+		)
+    </insert>
+    
+    <!-- 주문한 수량만큼 스탬프 추가 프로시저 호출-->
+    <insert id="insertCoupon" parameterType="map"> 
+    	CALL ADD_COUPON(
+    		#{userNum}
+    		, #{totalQty}
+   		)
+    </insert>
+    
+    
+    
+    
+    
+    
+    
+      
     <select id="selectPaymentList" parameterType="com.yum.domain.PaymentDTO" resultType="com.yum.domain.PaymentDTO">
         SELECT 
             *

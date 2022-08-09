@@ -8,17 +8,17 @@ import lombok.Setter;
 public class PaymentDTO {
 
 	// 주문 번호
-	private int orderNum;
+	private Long orderNum;
 	// 고객 번호
-	private int userNum;
+	private Long userNum;
 	// 지접 번호
-	private int branchNum;
+	private Long branchNum;
 	// 픽업 여부
 	private String pickupYn;
 	// 주문 시간
 	private String orderTime;
 	// 결제 금액(총 금액)
-	private int totalPrice;
+	private Long totalPrice;
 	
 	// 고유 번호
 	

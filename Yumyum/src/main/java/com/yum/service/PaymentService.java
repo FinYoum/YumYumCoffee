@@ -2,11 +2,21 @@ package com.yum.service;
 
 import java.util.List;
 
+import com.yum.domain.CartDTO;
 import com.yum.domain.OrderDTO;
 import com.yum.domain.PaymentDTO;
 
 public interface PaymentService {
-
+	
+	// 주문 내역 추가
+	public boolean insertOrder(PaymentDTO params);
+	
+	// 주문 세부 내역 추가
+	public boolean insertOrderDetail(CartDTO params);
+	
+	// 쿠폰 추가
+	public boolean insertCoupon(Long userNum, Long totalQty);
+	
 	// 결제할 내역 보기
 	// totalPrice로 결제 진행
 	

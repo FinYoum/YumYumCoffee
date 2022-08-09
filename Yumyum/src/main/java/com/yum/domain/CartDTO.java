@@ -29,4 +29,6 @@ public class CartDTO {
 	// 제품 이미지 경로
 	private String imgPath;
 
+	// 주문번호
+	private Long orderNum;
 }

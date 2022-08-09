@@ -122,9 +122,10 @@ public class BranchController {
 			// TODO => 올바르지 않은 접근이라는 메시지를 전달하고, 지점 리스트로 리다이렉트
 			return "redirect:/yumyum/branch";
 		} else {
-			//선택한 지점명 
+			//선택한 지점명/번호 
 			String branchName = cartMapper.selectBranchName(branchNum);
 			session.setAttribute("branchName", branchName);
+			session.setAttribute("branchNum", branchNum);
 			model.addAttribute("branchName", branchName);
 			
 			model.addAttribute("member", member);  
