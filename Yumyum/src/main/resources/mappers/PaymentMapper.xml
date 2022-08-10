@@ -6,6 +6,7 @@
 		, "user_num"	
 		, "branch_num"	
 		, "pickup_yn"	
+		, PICKUP_TIME
 		, "order_time"	
 		, "total_price"	
     </sql>
@@ -19,6 +20,7 @@
 			, #{userNum}
 			, #{branchNum}
 			, #{pickupYn}
+			, CURRENT_DATE+#{pickupTime}/(24*60)
 			, CURRENT_DATE
 			, #{totalPrice}
 		)
