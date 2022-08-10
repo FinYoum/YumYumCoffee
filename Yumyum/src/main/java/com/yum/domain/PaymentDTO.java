@@ -15,6 +15,8 @@ public class PaymentDTO {
 	private Long branchNum;
 	// 픽업 여부
 	private String pickupYn;
+	// 픽업 시간
+	private String pickupTime;
 	// 주문 시간
 	private String orderTime;
 	// 결제 금액(총 금액)

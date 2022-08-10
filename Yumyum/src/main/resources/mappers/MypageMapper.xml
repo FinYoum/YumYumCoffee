@@ -20,6 +20,7 @@
         , DESCRIPTION
     </sql>
         
+    <!-- 생일쿠폰 잡, 스탬프 쿠폰 프로시저로 추가 -->    
     <insert id="insertCoupon"> 
         INSERT INTO COUPON (
 	        CP_NUM 
@@ -40,9 +41,11 @@
         )
     </insert>
     
+    <!-- 쿠폰 리스트 가져오기 -->
     <select id="selectCouponList" parameterType="com.yum.domain.CouponDTO" resultType="com.yum.domain.CouponDTO">
         SELECT 
-	          EXPIRATION_DATE
+       		CP_NUM
+	        , EXPIRATION_DATE
 	        , KIND
 	        , DESCRIPTION
         FROM 
@@ -56,6 +59,18 @@
         ORDER BY
             EXPIRATION_DATE ASC
     </select>
+    
+    <!-- 사용한 쿠폰 업데이트 -->
+    <update id="deleteCoupon" parameterType="Long">
+    	UPDATE
+    		COUPON
+    	SET
+    		DELETY_YN='Y'
+    	WHERE 
+    		CP_NUM=#{cpNum}
+    </update>
+    
+    <!-- 회원 정보 불러오기 -->
     <select id="selectUserDetail" parameterType="int" resultType="com.yum.domain.MemberDTO">
         SELECT 
             *
@@ -65,6 +80,7 @@
             USER_NUM= #{userNum} 
     </select>
     
+    <!-- 쿠폰 갯수 세기 -->
     <select id="countCoupon" parameterType="com.yum.domain.CouponDTO" resultType="int">
         SELECT 
             COUNT(*)
@@ -78,7 +94,7 @@
             EXPIRATION_DATE>=CURRENT_DATE
     </select>
     
-    
+    <!-- 과거 주문 내역 리스트 -->
     <select id="selectOrderHistory" parameterType="map" resultType="com.yum.domain.OrderHistoryDTO">
 	       SELECT  
 	           o."order_num"
@@ -127,6 +143,7 @@
                 , p.NAME ASC
     </select>
         
+    <!-- 과거 주문 내역 갯수 카운트 -->    
     <select id="countOrder" parameterType="map" resultType="int">
         SELECT 
             COUNT(*)
