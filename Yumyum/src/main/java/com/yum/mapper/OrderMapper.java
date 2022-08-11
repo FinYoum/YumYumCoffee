@@ -15,6 +15,9 @@ public interface OrderMapper {
 	// 주문 내역 추가
 	public int insertOrder(OrderDTO params);
 	
+	// 최근 생성한 주문 컬럼의 주문번호 가져오기
+	public Long selectOrderNum(Long userNum);
+	
 	// 주문 세부 내역 추가
 	public int insertOrderDetail(CartDTO params);
 	
@@ -24,10 +27,4 @@ public interface OrderMapper {
 	// 결제 정보 추가
 	public int insertPayInfo(PaymentDTO params);
 	
-	
-	public List<PaymentDTO> selectPaymentList(PaymentDTO params);
-	public int selectTotalPrice(int orderNum);
-	public int countPaymentList(PaymentDTO params);
-	public String selectBranchName(int orderNum);
-	public List<OrderDTO> selectOrder(int orderNum);
 }

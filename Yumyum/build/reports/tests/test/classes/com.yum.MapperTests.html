@@ -23,7 +23,7 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">1</div>
+<div class="counter">5</div>
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.009s</div>
+<div class="counter">0.273s</div>
 <p>duration</p>
 </div>
 </td>
@@ -73,13 +73,39 @@
 <thead>
 <tr>
 <th>Test</th>
+<th>Method name</th>
 <th>Duration</th>
 <th>Result</th>
 </tr>
 </thead>
 <tr>
-<td class="success">test()</td>
-<td class="success">0.009s</td>
+<td class="success">패스워드 암호화 테스트</td>
+<td class="success">passwordEncode()</td>
+<td class="success">0.178s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testOfDelete()</td>
+<td class="success">testOfDelete()</td>
+<td class="success">0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testOfSelectDetail()</td>
+<td class="success">testOfSelectDetail()</td>
+<td class="success">0.058s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testOfSelectOrderHistory()</td>
+<td class="success">testOfSelectOrderHistory()</td>
+<td class="success">0.014s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testOfUpdate()</td>
+<td class="success">testOfUpdate()</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -87,7 +113,95 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>java.lang.NullPointerException
+<pre>2022-08-11 19:57:58,902 DEBUG [com.yum.mapper.MemberMapper.deleteMember] ==&gt;  Preparing: UPDATE MEMBER SET delete_yn = 'Y' WHERE user_num = ?
+2022-08-11 19:57:58,903 DEBUG [com.yum.mapper.MemberMapper.deleteMember] ==&gt; Parameters: 50(Long)
+2022-08-11 19:57:58,903  INFO [jdbc.sqlonly] UPDATE MEMBER
+		   SET delete_yn = 'Y'
+		 WHERE user_num = 50
+
+2022-08-11 19:57:58,908 DEBUG [com.yum.mapper.MemberMapper.deleteMember] &lt;==    Updates: 0
+2022-08-11 19:57:59,093 DEBUG [com.yum.mapper.MemberMapper.updateMember] ==&gt;  Preparing: UPDATE MEMBER SET name = ? , tel = ? , email = ? WHERE user_num = ?
+2022-08-11 19:57:59,095 DEBUG [com.yum.mapper.MemberMapper.updateMember] ==&gt; Parameters: 김아무개(String), 010-1234-5678(String), amugae@gmail.com(String), 2(Integer)
+2022-08-11 19:57:59,095  INFO [jdbc.sqlonly] UPDATE MEMBER
+		   SET name = '김아무개'
+				, tel = '010-1234-5678'
+				, email = 'amugae@gmail.com'
+		 WHERE user_num = 2
+
+2022-08-11 19:57:59,100 DEBUG [com.yum.mapper.MemberMapper.updateMember] &lt;==    Updates: 1
+2022-08-11 19:57:59,107 DEBUG [com.yum.mapper.MypageMapper.selectOrderHistory] ==&gt;  Preparing: SELECT o.&quot;order_num&quot; , o.&quot;user_num&quot; , o.&quot;order_time&quot; , b.BRANCH_NAME , o.&quot;total_price&quot; , d.&quot;qty&quot; , d.&quot;price&quot; , s.INFO , p.NAME FROM &quot;order_detail&quot; d, &quot;order&quot; o , BRANCH b , PRODUCT p , SHOTCUSTOM S WHERE d.&quot;order_num&quot; IN ( SELECT &quot;order_num&quot; FROM ( SELECT ROW_NUMBER() OVER(ORDER BY o.&quot;order_time&quot; DESC) AS rnum , o.&quot;order_num&quot; FROM &quot;order&quot; o WHERE &quot;user_num&quot; = ? AND &quot;order_time&quot; &gt;= (CURRENT_DATE-?+1) ) WHERE (?+5) &gt; rnum AND rnum &gt;= ? ) AND d.&quot;order_num&quot; = o.&quot;order_num&quot; AND o.&quot;branch_num&quot; = b.BRANCH_NUM AND d.&quot;product_num&quot;=p.PRODUCT_NUM AND d.&quot;shot_custom&quot;=s.SHOT_CUSTOM ORDER BY o.&quot;order_time&quot; DESC , p.NAME ASC
+2022-08-11 19:57:59,107 DEBUG [com.yum.mapper.MypageMapper.selectOrderHistory] ==&gt; Parameters: 2(Integer), 30(Integer), 1(Integer), 1(Integer)
+2022-08-11 19:57:59,107  INFO [jdbc.sqlonly] SELECT  
+	           o.&quot;order_num&quot;
+	            , o.&quot;user_num&quot;  
+	            , o.&quot;order_time&quot; 
+	            , b.BRANCH_NAME
+	            , o.&quot;total_price&quot; 
+	            , d.&quot;qty&quot; 
+	            , d.&quot;price&quot; 
+	            , s.INFO
+	            , p.NAME 
+	       FROM 
+	            &quot;order_detail&quot; d,
+	            &quot;order&quot; o 
+	            , BRANCH b
+	            , PRODUCT p
+	            , SHOTCUSTOM S 
+	       WHERE 
+	            d.&quot;order_num&quot; IN (
+	            SELECT 
+	               &quot;order_num&quot;
+	            FROM ( 
+                    SELECT 
+                        ROW_NUMBER() OVER(ORDER BY o.&quot;order_time&quot; DESC) AS rnum
+                        , o.&quot;order_num&quot; 
+                    FROM 
+                        &quot;order&quot; o
+                    WHERE 
+                        &quot;user_num&quot; = 2
+                    AND 
+                        &quot;order_time&quot; &gt;= (CURRENT_DATE-30+1)
+	             ) 
+	             WHERE 
+	                (1+5) &gt; rnum AND rnum &gt;= 1
+	        )
+	        AND 
+	             d.&quot;order_num&quot; = o.&quot;order_num&quot;
+	        AND 
+	             o.&quot;branch_num&quot; = b.BRANCH_NUM
+            AND  
+                 d.&quot;product_num&quot;=p.PRODUCT_NUM 
+            AND
+                d.&quot;shot_custom&quot;=s.SHOT_CUSTOM
+            ORDER BY 
+                o.&quot;order_time&quot; DESC
+                , p.NAME ASC
+
+2022-08-11 19:57:59,114  INFO [jdbc.resultsettable] 
+|----------|---------|-----------|------------|------------|----|------|-----|-----|
+|order_num |user_num |order_time |branch_name |total_price |qty |price |info |name |
+|----------|---------|-----------|------------|------------|----|------|-----|-----|
+|----------|---------|-----------|------------|------------|----|------|-----|-----|
+
+2022-08-11 19:57:59,114 DEBUG [com.yum.mapper.MypageMapper.selectOrderHistory] &lt;==      Total: 0
+[]
+2022-08-11 19:57:59,120 DEBUG [com.yum.mapper.MemberMapper.selectMemberDetail] ==&gt;  Preparing: SELECT name, id, pw, tel, email, birth, authority, stamp, delete_yn, branch_num FROM MEMBER WHERE user_num = ?
+2022-08-11 19:57:59,120 DEBUG [com.yum.mapper.MemberMapper.selectMemberDetail] ==&gt; Parameters: 1(Long)
+2022-08-11 19:57:59,120  INFO [jdbc.sqlonly] SELECT name, id, pw, tel, email, birth, authority, stamp, delete_yn, branch_num
+		  FROM MEMBER
+		 WHERE user_num = 1
+
+2022-08-11 19:57:59,128  INFO [jdbc.resultsettable] 
+|-----|-------|-------------------------------------------------------------|--------------|---------------------|--------------------|----------|------|----------|-----------|
+|name |id     |pw                                                           |tel           |email                |birth               |authority |stamp |delete_yn |branch_num |
+|-----|-------|-------------------------------------------------------------|--------------|---------------------|--------------------|----------|------|----------|-----------|
+|염휘원  |huywon |$2a$10$PPlCjVBMZ9eoWnxXO7QmMuitxWevc26n7uwSAm7Fz1ws5fodJQOHi |010-8888-8888 |duagnldnjs@gmail.com |2022-07-27 17:17:53 |3         |4     |N         |[unread]   |
+|-----|-------|-------------------------------------------------------------|--------------|---------------------|--------------------|----------|------|----------|-----------|
+
+2022-08-11 19:57:59,128 DEBUG [com.yum.mapper.MemberMapper.selectMemberDetail] &lt;==      Total: 1
+=========================
+{&quot;userNum&quot;:0,&quot;id&quot;:&quot;huywon&quot;,&quot;name&quot;:&quot;염휘원&quot;,&quot;pw&quot;:&quot;$2a$10$PPlCjVBMZ9eoWnxXO7QmMuitxWevc26n7uwSAm7Fz1ws5fodJQOHi&quot;,&quot;tel&quot;:&quot;010-8888-8888&quot;,&quot;email&quot;:&quot;duagnldnjs@gmail.com&quot;,&quot;birth&quot;:&quot;2022-07-27 17:17:53&quot;,&quot;authority&quot;:3,&quot;stamp&quot;:&quot;4&quot;,&quot;deleteYn&quot;:&quot;N&quot;}
+=========================
 </pre>
 </span>
 </div>
@@ -99,7 +213,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.4.1</a> at 2022. 6. 28. 오전 11:49:49</p>
+<a href="http://www.gradle.org">Gradle 7.4.1</a> at 2022. 8. 11. 오후 7:57:59</p>
 </div>
 </div>
 </body>
