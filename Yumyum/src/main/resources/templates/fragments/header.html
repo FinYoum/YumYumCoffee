@@ -18,10 +18,6 @@
                         <li class="nav-item" th:if="${member != null}">
                             <a class="nav-link" th:href="@{/mypage}">Mypage</a>
                         </li>
-                        <li class="nav-item" th:if="${member != null}">
-                            <a class="nav-link" th:href="@{/order/2}">결제확인</a>
-                        </li>
-                        
                     </ul>
                     <form class="d-flex">
                         <span class="mt-2 text-slate-700 font-semibold" th:if="${member != null}" th:text="${member.id}"></span>

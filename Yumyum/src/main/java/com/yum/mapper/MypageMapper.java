@@ -18,7 +18,7 @@ public interface MypageMapper {
 	public List<CouponDTO> selectCouponList(CouponDTO params); //회원번호
 	
 	// 쿠폰 삭제
-	public int deleteCoupon(Long cpNum);
+	public int deleteCoupon(CouponDTO params);
 	
 	// 회원 상세 정보 가져오기
 	public MemberDTO selectUserDetail(int userNum);

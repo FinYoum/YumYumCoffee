@@ -5,31 +5,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
+//결제 정보
 public class PaymentDTO {
-
+	
 	// 주문 번호
 	private Long orderNum;
-	// 고객 번호
-	private Long userNum;
-	// 지접 번호
-	private Long branchNum;
-	// 픽업 여부
-	private String pickupYn;
-	// 픽업 시간
-	private String pickupTime;
-	// 주문 시간
-	private String orderTime;
-	// 결제 금액(총 금액)
-	private Long totalPrice;
-	
-	// 고유 번호
-	
-	// 주문 고유 번호
-	
-	// 결제 방법
-	
-	// 결제 될 금액
-
-	// 결제 시간
+	// 아임포트 고유 결제번호
+	private String impUid;
+	// 가맹점에서 생성/관리하는 고유 주문번호
+	private String merchantUid;
+	// 결제수단
+	private String payMethod;
+	// 결제금액
+	private Long paidAmount;
+	// 카드사 승인번호(신용카드결제에 한하여 제공)
+	private String applyNum;
 	
 }

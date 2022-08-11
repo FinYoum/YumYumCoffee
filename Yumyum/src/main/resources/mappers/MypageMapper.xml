@@ -61,11 +61,24 @@
     </select>
     
     <!-- 사용한 쿠폰 업데이트 -->
-    <update id="deleteCoupon" parameterType="Long">
+    <update id="deleteCoupon" parameterType="com.yum.domain.CouponDTO">
     	UPDATE
     		COUPON
     	SET
-    		DELETY_YN='Y'
+    		DELETE_YN='Y'
+    		, ORDER_NUM=
+    				(SELECT "order_num" 
+					FROM
+						(SELECT 
+							o."order_num"
+							, RANK() OVER (ORDER BY o."order_time" DESC) AS RANK
+						FROM 
+							"order" o 
+						WHERE 
+							TRUNC(o."order_time",'DD')=TRUNC(CURRENT_DATE,'DD')  
+						) 
+					WHERE 
+						RANK=1)
     	WHERE 
     		CP_NUM=#{cpNum}
     </update>

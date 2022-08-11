@@ -37,9 +37,9 @@ public class MypageServiceImpl implements MypageService {
 	
 	//쿠폰 삭제
 	@Override
-	public boolean deleteCoupon(Long cpNum) {
+	public boolean deleteCoupon(CouponDTO params) {
 		int queryResult = 0;
-			queryResult = mypageMapper.deleteCoupon(cpNum);
+			queryResult = mypageMapper.deleteCoupon(params);
 		return (queryResult == 1) ? true : false;
 		
 	}

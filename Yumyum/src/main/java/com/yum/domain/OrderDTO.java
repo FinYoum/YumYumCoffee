@@ -1,7 +1,5 @@
 package com.yum.domain;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,24 +7,21 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class OrderDTO {
 
-	//주문 번호
-	private int orderNum;
-	//물품 번호
-	private int productNum;
-	//제품명
-	private String name;
-	//가격
-	private int price;
-	//갯수
-	private int qty;
-	//메뉴 커스텀
-	private String shotCustom;
-	//이미지 경로
-	private String imgPath;
+// 주문 정보
+public class OrderDTO {
 	
-//	//픽업여부
-//	private String pickupYn;
+	// 고객 번호
+	private Long userNum;
+	// 지접 번호
+	private Long branchNum;
+	// 픽업 여부
+	private String pickupYn;
+	// 픽업 시간
+	private String pickupTime;
+	// 주문 시간
+	private String orderTime;
+	// 결제 금액(총 금액)
+	private Long totalPrice;
 	
 }

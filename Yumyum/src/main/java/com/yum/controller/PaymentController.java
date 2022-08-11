@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yum.domain.PaymentDTO;
-import com.yum.service.PaymentService;
+import com.yum.service.OrderService;
 
 @RestController
 public class PaymentController {
 	
 	@Autowired
-	private PaymentService paymentService;
+	private OrderService paymentService;
 	
 	@GetMapping(value="/payment")
 	public ModelAndView PaymentList(@ModelAttribute("params") PaymentDTO params) {

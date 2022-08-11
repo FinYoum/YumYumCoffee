@@ -14,7 +14,7 @@ public interface MypageService {
 	public List<CouponDTO> getCouponList(CouponDTO params);
 	
 	// 쿠폰 삭제
-	public boolean deleteCoupon(Long cpNum);
+	public boolean deleteCoupon(CouponDTO params);
 	
 	// 회원 상세 정보 가져오기
 	public MemberDTO getUserDetail(int userNum);

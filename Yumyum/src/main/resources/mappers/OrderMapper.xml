@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yum.mapper.PaymentMapper">
+<mapper namespace="com.yum.mapper.OrderMapper">
     <sql id="orderColumns">
        	"order_num"	
 		, "user_num"	
@@ -12,7 +12,7 @@
     </sql>
     
     <!-- 주문 내역 추가-->
-    <insert id="insertOrder" parameterType="com.yum.domain.PaymentDTO">
+    <insert id="insertOrder" parameterType="com.yum.domain.OrderDTO">
 		INSERT INTO "order" (
 			<include refid="orderColumns"></include>
 		) VALUES (
@@ -54,7 +54,7 @@
 		)
     </insert>
     
-    <!-- 주문한 수량만큼 스탬프 추가 프로시저 호출-->
+    <!-- 주문한 수량만큼 스탬프/쿠폰 추가 프로시저 호출-->
     <insert id="insertCoupon" parameterType="map"> 
     	CALL ADD_COUPON(
     		#{userNum}
@@ -62,14 +62,41 @@
    		)
     </insert>
     
-    
-    
+    <!-- 결제 정보 저장 -->
+    <insert id="insertPayInfo" parameterType="com.yum.domain.CartDTO">
+    	INSERT INTO PAYMENT (
+		  	ORDER_NUM
+		  	, IMP_UID
+		  	, MERCHANT_UID
+		  	, PAY_METHOD
+		  	, PAID_AMOUNT
+		  	, APPLY_NUM
+		) VALUES (
+			(SELECT "order_num" 
+			FROM
+				(SELECT 
+					o."order_num"
+					, RANK() OVER (ORDER BY o."order_time" DESC) AS RANK
+				FROM 
+					"order" o 
+				WHERE 
+					TRUNC(o."order_time",'DD')=TRUNC(CURRENT_DATE,'DD')  
+				) 
+			WHERE 
+				RANK=1)
+			, #{impUid}
+			, #{merchantUid}
+			, #{payMethod}
+			, #{paidAmount}
+			, #{applyNum}
+		)
+    </insert>
     
     
     
     
       
-    <select id="selectPaymentList" parameterType="com.yum.domain.PaymentDTO" resultType="com.yum.domain.PaymentDTO">
+    <select id="selectPaymentList" parameterType="com.yum.domain.OrderDTO" resultType="com.yum.domain.OrderDTO">
         SELECT 
             *
         FROM 

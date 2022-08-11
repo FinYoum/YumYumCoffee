@@ -9,17 +9,17 @@ import org.springframework.stereotype.Service;
 import com.yum.domain.CartDTO;
 import com.yum.domain.OrderDTO;
 import com.yum.domain.PaymentDTO;
-import com.yum.mapper.PaymentMapper;
+import com.yum.mapper.OrderMapper;
 
 @Service
-public class PaymentServiceImpl implements PaymentService {
+public class OrderServiceImpl implements OrderService {
 
 	@Autowired
-	private PaymentMapper paymentMapper;
+	private OrderMapper paymentMapper;
 	
 	// 주문 내역 추가
 	@Override		
-	public boolean insertOrder(PaymentDTO params) {
+	public boolean insertOrder(OrderDTO params) {
 		int queryResult = 0;
 			queryResult = paymentMapper.insertOrder(params);
 		return (queryResult == 1) ? true : false;
@@ -40,7 +40,18 @@ public class PaymentServiceImpl implements PaymentService {
 		return (queryResult == 1) ? true : false;
 	}
 	
+	// 결제 정보 추가
+		public boolean inserstPayInfo(PaymentDTO params) {
+		int queryResult = 0;
+		queryResult = paymentMapper.insertPayInfo(params);
+		return (queryResult == 1) ? true : false;
+	}
 	
+	
+		
+		
+		
+		
 	@Override
 	public int countPaymentList(PaymentDTO params) {
 		int countPaymentList = paymentMapper.countPaymentList(params);

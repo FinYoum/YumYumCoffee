@@ -10,15 +10,19 @@ import com.yum.domain.OrderDTO;
 import com.yum.domain.PaymentDTO;
 
 @Mapper
-public interface PaymentMapper {
+public interface OrderMapper {
+	
 	// 주문 내역 추가
-	public int insertOrder(PaymentDTO params);
+	public int insertOrder(OrderDTO params);
 	
 	// 주문 세부 내역 추가
 	public int insertOrderDetail(CartDTO params);
 	
 	// 주문한 수량만큼 스탬프 추가
 	public int insertCoupon(@Param("userNum") Long userNum, @Param("totalQty") Long totalQty);
+	
+	// 결제 정보 추가
+	public int insertPayInfo(PaymentDTO params);
 	
 	
 	public List<PaymentDTO> selectPaymentList(PaymentDTO params);

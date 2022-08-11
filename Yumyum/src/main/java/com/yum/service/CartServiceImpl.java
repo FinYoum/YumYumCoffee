@@ -68,7 +68,4 @@ public class CartServiceImpl implements CartService{
 		} 
 		return (queryResult == 1) ? true : false;
 	}
-	
-	
-	
 }
