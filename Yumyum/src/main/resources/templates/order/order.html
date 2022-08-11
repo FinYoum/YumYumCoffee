@@ -220,18 +220,22 @@
 			let payMethod = $("input[name=payMethod]:checked").val();
 			let timeStamp = new Date().getTime();
 			console.log()
+			
+			//https://github.com/iamport/iamport-manual/blob/master/%EB%B9%84%EC%9D%B8%EC%A6%9D%EA%B2%B0%EC%A0%9C/example/inicis-request-billing-key.md
+			// 결제금액이 0인경우
 
 			//가맹점 식별코드
 			let IMP = window.IMP;
 			IMP.init('imp46753753');
 			IMP.request_pay({
-				pg: 'kcp',
-				pay_method: payMethod, //결제 방법 선택
-				merchant_uid: timeStamp,
-				name: "주문번호 " + timeStamp, //결제창에서 보여질 이름
-				amount: totalPrice, //실제 결제되는 가격
-				buyer_email: 'example@yumyumcoffee.co.kr',
-				buyer_tel: '010-1234-5678',
+				pg: 'kcp'
+				, pay_method: payMethod //결제 방법 선택
+				,merchant_uid: timeStamp
+				,name: "주문번호 " + timeStamp //결제창에서 보여질 이름
+				, amount: totalPrice //실제 결제되는 가격
+				, buyer_email: 'example@yumyumcoffee.co.kr'
+				, buyer_tel: '010-1234-5678'
+				//, costomer_id:'imp46753753'
 			}, function (rsp) {
 				// iframe 방식으로 호출된 결제창에서 결제 후 호출되는 콜백 함수
 				console.log(rsp);

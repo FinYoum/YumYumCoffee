@@ -303,13 +303,13 @@
 					$("#modal-name").html(name);
 					$("#modal-imgPath").attr("src",  imgPath);
 					
-					// 음료(codeId contain 'b') 샷 추가 div보이기
-					 if(res.product.codeId.includes('b')){
+					// 커피만 샷 추가 div보이기
+					 if(res.product.codeId=='b1'){
 	                	$("#customDiv").show();
 	                	$("input:radio[id='option5']").hide();
 	                	$("input:radio[id='option1']").prop("checked", true);
 	                } else{
-	                // 디저트 샷 커스텀 5 기본 선택
+	                // 이외 샷 커스텀 5 기본 선택
 	                    $("#customDiv").hide();
 	                    $("input:radio[id='option5']").prop("checked", true);
 	                }
@@ -332,7 +332,7 @@
 			    } else{
 			    	// 카트 아이콘 클릭 시, 바로 장바구니 추가 
 			    	// 음료인 경우, shotCustom 선택안함
-			    	if(codeId.includes('b')){
+			    	if(codeId=='b1'){
 			    	    params={
 		                        "userNum":userNum,
 		                        "branchNum":branchNum,
