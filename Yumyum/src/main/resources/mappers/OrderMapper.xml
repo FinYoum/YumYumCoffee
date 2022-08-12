@@ -67,22 +67,29 @@
     </insert>
     
     <!-- 결제 정보 저장 -->
-    <insert id="insertPayInfo" parameterType="com.yum.domain.CartDTO">
+    <insert id="insertPayInfo" parameterType="com.yum.domain.PaymentDTO">
     	INSERT INTO PAYMENT (
-		  	ORDER_NUM
-		  	, IMP_UID
+		  	IMP_UID
 		  	, MERCHANT_UID
 		  	, PAY_METHOD
 		  	, PAID_AMOUNT
 		  	, APPLY_NUM
 		) VALUES (
-			#{orderNum}
-			, #{impUid}
+			#{impUid}
 			, #{merchantUid}
 			, #{payMethod}
 			, #{paidAmount}
 			, #{applyNum}
 		)
     </insert>
-
+    
+    <!-- 결제 정보에 주문 번호 추가 -->
+    <update id="updateOrderNumPay" parameterType="com.yum.domain.PaymentDTO">
+    	UPDATE
+    		PAYMENT
+    	SET
+    		ORDER_NUM=#{orderNum}
+    	WHERE
+    		IMP_UID=#{impUid}
+    </update>
 </mapper>

@@ -32,7 +32,6 @@ public class LoginCheck {
 	@Around("execution(* com.yum.controller.APIController.*(..)) "
 			+"|| execution(* com.yum.controller.BranchController.*(..)) "
 			+"|| execution(* com.yum.controller.CartController.*(..)) "
-			+"|| execution(* com.yum.controller.ImpContoroller.*(..)) "
 			+"|| execution(* com.yum.controller.MypageController.*(..)) "
 			+"|| execution(* com.yum.controller.OrderController.*(..)) "
 			+"|| execution(* com.yum.controller.ProductController.*(..)) "

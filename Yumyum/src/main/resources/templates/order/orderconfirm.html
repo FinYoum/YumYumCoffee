@@ -11,7 +11,9 @@
     
     <th:block layout:fragment="content">
        <div>
-       	<p th:text"|${orderNum} 주문이 완료되었습니다.">주문이 완료되었습니다.</p>
+       		<p th:if="${msg}=='commit'">주문이 완료되었습니다.</p>
+       		<p th:if="${msg}=='rollback'">주문이 취소되었습니다.</p>
        </div>
     </th:block>
+    <!-- 만약 ${msg}가 rollback이면 환불 요청하는 ajax 호출 -->
 </html>

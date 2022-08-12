@@ -25,5 +25,7 @@ public class CouponDTO {
 	private String deleteYn;
 //	설명
 	private String description;
+//  쿠폰을 사용한 주문 번호
+	private Long orderNum;
 		
 }

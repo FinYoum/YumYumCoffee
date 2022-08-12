@@ -7,7 +7,7 @@
 
 
 
-#### * 제품이미지 파일 yumyum.zip을 압축 해제하여 로컬 사진 폴더에 넣으면 제품 이미지를 확인할 수 있습니다.
+#### * 제품이미지 파일 yumyum_product_img.zip을 압축 해제하여 로컬 사진 폴더에 넣으면 제품 이미지를 확인할 수 있습니다.
 EX. C:\Users\user\Pictures 폴더에 압축해제한 폴더를 넣어<br>
     C:\Users\user\Pictures\yumyum 구조가 되면 됩니다.
 

@@ -27,4 +27,6 @@ public interface OrderMapper {
 	// 결제 정보 추가
 	public int insertPayInfo(PaymentDTO params);
 	
+	// 결제 정보에 주문 번호 추가
+	public int updateOrderNumPay(PaymentDTO params);
 }

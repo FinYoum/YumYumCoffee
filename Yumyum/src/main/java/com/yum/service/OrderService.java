@@ -23,4 +23,7 @@ public interface OrderService {
 	// 결제 정보 추가
 	public boolean inserstPayInfo(PaymentDTO params);
 	
+	// 결제 정보에 주문 번호 추가
+	public boolean addOrderNumPay(PaymentDTO params);
+	
 }

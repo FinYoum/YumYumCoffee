@@ -51,10 +51,16 @@ public class OrderServiceImpl implements OrderService {
 	
 	
 	// 결제 정보 추가
-		public boolean inserstPayInfo(PaymentDTO params) {
+	public boolean inserstPayInfo(PaymentDTO params) {
 		int queryResult = 0;
 		queryResult = paymentMapper.insertPayInfo(params);
 		return (queryResult == 1) ? true : false;
 	}
 	
+	// 결제 정보에 주문 번호 추가
+	public boolean addOrderNumPay(PaymentDTO params) {
+		int queryResult = 0;
+		queryResult = paymentMapper.updateOrderNumPay(params);
+		return (queryResult == 1) ? true : false;
+	}
 }

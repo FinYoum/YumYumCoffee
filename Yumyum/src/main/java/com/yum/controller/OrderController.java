@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderController {
 
 	@Autowired
-	private OrderService paymentService;
+	private OrderService orderService;
 
 	@Autowired
 	private MypageService mypageService;
@@ -88,19 +89,18 @@ public class OrderController {
 			Long branchNum = Long.valueOf(session.getAttribute("branchNum").toString());
 			return "redirect:/product(branchNum="+branchNum+")";
 		}
-		
-		
 	}
 
+	
 	// 결제 완료
-	// TODO 트랜젝션 처리/실패했을 경우 
 	@PostMapping(value={"/orderconfirm"})
 	public String orderConfirm(
 			@RequestParam Map<String, Object> params
 			, HttpSession session
 			, Model model
 			, OrderDTO order) throws JsonMappingException, JsonProcessingException {
-		log.debug(params.toString());
+		log.debug("orderConfirm 함수 진입");
+		
 		MemberDTO member = (MemberDTO) session.getAttribute(SessionConstants.loginMember);
 		model.addAttribute("member", member);
 		
@@ -123,13 +123,10 @@ public class OrderController {
 			new TypeReference<List<CouponDTO>>() {});
 		
 		//결제 내역
-		log.info(params.get("payment").toString());
-//		PaymentDTO payment = objectMapper.readValue(params.get("payment").toString(),
-//				new TypeReference<List<PaymentDTO>>() {}).get(0);
 		PaymentDTO payment =  new Gson().fromJson(params.get("payment").toString(), PaymentDTO.class);
+		String impUid = payment.getImpUid().toString();
 		
-		 
-		 // 회원이 선택한 지점의 지점번호 
+		// 회원이 선택한 지점의 지점번호 
 		Long branchNum = Long.valueOf(session.getAttribute("branchNum").toString());
 		
 		// 주문 내역 DB 추가
@@ -138,43 +135,88 @@ public class OrderController {
 		order.setPickupYn(pickupYn);
 		order.setTotalPrice(totalPrice);
 		
+		String msg="";
 		try {
-			boolean resultOrder= paymentService.insertOrder(order);
-			log.info("주문 내역 인서트 완료");
-			if (resultOrder!=false) {
-				Long orderNum = paymentService.getOrderNum(userNum);
-				payment.setOrderNum(orderNum);
+			// 결제 내역 추가
+			boolean resultPayment = orderService.inserstPayInfo(payment);
+			if (resultPayment==true) {
 				
-				boolean resultPayment = paymentService.inserstPayInfo(payment);
-				log.info("결제 내역 인서트 완료");
-				if (resultOrder=true) {
-					for(CartDTO cart:cartList) {
-						cart.setOrderNum(orderNum);
-						boolean resultOrderDetail = paymentService.insertOrderDetail(cart);
-						log.info("주문 세부 내역 인서트 완료");
-						if(resultOrderDetail=true) {
-							cartService.deleteCart(cart);
-							log.info("장바구니 삭제 완료");
-						}
-					}
-					boolean resultCoupon = paymentService.insertCoupon(userNum, totalQty);
-					log.info("쿠폰 적립 완료");
-					if (couponList.size()>0) {
-						for(CouponDTO coupon:couponList) {
-							boolean deleteCoupon = mypageService.deleteCoupon(coupon);
-							log.info("쿠폰 삭제 완료");
-						}
-					}
-				}
-				
-				// 회원 정보 업데이트 
-				member = memberService.getMemberDetail(Long.valueOf(member.getUserNum()));
-				session.setAttribute(SessionConstants.loginMember, member);
+				// 주문 내역 DB 인서트, 트랜젝션
+				updatePayInfo(session
+						, order
+						, userNum
+						, payment
+						, cartList
+						, totalQty
+						, couponList
+						, impUid);
+				msg+="commit";
 			}
 		} catch (Exception e) {			
+			log.debug("예외 처리");
 			e.printStackTrace();
-		}	
+			msg+="rollback";
+			model.addAttribute("payment",payment);
+		}
+		model.addAttribute("msg", msg);
 		return "order/orderconfirm";
 	}
-
+	
+	
+	// 주문 내역 추가 트랜잭션 
+	//예외 발생 시, 롤백 실행
+	@Transactional(rollbackFor = Exception.class)
+	public void updatePayInfo(HttpSession session
+			, OrderDTO order
+			, Long userNum
+			, PaymentDTO payment
+			, List<CartDTO> cartList
+			, Long totalQty
+			, List<CouponDTO> couponList
+			, String impUid
+			) throws Exception {
+		MemberDTO member = (MemberDTO) session.getAttribute(SessionConstants.loginMember);
+		
+		try {
+			orderService.insertOrder(order);
+			log.info("주문 내역 인서트 완료");
+			Long orderNum = orderService.getOrderNum(userNum);
+				
+			// 결제내역에 대해 주문번호 업데이트 
+			payment.setOrderNum(orderNum);
+			orderService.addOrderNumPay(payment);
+			
+			
+			// 장바구니 제품 주문 세부내역으로 인서트 후, 삭제 
+			for(CartDTO cart:cartList) {
+				cart.setOrderNum(orderNum);
+				boolean resultOrderDetail = orderService.insertOrderDetail(cart);
+				log.info("주문 세부 내역 인서트 완료");
+				if(resultOrderDetail==true) {
+					cartService.deleteCart(cart);
+					log.info("장바구니 삭제 완료");
+				}
+			}
+			
+			// 구매한 제품 수 만큼 쿠폰 적립
+			boolean resultCoupon = orderService.insertCoupon(userNum, totalQty);
+			log.info("쿠폰 적립 완료");
+			
+			// 사용한 쿠폰 삭제
+			if (couponList.size()>0) {
+				for(CouponDTO coupon:couponList) {
+					coupon.setOrderNum(orderNum);
+					mypageService.deleteCoupon(coupon);
+					log.info("쿠폰 삭제 완료");
+				}
+			}
+		
+			// 회원 정보 업데이트 
+			member = memberService.getMemberDetail(Long.valueOf(member.getUserNum()));
+			session.setAttribute(SessionConstants.loginMember, member);
+		} catch (Exception e) {			
+			e.printStackTrace();
+			throw new Exception();
+		}
+	}
 }

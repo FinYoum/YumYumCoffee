@@ -22,12 +22,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/verifyiamport")
 // iamport 결제 검증
-public class iamportVerifyController {
+public class IamportVerifyController {
 
     private final IamportClient iamportClient;
 
     // REST API 와 REST API secret 입력
-    public iamportVerifyController(){
+    public IamportVerifyController(){
         this.iamportClient = new IamportClient("7464134155225840", "nxuuws9VZYJEhe0mU3qZozR473fqlO8L09YUHLXDKNtso1W1n1DzzxbQQR0iNaDMu6asnChOKceyVgiL");
     }
 
