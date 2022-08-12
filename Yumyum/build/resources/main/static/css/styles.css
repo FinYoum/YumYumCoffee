@@ -2199,7 +2199,7 @@ progress {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  border-radius: 0.25rem;
+  /* border-radius: 0.25rem; */
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2771,7 +2771,7 @@ textarea.form-control-lg {
   white-space: nowrap;
   background-color: #e9ecef;
   border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  /* border-radius: 0.25rem; */
 }
 
 .input-group-lg > .form-control,
@@ -5600,6 +5600,8 @@ textarea.form-control-lg {
   .modal-dialog {
     max-width: 500px;
     margin: 1.75rem auto;
+    margin-top:100px;
+    margin-bottom:100px;
   }
 
   .modal-dialog-scrollable {
@@ -7491,7 +7493,7 @@ textarea.form-control-lg {
 }
 
 .py-5 {
-  padding-top: 3rem !important;
+  /* padding-top: 3rem !important; */
   padding-bottom: 3rem !important;
 }
 
@@ -11285,4 +11287,185 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+  
 }
+  .filebox input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    }
+  .filebox.bs3-primary .col-sm-12>label {
+    color: #fff;
+    background-color: #393b3d;
+    border-color: #393b3d;
+  }
+  .filebox .col-sm-12>label {
+    display: inline-block;
+    padding: .5em .75em;
+    color: #999;
+    font-size: inherit;
+    font-weight: 600;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+  }
+  .filebox .upload-name {
+    display: inline-block;
+    width: 350px;
+    padding: .5em .75em;
+    /* label의 패딩값과 일치 */
+    font-size: inherit;
+    font-family: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #f5f5f5;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+    -webkit-appearance: none;
+    /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  .selectBorder{
+    border:1px solid #bdc2c7;
+    border-radius:3px;
+    color: #66696b;
+    padding: 3px;
+  }
+  .btn1{
+    border: 2px solid #eeeaea;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    font-size: 18px;
+    padding: 2px;
+    font-weight:bold;
+  }
+  
+  .modal1{
+	display: none;
+	background-color: #FDFDFD;
+	width: 600px;
+	height: 200px;
+	position: absolute;
+	top: 30%;
+	left: 30%; 
+	border: 1px solid #E9ECEF;
+	border-radius: 5px;
+	z-index: 2;
+   } 
+   
+   .close1{
+    float:right;
+    border-radius: 0px 0px 0px 5px;
+    background-color: #FDFDFD;
+   }
+   .close1:hover{
+    background-color: #D0D2D5;
+   }
+	
+	#btn_info{
+    border: 0px;
+    border-radius: 5px;
+    padding:5px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(120, 123, 129, 0.3);
+    margin-top: -10px;
+	}
+  
+#btnDiv{
+	margin-top:10px;
+}  
+.btn_wrap1{
+	display: inline;
+	float:left;
+}
+.btn_wrap2{
+	display: inline;
+    float:right;
+}
+
+select{
+    border:1px solid gray;
+    border-radius:3px;
+}
+
+#selectCodeId{
+    border: 0px;
+    height:27px;
+    width: 30px;
+    border-radius: 5px;
+    padding: 0.5px 1.5px 1.5px 6px;
+    background: #f1efe9;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+ul#pagingul {
+	text-align: center !important;
+	display: inline-block !important;
+	border: 1px solid #ccc !important;
+	border-right: 0 !important;
+	padding-left: 0rem !important;
+}
+
+ul#pagingul li {
+	text-align: center !important;
+	float: left !important;
+	list-style: none !important;
+}
+
+ul#pagingul li a {
+	display: block !important;
+	font-size: 14px !important;
+	padding: 9px 12px !important;
+	border-right: solid 1px #ccc !important;
+	box-sizing: border-box !important;
+	color: #000 !important;
+}
+
+ul#pagingul li.on {
+	background: #212529 !important;
+	border-color: #212529 !important;
+}
+
+ul#pagingul li.on a {
+	color: #fff !important;
+}
+  
+  
+.modal-dialog{
+	max-width: 700px;
+}
+
+.btn:focus,.btn:active {
+	 outline: none !important;
+   box-shadow: none;
+	
+}
+
+.image{
+	cursor: pointer;
+}
+  

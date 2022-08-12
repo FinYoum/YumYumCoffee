@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yum.mapper.OrderMapper">
-    <sql id="orderColumns">
-       	"order_num"	
-		, "user_num"	
-		, "branch_num"	
-		, "pickup_yn"	
-		, PICKUP_TIME
-		, "order_time"	
-		, "total_price"	
-    </sql>
-    
+
     <!-- 주문 내역 추가-->
     <insert id="insertOrder" parameterType="com.yum.domain.OrderDTO">
 		INSERT INTO "order" (
-			<include refid="orderColumns"></include>
+			"order_num"	
+			, "user_num"	
+			, "branch_num"	
+			, "pickup_yn"	
+			, PICKUP_TIME
+			, "order_time"	
+			, "total_price"	
 		) VALUES (
 			ORDER_SEQ.NEXTVAL
 			, #{userNum}
@@ -26,6 +23,24 @@
 		)
     </insert>
     
+    <!--회원의 최근 생성한 주문 컬럼의 주문번호 가져오기 -->
+    <select id="selectOrderNum" parameterType="Long" resultType="Long">
+    	SELECT "order_num" 
+			FROM
+				(SELECT 
+					o."order_num"
+					, RANK() OVER (ORDER BY o."order_time" DESC) AS RANK
+				FROM 
+					"order" o 
+				WHERE 
+					"user_num"=#{userNum}
+				AND
+					TRUNC(o."order_time",'DD')=TRUNC(CURRENT_DATE,'DD')  
+				) 
+			WHERE 
+				RANK=1
+    </select>
+    
     <!-- 주문 세부 내역 추가-->
     <insert id="insertOrderDetail" parameterType="com.yum.domain.CartDTO">
 		INSERT INTO "order_detail" (
@@ -35,18 +50,7 @@
 			, "price"	
 			, "shot_custom"	
 		) VALUES (
-			(SELECT "order_num" 
-			FROM
-				(SELECT 
-					o."order_num"
-					, RANK() OVER (ORDER BY o."order_time" DESC) AS RANK
-				FROM 
-					"order" o 
-				WHERE 
-					TRUNC(o."order_time",'DD')=TRUNC(CURRENT_DATE,'DD')  
-				) 
-			WHERE 
-				RANK=1)
+			#{orderNum}
 			, #{productNum}
 			, #{qty}
 			, #{totalPrice}
@@ -72,18 +76,7 @@
 		  	, PAID_AMOUNT
 		  	, APPLY_NUM
 		) VALUES (
-			(SELECT "order_num" 
-			FROM
-				(SELECT 
-					o."order_num"
-					, RANK() OVER (ORDER BY o."order_time" DESC) AS RANK
-				FROM 
-					"order" o 
-				WHERE 
-					TRUNC(o."order_time",'DD')=TRUNC(CURRENT_DATE,'DD')  
-				) 
-			WHERE 
-				RANK=1)
+			#{orderNum}
 			, #{impUid}
 			, #{merchantUid}
 			, #{payMethod}
@@ -91,86 +84,5 @@
 			, #{applyNum}
 		)
     </insert>
-    
-    
-    
-    
-      
-    <select id="selectPaymentList" parameterType="com.yum.domain.OrderDTO" resultType="com.yum.domain.OrderDTO">
-        SELECT 
-            *
-        FROM 
-            "order"
-        ORDER BY
-            "order_num" ASC
-    </select>
-    
-    <select id="countPaymentList" parameterType="com.yum.domain.PaymentDTO" resultType="int">
-        SELECT 
-            COUNT(*)
-        FROM 
-            "order"
-    </select>
-    
-    <select id="selectTotalPrice" parameterType="int" resultType="int">
-       SELECT
-           "total_price"
-       FROM
-           "order"
-       WHERE
-           "order_num" = #{ orderNum }
-    </select>
-    
-    <select id="selectBranchName" parameterType="int" resultType="String">
-        SELECT 
-            b.BRANCH_NAME  
-        FROM 
-            BRANCH b 
-        WHERE 
-            b.BRANCH_NUM = (SELECT 
-                                o."branch_num"  
-                            FROM 
-                                "order" o 
-                            WHERE 
-                            o."order_num" = #{ orderNum })
-    </select>
-    
-    <select id="selectOrder" parameterType="int" resultType="com.yum.domain.OrderDTO">
-        <!-- SELECT * FROM "order_detail" WHERE "order_num" = #{ orderNum } -->
-        SELECT 
-            *
-        FROM 
-            (SELECT 
-                od."order_num"
-                , p.PRODUCT_NUM
-                , p.NAME
-                , p.PRICE
-                , p.INFO
-                , od."qty"
-                , od."shot_custom"
-                , i.img_path
-             FROM 
-                "order_detail" od
-                , PRODUCT p
-                , img i
-             WHERE 
-                p.PRODUCT_NUM = od."product_num"
-             AND
-                p.PRODUCT_NUM = i.PRODUCT_NUM)
-        WHERE 
-            PRODUCT_NUM 
-        IN 
-            (SELECT 
-                  "product_num" 
-             FROM 
-                  "order_detail" 
-             WHERE 
-                  "order_num" = #{ orderNum })
-        AND
-            "order_num" = #{ orderNum }
-    </select>
-    
-    
-    
 
 </mapper>

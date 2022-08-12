@@ -9,20 +9,50 @@
         , price
         , info
     </sql>
+    
+    <sql id="branchProductColumns">
+         branch_num
+        ,product_num
+        ,hiden_yn
+    </sql>
 
     <insert id="insertProduct" parameterType="com.yum.domain.ProductDTO">
-        INSERT INTO product (
-            <include refid="productColumns" />
-        ) VALUES (
-              #{productNum}
-            , #{codeId}
-            , #{name}
-            , #{price}
-            , #{info}
-        )
+        INSERT ALL
+            into product (
+                <include refid="productColumns" />
+            ) VALUES (
+                  #{productNum}
+                , #{codeId}
+                , #{name}
+                , #{price}
+                , #{info}
+            )
+            <!-- branchProduct에 insert -->
+            into branch_product( 
+                <include refid="branchProductColumns"/>
+            ) VALUES (
+                1
+                , #{productNum}
+                , 'N'
+            )
+            into branch_product( 
+                <include refid="branchProductColumns"/>
+            ) VALUES (
+                2
+                , #{productNum}
+                , 'N'
+            )
+            into branch_product( 
+                <include refid="branchProductColumns"/>
+            ) VALUES (
+                3
+                , #{productNum}
+                , 'N'
+            )
+        SELECT * FROM DUAL
     </insert>
-    
     <select id="selectProductDetail" parameterType="long" resultType="com.yum.domain.ProductDTO">
+        
         SELECT 
             <include refid="productColumns" />
         FROM 
@@ -34,26 +64,76 @@
     <update id="updateProduct" parameterType="com.yum.domain.ProductDTO">
         UPDATE product
         SET
-            price=#{price}
+<!--              code_id=#{codeId} 
+            , --> name=#{name}
+            , price=#{price}
             , info=#{info}
         WHERE
             product_num=#{productNum}
     </update>
     
     <delete id="deleteProduct" parameterType="long">
-        DELETE product
+        delete product
         WHERE
             product_num=#{productNum}
     </delete>
     
+	<sql id="searchQuery">
+		
+		<if test='codeId !=null and codeId.equals("b") '>
+			 and   code_id like 'b%'
+		</if>		
+		<if test='codeId !=null and codeId.equals("d") '>
+			 and   code_id like 'd%'
+		</if>
+		
+		<if test='codeId !=null and !codeId.equals("all") and !codeId.equals("b") and !codeId.equals("d") '>
+			 and   code_id = #{codeId}
+		</if>
+
+	</sql>
+    
     <select id="selectProductList" parameterType="com.yum.domain.ProductDTO" resultType="com.yum.domain.ProductDTO">
-        SELECT 
-            product_num
-            ,name
-            ,price
-            ,info 
-        FROM 
-            product
+
+       SELECT
+             product_num
+	        , code_id
+	        , name
+	        , price
+	        , info
+	        , img_num
+	        , original_name
+	        , save_name
+	        , img_path
+        
+        FROM (
+            SELECT ROW_NUMBER() OVER (ORDER BY A.product_num) NUM
+            , A.*
+            , I.IMG_NUM
+            , I.ORIGINAL_NAME
+            , I.SAVE_NAME
+            , I.IMG_PATH
+           
+            FROM product A
+            
+            INNER JOIN img I  ON 
+            
+            A.product_num=I.product_num  
+                 
+	     <![CDATA[   
+	      WHERE  A.product_num > 0
+	     ]]>
+	     
+	     
+	     <include refid="searchQuery" />            
+            
+            ORDER BY A.product_num 
+        )
+        WHERE 
+
+     	
+        NUM BETWEEN #{paginationInfo.firstRecordIndex} AND #{paginationInfo.lastRecordIndex}
+       
     </select>
     
     <select id="selectProductTotalCount" parameterType="com.yum.domain.ProductDTO" resultType="int">
@@ -61,6 +141,11 @@
             COUNT(*)
         FROM 
             product
+        WHERE    
+	     <![CDATA[   
+	        product_num > 0
+	     ]]>
+	     <include refid="searchQuery" />           
     </select>
     
     <select id="selectProductMax" parameterType="com.yum.domain.ProductDTO" resultType="int">
@@ -69,4 +154,5 @@
         FROM
             product
     </select>
+    
 </mapper>

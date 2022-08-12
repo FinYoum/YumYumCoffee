@@ -35,7 +35,6 @@ public class LoginCheck {
 			+"|| execution(* com.yum.controller.ImpContoroller.*(..)) "
 			+"|| execution(* com.yum.controller.MypageController.*(..)) "
 			+"|| execution(* com.yum.controller.OrderController.*(..)) "
-			+"|| execution(* com.yum.controller.PaymentController.*(..)) "
 			+"|| execution(* com.yum.controller.ProductController.*(..)) "
 			+"|| execution(* com.yum.controller.LoginController.logout())"
     		+"|| execution(* com.yum.controller.LoginController.updatePw())"
