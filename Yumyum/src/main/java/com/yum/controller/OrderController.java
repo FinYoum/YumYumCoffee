@@ -91,6 +91,7 @@ public class OrderController {
 
 	// 결제 완료
 	// TODO 트랜젝션 처리/실패했을 경우 
+	// orderNum set
 	@PostMapping(value = { "/orderconfirm" })
 	public String orderDone(
 			@RequestParam Map<String, Object> params
