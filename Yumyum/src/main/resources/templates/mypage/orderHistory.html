@@ -94,7 +94,6 @@
             
                     return year + "-" + month + "-" + day;
                 }
-                
                         
                 const getDateDiff = (d1, d2) => {
                       const date1 = new Date(d1);
@@ -139,7 +138,7 @@
                                 (rv[x[key]] = rv[x[key]] || []).push(x);
                                 return rv;
                               }, {});
-                            };
+                        };
                         // orderTime을 기준으로 그룹 정렬(이미 시간 내림차순으로 정렬되어있는 상태)
                         let groupOrderList=groupArrayOfObjects(response.orderHistoryList,"orderTime");
 

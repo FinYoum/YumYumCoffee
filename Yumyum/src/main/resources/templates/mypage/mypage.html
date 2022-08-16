@@ -42,8 +42,7 @@
 
 			<!-- 쿠폰 영역 -->
 			<div class="text-center">
-				<p
-					style="font-size: x-large; margin-bottom: 10px; font-weight: 500;">COUPON</p>
+				<p style="font-size: x-large; margin-bottom: 10px; font-weight: 500;">COUPON</p>
 				<p th:text="${couponTotalCount}" onclick="openModal()"
 					style="cursor: pointer; font-size: xx-large;"></p>
 			</div>
@@ -155,11 +154,16 @@
 				    }
 				});
 			})
+		    
+			function openModalId() {
+				$("#modalIdentification").modal("toggle");
+			};
+		    /*[- end of function -]*/
 			
     /*쿠폰 리스트 출력*/       
     (function() {
         printCouponList();
-    });
+    })();
     
     function printCouponList() {
 
@@ -174,26 +178,22 @@
                     couponHtml += `
                         <li class="bg-stone-100 border-solid border-2 rounded m-3 p-3 border-slate-600">
                             <div style="display:flex; flex-flow: row wrap; justify-content: space-between;">
-                                <div class="py-1 font-semibold hover:text-slate-900 dark:text-slate-400"
-                                >${coupon.kind} 쿠폰</div>
-                                <div class="py-1 font-semibold hover:text-slate-900 dark:text-slate-400"
-                                >유효기간 : ${expDate}까지</div>
+                                <div class="py-1 font-semibold hover:text-slate-900 dark:text-slate-400">${coupon.kind} 쿠폰</div>
+                                <div class="py-1 font-semibold hover:text-slate-900 dark:text-slate-400">유효기간 : ${expDate}까지</div>
                             </div>
-                            <div >${coupon.description}</div>
+                            <div>${coupon.description}</div>
                         </li>
                     `;
                 });
                 $("#coupon-list").html(couponHtml);
             }
         }, "json");
-    }
+    };
+    /*[- end of function -]*/
     
-	function openModalId() {
-		$("#modalIdentification").modal("toggle");
-	}
 	function openModal() {
 	    $("#couponModal").modal("toggle");
-	}
+	};
      /*[- end of function -]*/
             /*]]>*/
         </script>
