@@ -125,51 +125,41 @@
 <th:block layout:fragment="script">
 	<script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 	<script th:inline="javascript">
-		/*<![CDATA[ */
-			$("#pw").keydown(function(e) {
-	   			if (e.keyCode == 13) {
-	   				$('#btnConfirm').trigger('click');
-	   			}
+            /*<![CDATA[*/
+            
+            $("#pw").keydown(function(e) {
+		   		if (e.keyCode == 13) {
+		   			$('#btnConfirm').trigger('click');
+		   		}
 			});
 			$(document)
 			.on('click','#btnConfirm',function(){
 				$.ajax({
-			    	url:'/identification',
-			        type:'post',
-			        data:{pw:$('#pw').val()},
-			        success:function(result){ //컨트롤러에서 넘어온 result값을 받는다 
-			        	if(result != 1){ //result가 1이 아니면(=0일 경우) -> 본인확인 실패 
-			        		alert("본인임을 확인할 수 없습니다.");
-				            return false;
-			                
-			            } else { // result가 1일 경우 -> 본인확인 완료
+				    url:'/identification',
+				    type:'post',
+				    data:{pw:$('#pw').val()},
+				    success:function(result){ //컨트롤러에서 넘어온 result값을 받는다 
+				        if(result != 1){ //result가 1이 아니면(=0일 경우) -> 본인확인 실패 
+				        	alert("본인임을 확인할 수 없습니다.");
+					        return false;
+				                
+				        } else { // result가 1일 경우 -> 본인확인 완료
 							document.location="/updateuser";
-					        return true;
-			            }
-			        },
-			        error:function(){
-		        		alert("본인임을 확인할 수 없습니다.");
-			            console.log("본인임을 확인할 수 없습니다.");
-			            return false;
-			        }
+						    return true;
+				        }
+				    },
+				    error:function(){
+			        	alert("본인임을 확인할 수 없습니다.");
+				        console.log("본인임을 확인할 수 없습니다.");
+				        return false;
+				    }
 				});
 			})
 			
-			function openModalId() {
-				
-		         $("#modalIdentification").modal("toggle");
-		     }
-		/*[- end of function -]*/
-		/*]]>*/
-	</script>
-
-	<script th:inline="javascript">
-            /*<![CDATA[*/
-                
     /*쿠폰 리스트 출력*/       
     (function() {
         printCouponList();
-    })();
+    });
     
     function printCouponList() {
 
@@ -197,11 +187,13 @@
             }
         }, "json");
     }
-    /*[- end of function -]*/
-     
-     function openModal() {
-         $("#couponModal").modal("toggle");
-     }
+    
+	function openModalId() {
+		$("#modalIdentification").modal("toggle");
+	}
+	function openModal() {
+	    $("#couponModal").modal("toggle");
+	}
      /*[- end of function -]*/
             /*]]>*/
         </script>

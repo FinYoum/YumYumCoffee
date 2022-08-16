@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="layout/basic">
 <th:block layout:fragment="title">
 	<title>결제</title>
@@ -20,23 +21,29 @@
 				<h2 th:text="${ branchName }" class="text-2xl font-semibold"></h2>
 				<hr style="margin: 20px">
 				<!-- 주문내역 카드 -->
-				<div class="card mb-3" style="max-width: 540px;" th:if="${not #lists.isEmpty( cartList )}"
+				<div class="card mb-3" style="max-width: 540px;"
+					th:if="${not #lists.isEmpty( cartList )}"
 					th:each="cart : ${ cartList }">
 					<div class="row g-0">
 						<div class="col-md-4">
-							<img th:src="${ cart.imgPath }" class="img-fluid rounded-start" alt="...">
+							<img th:src="${ cart.imgPath }" class="img-fluid rounded-start"
+								alt="...">
 						</div>
 						<div class="col-md-8">
 							<div class="card-body">
 								<h5 class="card-title">주문 내역</h5>
-								<span class="card-text" th:text="|${ cart.name }|"></span> <span class="card-text"
-									th:text="|${ cart.price } 원|"></span><br>
-								<small class="text-muted" th:if="${ cart.shotCustom }==1">샷
-									추가 : 기본</small> <small class="text-muted" th:if="${ cart.shotCustom }==2">샷 추가 :
-									연하게</small> <small class="text-muted" th:if="${ cart.shotCustom }==3">샷 추가
-									: 샷 추가(+500)</small> <small class="text-muted" th:if="${ cart.shotCustom }==4">샷 추가
-									: 2샷 추가(+1,000)</small> <small class="text-muted"
-									th:if="${ cart.shotCustom }==5">Bakery</small>
+								<span class="card-text" th:text="|${ cart.name }|"></span> 
+								<span class="card-text" th:text="|${ cart.price } 원|"></span><br>
+								<small class="text-muted" 
+										th:if="${ cart.shotCustom }==1">샷 추가 : 기본</small> 
+								<small class="text-muted"
+										th:if="${ cart.shotCustom }==2">샷 추가 : 연하게</small> 
+								<small class="text-muted" 
+										th:if="${ cart.shotCustom }==3">샷 추가 : 샷 추가(+500)</small> 
+								<small class="text-muted"
+										th:if="${ cart.shotCustom }==4">샷 추가 : 2샷 추가(+1,000)</small> 
+								<small class="text-muted" 
+										th:if="${ cart.shotCustom }==5">Bakery</small>
 								<span class="card-text" th:text="|x ${ cart.qty }|"></span><br>
 								<span class="card-text" th:text="|합계 ${cart.totalPrice }원|"></span>
 								<!-- <hr Style="margin-top:10px"> -->
@@ -46,8 +53,6 @@
 				</div>
 				<hr style="margin: 20px">
 
-
-
 			</div>
 
 			<!-- 화면 분할 -->
@@ -56,8 +61,10 @@
 				<!-- 결제 시 데이터 테이블에 커밋! -->
 				<div>
 					<h2 class="text-xl font-semibold">픽업 옵션</h2>
-					<br style="margin: 10px"> <input name="pickupOrNot" type="radio" checked class="m-1" value="N">매장
-					<input name="pickupOrNot" type="radio" class="m-1" value="Y" onclick="pickupBtnAbled()">포장
+					<br style="margin: 10px"> <input name="pickupOrNot"
+						type="radio" checked class="m-1" value="N">매장 
+					<input name="pickupOrNot" type="radio" class="m-1" value="Y"
+						onclick="pickupBtnAbled()">포장
 				</div>
 				<hr class="my-3">
 
@@ -67,14 +74,18 @@
 					<br style="margin: 10px">
 					<!-- <div class="btn-group" role="group"> -->
 					<div class="d-flex justify-content-around">
-						<button type="button" class="btn btn-outline-secondary button-class1 pickupBtn" th:value="0"
-							disabled="disabled">바로</button>
-						<button type="button" class="btn btn-outline-secondary button-class2 pickupBtn" th:value="10"
-							disabled="disabled">10분 후</button>
-						<button type="button" class="btn btn-outline-secondary button-class3 pickupBtn" th:value="30"
-							disabled="disabled">30분 후</button>
-						<button type="button" class="btn btn-outline-secondary button-class4 pickupBtn" th:value="60"
-							disabled="disabled">1시간 후</button>
+						<button type="button"
+							class="btn btn-outline-secondary button-class1 pickupBtn"
+							th:value="0" disabled="disabled">바로</button>
+						<button type="button"
+							class="btn btn-outline-secondary button-class2 pickupBtn"
+							th:value="10" disabled="disabled">10분 후</button>
+						<button type="button"
+							class="btn btn-outline-secondary button-class3 pickupBtn"
+							th:value="30" disabled="disabled">30분 후</button>
+						<button type="button"
+							class="btn btn-outline-secondary button-class4 pickupBtn"
+							th:value="60" disabled="disabled">1시간 후</button>
 					</div>
 					<!-- </div> -->
 				</div>
@@ -83,9 +94,11 @@
 				<!-- 보유 쿠폰 목록 -->
 				<div class="mt-4">
 					<h2 class="text-xl font-semibold my-3">할인 쿠폰</h2>
-					<select id="couponList" class="w-70 h-10 p-1" onchange="if (this.selectedIndex) selectCp()">
+					<select id="couponList" class="w-70 h-10 p-1"
+						onchange="if (this.selectedIndex) selectCp()">
 						<option>쿠폰을 선택해주세요</option>
-						<option th:if="${not #lists.isEmpty( couponList )}" th:each="coupon, i : ${ couponList }"
+						<option th:if="${not #lists.isEmpty( couponList )}"
+							th:each="coupon, i : ${ couponList }"
 							th:id="'cp'+${coupon.cpNum}" th:value="${coupon.cpNum}"
 							th:text="|${coupon.kind} 쿠폰	 3000원 할인  ~${#strings.substring(coupon.expirationDate, 2, 10)}|">
 						</option>
@@ -97,28 +110,27 @@
 				<!-- 결제 수단 -->
 				<!-- value 값을 pay_method 데이터로 넘겨 iamport()에 넣으면 된다. -->
 				<h2 class="text-xl font-semibold my-3">결제수단</h2>
-				<input type="radio" name="payMethod" value="card" class="m-1" checked>신용카드
-				<input type="radio" name="payMethod" value="kakaopay" class="m-1" disabled>카카오페이
+				<input type="radio" name="payMethod" value="card" class="m-1" checked>신용카드 
+				<input type="radio" name="payMethod" value="kakaopay" class="m-1" disabled>카카오페이 
 				<input type="radio" name="payMethod" value="samsung" class="m-1" disabled>삼성페이
 				<hr class="my-3">
 
 				<!-- 결제 금액 -->
 				<div id="calc" class="">
 					<div class="flex justify-end mx-5">
-						<span class="text-xl font-semibold">총 수량</span> <span
-							class="inline-block text-xl w-32 text-right" th:text="${totalQty}"></span>
+						<span class="text-xl font-semibold">총 수량</span> 
+						<span class="inline-block text-xl w-32 text-right" th:text="${totalQty}"></span>
 					</div>
 					<div class="flex justify-end mx-5">
-						<span class="text-xl font-semibold">결제 금액</span> <span
-							class="inline-block text-xl w-32 text-right" th:text="|${totalPrice} 원|"
-							id="totalPrice"></span>
+						<span class="text-xl font-semibold">결제 금액</span> 
+						<span class="inline-block text-xl w-32 text-right" th:text="|${totalPrice} 원|" id="totalPrice"></span>
 					</div>
 				</div>
 
 				<div class="flex justify-end pr-5">
 					<!-- 결제의 파라미터로 주문번호, 총액, 결제수단에 따라 Case문 변경되도록 js수정 -->
-					<button type="button" class="btn btn-outline-dark" style="font-size: 1.2em"
-						th:onclick="|javascript:iamport()|">구매</button>
+					<button type="button" class="btn btn-outline-dark"
+						style="font-size: 1.2em" th:onclick="|javascript:iamport()|">구매</button>
 				</div>
 			</div>
 		</div>
@@ -136,12 +148,10 @@
 		let pickupTime = 0;
 		let totalPrice = parseInt(/*[[ ${totalPrice} ]]*/);
 
-
 		// 픽업 옵션 포장 선택 시, 픽업 시간 활성화 
 		function pickupBtnAbled() {
 			$('.pickupBtn').attr("disabled", false);
 		}
-
 
 		//픽업 시간 선택 시, 버튼 색상 변경
 		$(function () {
